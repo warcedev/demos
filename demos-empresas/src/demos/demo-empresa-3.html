@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VERTEX — Consultoría Estratégica</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --navy: #050d1a;
+      --navy2: #0a1628;
+      --blue: #1a3a6e;
+      --accent: #2f6fff;
+      --accent2: #5b8fff;
+      --white: #ffffff;
+      --off: #f0f2f7;
+      --gray: #8090aa;
+      --light-line: rgba(255,255,255,0.07);
+      --font-head: 'Syne', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.4rem 4rem;
+      background: rgba(5,13,26,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--light-line);
+    }
+    .logo {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 1.3rem;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .logo-dot {
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+    .nav-links a {
+      color: var(--gray);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-btn {
+      padding: 0.6rem 1.4rem;
+      background: var(--accent);
+      color: var(--white) !important;
+      border-radius: 2px;
+      font-weight: 500 !important;
+      transition: background 0.3s !important;
+    }
+    .nav-btn:hover { background: var(--accent2) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      padding: 140px 4rem 6rem;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 4rem;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Background glow */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: -200px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(47,111,255,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -100px; right: 0;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(47,111,255,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-label {
+      display: inline-flex; align-items: center; gap: 0.75rem;
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 2rem;
+    }
+    .hero-label span {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(47,111,255,0.4); }
+      50% { opacity: 0.8; transform: scale(1.2); box-shadow: 0 0 0 6px rgba(47,111,255,0); }
+    }
+    h1 {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(3rem, 5.5vw, 5.5rem);
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      color: var(--white);
+    }
+    h1 .accent { color: var(--accent2); }
+    .hero-desc {
+      margin-top: 2rem;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--gray);
+      max-width: 520px;
+    }
+    .hero-actions {
+      margin-top: 3rem;
+      display: flex; gap: 1rem; flex-wrap: wrap;
+    }
+    .btn-primary {
+      padding: 0.9rem 2rem;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .btn-primary:hover {
+      background: var(--accent2);
+      box-shadow: 0 4px 24px rgba(47,111,255,0.35);
+    }
+    .btn-ghost {
+      padding: 0.9rem 2rem;
+      background: transparent;
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 2px;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .btn-ghost:hover {
+      border-color: rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.04);
+    }
+    .hero-metrics {
+      margin-top: 4rem;
+      display: flex; gap: 3rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--light-line);
+    }
+    .metric-num {
+      font-family: var(--font-head);
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1;
+    }
+    .metric-num sup { font-size: 1rem; color: var(--accent2); }
+    .metric-label { font-size: 0.72rem; color: var(--gray); margin-top: 0.3rem; }
+
+    /* Hero right — dashboard card */
+    .hero-card {
+      background: var(--navy2);
+      border: 1px solid var(--light-line);
+      border-radius: 8px;
+      padding: 2rem;
+      position: relative; z-index: 2;
+    }
+    .card-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .card-title { font-family: var(--font-head); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray); }
+    .card-badge {
+      font-size: 0.65rem; font-weight: 500;
+      color: #34d399;
+      background: rgba(52,211,153,0.1);
+      border: 1px solid rgba(52,211,153,0.2);
+      padding: 0.25rem 0.6rem;
+      border-radius: 20px;
+    }
+    /* Mini bar chart */
+    .chart { display: flex; align-items: flex-end; gap: 6px; height: 80px; margin-bottom: 1.5rem; }
+    .bar {
+      flex: 1;
+      background: var(--blue);
+      border-radius: 3px 3px 0 0;
+      transition: background 0.3s;
+      position: relative;
+    }
+    .bar:hover { background: var(--accent); }
+    .bar.active { background: var(--accent); }
+    .chart-labels { display: flex; gap: 6px; margin-bottom: 1.5rem; }
+    .chart-label { flex: 1; font-size: 0.6rem; color: var(--gray); text-align: center; }
+    .card-divider { height: 1px; background: var(--light-line); margin: 1.25rem 0; }
+    .card-kpi-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .kpi-item {}
+    .kpi-val { font-family: var(--font-head); font-size: 1.5rem; font-weight: 700; color: var(--white); }
+    .kpi-label { font-size: 0.65rem; color: var(--gray); margin-top: 0.15rem; }
+    .kpi-change { font-size: 0.65rem; color: #34d399; margin-top: 0.1rem; }
+    .kpi-change.down { color: #f87171; }
+    .card-footer { margin-top: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
+    .avatar-stack { display: flex; }
+    .avatar {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 2px solid var(--navy2);
+      margin-left: -8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.55rem; font-weight: 600;
+    }
+    .avatar:first-child { margin-left: 0; }
+    .avatar-1 { background: #2f6fff; }
+    .avatar-2 { background: #8b5cf6; }
+    .avatar-3 { background: #ec4899; }
+    .card-footer-text { font-size: 0.7rem; color: var(--gray); margin-left: 0.5rem; }
+
+    /* ── SECTION COMMON ── */
+    .section-eyebrow {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .section-eyebrow::before {
+      content: '';
+      width: 20px; height: 2px;
+      background: var(--accent);
+      display: inline-block;
+    }
+    h2 {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    h2 em { font-style: normal; color: var(--accent2); }
+
+    /* ── SERVICES ── */
+    .services {
+      padding: 8rem 4rem;
+      background: var(--navy2);
+      border-top: 1px solid var(--light-line);
+    }
+    .services-inner { max-width: 1280px; margin: 0 auto; }
+    .services-top {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: end;
+      margin-bottom: 4rem;
+    }
+    .services-top-right p { font-size: 0.9rem; line-height: 1.8; color: var(--gray); }
+    .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--light-line); }
+    .svc {
+      background: var(--navy2);
+      padding: 2.5rem;
+      border-top: 2px solid transparent;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .svc:hover { border-color: var(--accent); background: rgba(47,111,255,0.04); }
+    .svc-icon {
+      width: 48px; height: 48px;
+      background: rgba(47,111,255,0.1);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+    }
+    .svc-name {
+      font-family: var(--font-head);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 0.75rem;
+    }
+    .svc-text { font-size: 0.82rem; line-height: 1.8; color: var(--gray); }
+    .svc-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      margin-top: 1.5rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--accent2);
+      text-decoration: none;
+      transition: gap 0.2s;
+    }
+    .svc-link:hover { gap: 0.7rem; }
+
+    /* ── WHY US ── */
+    .why {
+      padding: 8rem 4rem;
+      background: var(--navy);
+    }
+    .why-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 6rem; align-items: center;
+    }
+    .why-visual {
+      position: relative;
+    }
+    .why-main-box {
+      background: var(--navy2);
+      border: 1px solid var(--light-line);
+      border-radius: 8px;
+      padding: 2.5rem;
+    }
+    .why-main-box-label { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 1.5rem; }
+    .progress-list { display: flex; flex-direction: column; gap: 1.25rem; }
+    .progress-item {}
+    .progress-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+    .progress-name { font-size: 0.82rem; color: var(--white); font-weight: 400; }
+    .progress-pct { font-size: 0.82rem; color: var(--accent2); font-weight: 500; }
+    .progress-bar { height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 2px;
+      animation: fillBar 1.5s ease forwards;
+    }
+    @keyframes fillBar { from { width: 0; } }
+    .why-float-card {
+      position: absolute; bottom: -1.5rem; right: -1.5rem;
+      background: var(--accent);
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+      min-width: 160px;
+    }
+    .why-float-num {
+      font-family: var(--font-head);
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+    }
+    .why-float-label { font-size: 0.68rem; color: rgba(255,255,255,0.7); margin-top: 0.25rem; }
+    .why-content {}
+    .why-content h2 { margin-bottom: 1.5rem; }
+    .why-content > p { font-size: 0.9rem; line-height: 1.9; color: var(--gray); margin-bottom: 2.5rem; }
+    .why-points { display: flex; flex-direction: column; gap: 1.25rem; }
+    .why-point {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 1.25rem;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .why-point:hover { border-color: var(--light-line); background: rgba(255,255,255,0.02); }
+    .why-point-icon {
+      width: 36px; height: 36px; flex-shrink: 0;
+      background: rgba(47,111,255,0.12);
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .why-point-title { font-size: 0.9rem; font-weight: 500; color: var(--white); margin-bottom: 0.25rem; }
+    .why-point-text { font-size: 0.78rem; line-height: 1.7; color: var(--gray); }
+
+    /* ── CASES ── */
+    .cases {
+      padding: 8rem 4rem;
+      background: var(--navy2);
+      border-top: 1px solid var(--light-line);
+    }
+    .cases-inner { max-width: 1280px; margin: 0 auto; }
+    .cases-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; }
+    .cases-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+    .case-card {
+      background: var(--navy);
+      border: 1px solid var(--light-line);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.4s;
+    }
+    .case-card:hover { border-color: rgba(47,111,255,0.4); transform: translateY(-4px); }
+    .case-top {
+      height: 180px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .case-card:nth-child(1) .case-top { background: linear-gradient(135deg, #0d1f3c, #0a1628); }
+    .case-card:nth-child(2) .case-top { background: linear-gradient(135deg, #1a0d2e, #0e0a18); }
+    .case-card:nth-child(3) .case-top { background: linear-gradient(135deg, #0d1f1a, #081210); }
+    .case-glyph {
+      font-family: var(--font-head);
+      font-size: 5rem;
+      font-weight: 800;
+      color: rgba(255,255,255,0.04);
+    }
+    .case-tag {
+      position: absolute; top: 1rem; left: 1rem;
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      background: rgba(47,111,255,0.12);
+      padding: 0.3rem 0.7rem;
+      border-radius: 20px;
+    }
+    .case-body { padding: 1.75rem; }
+    .case-client { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.5rem; }
+    .case-title { font-family: var(--font-head); font-size: 1.15rem; font-weight: 600; color: var(--white); margin-bottom: 0.75rem; line-height: 1.3; }
+    .case-text { font-size: 0.78rem; line-height: 1.7; color: var(--gray); }
+    .case-result {
+      display: flex; gap: 1.5rem;
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--light-line);
+    }
+    .result-num { font-family: var(--font-head); font-size: 1.4rem; font-weight: 700; color: var(--white); }
+    .result-label { font-size: 0.65rem; color: var(--gray); margin-top: 0.1rem; }
+
+    /* ── TEAM ── */
+    .team {
+      padding: 8rem 4rem;
+      background: var(--navy);
+    }
+    .team-inner { max-width: 1280px; margin: 0 auto; }
+    .team-header { margin-bottom: 4rem; }
+    .team-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2rem; }
+    .team-card {
+      border: 1px solid var(--light-line);
+      border-radius: 6px; overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .team-card:hover { border-color: rgba(47,111,255,0.4); }
+    .team-img {
+      height: 200px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .team-card:nth-child(1) .team-img { background: linear-gradient(160deg, #0d1f3c, #050d1a); }
+    .team-card:nth-child(2) .team-img { background: linear-gradient(160deg, #1a0d2e, #050d1a); }
+    .team-card:nth-child(3) .team-img { background: linear-gradient(160deg, #0d1f1a, #050d1a); }
+    .team-card:nth-child(4) .team-img { background: linear-gradient(160deg, #1a180d, #050d1a); }
+    .team-initials {
+      font-family: var(--font-head);
+      font-size: 3rem; font-weight: 800;
+      color: rgba(255,255,255,0.06);
+    }
+    .team-body { padding: 1.5rem; }
+    .team-name { font-family: var(--font-head); font-size: 1rem; font-weight: 600; color: var(--white); }
+    .team-role { font-size: 0.72rem; color: var(--accent2); margin-top: 0.25rem; }
+    .team-bio { font-size: 0.75rem; line-height: 1.7; color: var(--gray); margin-top: 0.75rem; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials {
+      padding: 8rem 4rem;
+      background: var(--navy2);
+      border-top: 1px solid var(--light-line);
+    }
+    .testimonials-inner { max-width: 1280px; margin: 0 auto; }
+    .testimonials-header { margin-bottom: 4rem; }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+    .testi-card {
+      background: var(--navy);
+      border: 1px solid var(--light-line);
+      border-radius: 6px;
+      padding: 2rem;
+    }
+    .testi-quote {
+      font-family: var(--font-head);
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+    .testi-text { font-size: 0.85rem; line-height: 1.8; color: rgba(255,255,255,0.65); font-style: italic; margin-bottom: 1.5rem; }
+    .testi-divider { height: 1px; background: var(--light-line); margin-bottom: 1.25rem; }
+    .testi-author { display: flex; align-items: center; gap: 0.75rem; }
+    .testi-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; font-weight: 600; color: #fff;
+    }
+    .testi-name { font-size: 0.82rem; font-weight: 500; color: var(--white); }
+    .testi-company { font-size: 0.68rem; color: var(--gray); }
+
+    /* ── CTA BANNER ── */
+    .cta-banner {
+      margin: 0 4rem 8rem;
+      background: linear-gradient(135deg, var(--accent) 0%, #1a3fcf 100%);
+      border-radius: 10px;
+      padding: 4rem;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 2rem;
+      position: relative; overflow: hidden;
+    }
+    .cta-banner::before {
+      content: '';
+      position: absolute; top: -50px; right: -50px;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+    }
+    .cta-banner::after {
+      content: '';
+      position: absolute; bottom: -80px; right: 100px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .cta-text h3 {
+      font-family: var(--font-head);
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .cta-text p { font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 0.5rem; }
+    .btn-white {
+      flex-shrink: 0;
+      padding: 1rem 2.5rem;
+      background: #fff;
+      color: var(--accent);
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: opacity 0.3s;
+      position: relative; z-index: 2;
+    }
+    .btn-white:hover { opacity: 0.9; }
+
+    /* ── CONTACT ── */
+    .contact {
+      padding: 0 4rem 8rem;
+      max-width: 1280px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+    }
+    .contact-left h2 { margin-bottom: 1.5rem; }
+    .contact-left > p { font-size: 0.88rem; line-height: 1.9; color: var(--gray); margin-bottom: 2.5rem; }
+    .contact-details { display: flex; flex-direction: column; gap: 1.5rem; }
+    .contact-detail-label { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent2); margin-bottom: 0.25rem; }
+    .contact-detail-value { font-size: 0.9rem; color: var(--white); }
+    .form { display: flex; flex-direction: column; gap: 1.25rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    label { display: block; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.5rem; }
+    .form input, .form select, .form textarea {
+      width: 100%;
+      background: var(--navy2);
+      border: 1px solid var(--light-line);
+      color: var(--white);
+      padding: 0.85rem 1rem;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 300;
+      outline: none;
+      border-radius: 2px;
+      transition: border-color 0.3s;
+      appearance: none;
+    }
+    .form input:focus, .form select:focus, .form textarea:focus { border-color: var(--accent); }
+    .form input::placeholder, .form textarea::placeholder { color: rgba(255,255,255,0.2); }
+    .form textarea { resize: none; height: 100px; }
+    .form button {
+      padding: 0.95rem 2rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.3s, box-shadow 0.3s;
+      align-self: flex-start;
+    }
+    .form button:hover { background: var(--accent2); box-shadow: 0 4px 20px rgba(47,111,255,0.35); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #020810;
+      border-top: 1px solid var(--light-line);
+      padding: 4rem;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+    .footer-logo-block .logo { margin-bottom: 1rem; }
+    .footer-logo-block p { font-size: 0.75rem; line-height: 1.8; color: var(--gray); max-width: 240px; }
+    .footer-col-title { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 1.25rem; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+    .footer-links a { color: var(--gray); text-decoration: none; font-size: 0.8rem; transition: color 0.3s; }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom {
+      background: #020810;
+      border-top: 1px solid var(--light-line);
+      padding: 1.5rem 4rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-bottom p { font-size: 0.65rem; color: rgba(255,255,255,0.2); letter-spacing: 0.08em; }
+    .footer-socials { display: flex; gap: 1.25rem; }
+    .footer-socials a { color: var(--gray); text-decoration: none; font-size: 0.72rem; transition: color 0.3s; }
+    .footer-socials a:hover { color: var(--white); }
+
+    @media (max-width: 1024px) {
+      nav { padding: 1.2rem 2rem; }
+      .nav-links li:not(:last-child) { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 120px 2rem 4rem; }
+      .hero-card { display: none; }
+      .services { padding: 5rem 2rem; }
+      .services-top { grid-template-columns: 1fr; gap: 2rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .why { padding: 5rem 2rem; }
+      .why-inner { grid-template-columns: 1fr; }
+      .why-visual { display: none; }
+      .cases { padding: 5rem 2rem; }
+      .cases-grid { grid-template-columns: 1fr; }
+      .team { padding: 5rem 2rem; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+      .testimonials { padding: 5rem 2rem; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .cta-banner { margin: 0 2rem 5rem; flex-direction: column; text-align: center; }
+      .contact { padding: 0 2rem 5rem; grid-template-columns: 1fr; gap: 3rem; }
+      footer { padding: 3rem 2rem; grid-template-columns: 1fr 1fr; }
+      .footer-bottom { padding: 1.25rem 2rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+    @media (max-width: 600px) {
+      .hero-metrics { flex-direction: column; gap: 1.5rem; }
+      .team-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo"><div class="logo-dot"></div>VERTEX</div>
+    <ul class="nav-links">
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#casos">Casos</a></li>
+      <li><a href="#equipo">Equipo</a></li>
+      <li><a href="#contacto" class="nav-btn">Contactar</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <p class="hero-label"><span></span>Consultoría Estratégica · Madrid</p>
+      <h1>Decisiones<br>mejores.<br><span class="accent">Resultados</span><br>reales.</h1>
+      <p class="hero-desc">Ayudamos a empresas a crecer con estrategia, rigor analítico y ejecución eficaz. Desde la diagnosis hasta la implementación, estamos con usted en cada paso.</p>
+      <div class="hero-actions">
+        <a href="#servicios" class="btn-primary">Explorar servicios</a>
+        <a href="#casos" class="btn-ghost">Ver casos de éxito</a>
+      </div>
+      <div class="hero-metrics">
+        <div>
+          <div class="metric-num">€2.4<sup>B</sup></div>
+          <div class="metric-label">Valor generado para clientes</div>
+        </div>
+        <div>
+          <div class="metric-num">180<sup>+</sup></div>
+          <div class="metric-label">Proyectos completados</div>
+        </div>
+        <div>
+          <div class="metric-num">94<sup>%</sup></div>
+          <div class="metric-label">Tasa de retención</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="card-header">
+        <span class="card-title">Rendimiento Q4</span>
+        <span class="card-badge">↑ En objetivo</span>
+      </div>
+      <div class="chart">
+        <div class="bar" style="height:35%"></div>
+        <div class="bar" style="height:55%"></div>
+        <div class="bar" style="height:45%"></div>
+        <div class="bar active" style="height:80%"></div>
+        <div class="bar" style="height:65%"></div>
+        <div class="bar" style="height:90%"></div>
+        <div class="bar active" style="height:100%"></div>
+        <div class="bar" style="height:75%"></div>
+      </div>
+      <div class="chart-labels">
+        <span class="chart-label">May</span>
+        <span class="chart-label">Jun</span>
+        <span class="chart-label">Jul</span>
+        <span class="chart-label">Ago</span>
+        <span class="chart-label">Sep</span>
+        <span class="chart-label">Oct</span>
+        <span class="chart-label">Nov</span>
+        <span class="chart-label">Dic</span>
+      </div>
+      <div class="card-divider"></div>
+      <div class="card-kpi-row">
+        <div class="kpi-item">
+          <div class="kpi-val">+38%</div>
+          <div class="kpi-label">Crecimiento ingresos</div>
+          <div class="kpi-change">↑ vs año anterior</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-val">€4.2M</div>
+          <div class="kpi-label">Ahorro operativo</div>
+          <div class="kpi-change">↑ +12% objetivo</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-val">-22%</div>
+          <div class="kpi-label">Reducción costes</div>
+          <div class="kpi-change down">↓ bajo umbral</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-val">96%</div>
+          <div class="kpi-label">Satisfacción cliente</div>
+          <div class="kpi-change">↑ +4 puntos</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="avatar-stack">
+          <div class="avatar avatar-1">CR</div>
+          <div class="avatar avatar-2">MV</div>
+          <div class="avatar avatar-3">AL</div>
+        </div>
+        <span class="card-footer-text">Equipo asignado al proyecto</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="servicios">
+    <div class="services-inner">
+      <div class="services-top">
+        <div>
+          <p class="section-eyebrow">Áreas de práctica</p>
+          <h2>Lo que <em>hacemos</em></h2>
+        </div>
+        <div class="services-top-right">
+          <p>Contamos con equipos especializados en las áreas que más impactan en el crecimiento y la eficiencia de su organización. Sin generalistas: cada proyecto lo lidera quien más sabe del tema.</p>
+        </div>
+      </div>
+      <div class="services-grid">
+        <div class="svc">
+          <div class="svc-icon">📊</div>
+          <div class="svc-name">Estrategia Corporativa</div>
+          <p class="svc-text">Diagnóstico organizacional, planificación estratégica a 3–5 años y roadmaps de transformación alineados con los objetivos del negocio.</p>
+          <a href="#" class="svc-link">Saber más →</a>
+        </div>
+        <div class="svc">
+          <div class="svc-icon">⚙️</div>
+          <div class="svc-name">Eficiencia Operativa</div>
+          <p class="svc-text">Rediseño de procesos, automatización y reducción de costes sin comprometer la calidad del servicio ni el talento del equipo.</p>
+          <a href="#" class="svc-link">Saber más →</a>
+        </div>
+        <div class="svc">
+          <div class="svc-icon">💡</div>
+          <div class="svc-name">Transformación Digital</div>
+          <p class="svc-text">Hoja de ruta digital, adopción tecnológica y gestión del cambio para organizaciones que necesitan evolucionar con rapidez y seguridad.</p>
+          <a href="#" class="svc-link">Saber más →</a>
+        </div>
+        <div class="svc">
+          <div class="svc-icon">📈</div>
+          <div class="svc-name">Crecimiento e Ingresos</div>
+          <p class="svc-text">Estrategias de expansión de mercado, optimización comercial y nuevas líneas de negocio con base en datos y benchmarks del sector.</p>
+          <a href="#" class="svc-link">Saber más →</a>
+        </div>
+        <div class="svc">
+          <div class="svc-icon">🤝</div>
+          <div class="svc-name">M&A y Due Diligence</div>
+          <p class="svc-text">Asesoramiento en fusiones, adquisiciones y procesos de integración post-deal con enfoque en preservación de valor a largo plazo.</p>
+          <a href="#" class="svc-link">Saber más →</a>
+        </div>
+        <div class="svc">
+          <div class="svc-icon">🛡️</div>
+          <div class="svc-name">Gestión de Riesgos</div>
+          <p class="svc-text">Identificación, evaluación y mitigación de riesgos operacionales, regulatorios y estratégicos en entornos de alta incertidumbre.</p>
+          <a href="#" class="svc-link">Saber más →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="why">
+    <div class="why-inner">
+      <div class="why-visual">
+        <div class="why-main-box">
+          <div class="why-main-box-label">Impacto promedio por proyecto</div>
+          <div class="progress-list">
+            <div class="progress-item">
+              <div class="progress-header"><span class="progress-name">Reducción de costes</span><span class="progress-pct">34%</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:34%"></div></div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-header"><span class="progress-name">Aumento de ingresos</span><span class="progress-pct">28%</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:28%"></div></div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-header"><span class="progress-name">Mejora en eficiencia operativa</span><span class="progress-pct">61%</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:61%"></div></div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-header"><span class="progress-name">Satisfacción del equipo interno</span><span class="progress-pct">87%</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:87%"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="why-float-card">
+          <div class="why-float-num">15+</div>
+          <div class="why-float-label">Años de experiencia en el sector</div>
+        </div>
+      </div>
+      <div class="why-content">
+        <p class="section-eyebrow">Por qué elegirnos</p>
+        <h2>Resultados, no<br><em>presentaciones</em></h2>
+        <p>Muchas consultoras entregan informes. Nosotros entregamos cambios. Nuestra metodología combina análisis riguroso con implementación práctica, asegurándonos de que cada recomendación se traduce en impacto real.</p>
+        <div class="why-points">
+          <div class="why-point">
+            <div class="why-point-icon">🎯</div>
+            <div>
+              <div class="why-point-title">Enfoque en resultados medibles</div>
+              <p class="why-point-text">Definimos KPIs claros al inicio y medimos el impacto en cada fase del proyecto.</p>
+            </div>
+          </div>
+          <div class="why-point">
+            <div class="why-point-icon">🔍</div>
+            <div>
+              <div class="why-point-title">Especialización sectorial profunda</div>
+              <p class="why-point-text">No somos generalistas. Tenemos práctica vertical en finanzas, industria, retail y servicios.</p>
+            </div>
+          </div>
+          <div class="why-point">
+            <div class="why-point-icon">⚡</div>
+            <div>
+              <div class="why-point-title">Agilidad sin perder rigor</div>
+              <p class="why-point-text">Metodología ágil que permite iterar rápido sin sacrificar la calidad del análisis.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASES -->
+  <section class="cases" id="casos">
+    <div class="cases-inner">
+      <div class="cases-header">
+        <div>
+          <p class="section-eyebrow">Casos de éxito</p>
+          <h2>Resultados <em>concretos</em></h2>
+        </div>
+        <a href="#" class="btn-ghost" style="font-size:0.78rem;padding:0.7rem 1.5rem;">Ver todos los casos →</a>
+      </div>
+      <div class="cases-grid">
+        <div class="case-card">
+          <div class="case-top">
+            <span class="case-glyph">MR</span>
+            <span class="case-tag">Estrategia Corporativa</span>
+          </div>
+          <div class="case-body">
+            <div class="case-client">Meridian Retail Group</div>
+            <div class="case-title">Reestructuración estratégica y expansión a 3 nuevos mercados</div>
+            <p class="case-text">Rediseño del modelo de negocio y plan de expansión internacional en 18 meses.</p>
+            <div class="case-result">
+              <div><div class="result-num">+42%</div><div class="result-label">Ingresos</div></div>
+              <div><div class="result-num">3</div><div class="result-label">Nuevos mercados</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="case-card">
+          <div class="case-top">
+            <span class="case-glyph">AT</span>
+            <span class="case-tag">Transformación Digital</span>
+          </div>
+          <div class="case-body">
+            <div class="case-client">Athos Finanzas</div>
+            <div class="case-title">Digitalización de procesos core y reducción del time-to-market</div>
+            <p class="case-text">Implantación de plataforma digital y rediseño de flujos operativos críticos.</p>
+            <div class="case-result">
+              <div><div class="result-num">-55%</div><div class="result-label">Time-to-market</div></div>
+              <div><div class="result-num">€2.1M</div><div class="result-label">Ahorro anual</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="case-card">
+          <div class="case-top">
+            <span class="case-glyph">NV</span>
+            <span class="case-tag">Eficiencia Operativa</span>
+          </div>
+          <div class="case-body">
+            <div class="case-client">Novanta Industrial</div>
+            <div class="case-title">Optimización de cadena de suministro y reducción de residuos</div>
+            <p class="case-text">Análisis y rediseño completo de la cadena de valor con enfoque en sostenibilidad.</p>
+            <div class="case-result">
+              <div><div class="result-num">-31%</div><div class="result-label">Costes operativos</div></div>
+              <div><div class="result-num">+18%</div><div class="result-label">EBITDA</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="team" id="equipo">
+    <div class="team-inner">
+      <div class="team-header">
+        <p class="section-eyebrow">Nuestro equipo</p>
+        <h2>Expertos con <em>experiencia real</em></h2>
+      </div>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-img"><span class="team-initials">RA</span></div>
+          <div class="team-body">
+            <div class="team-name">Roberto Allende</div>
+            <div class="team-role">CEO & Socio Fundador</div>
+            <p class="team-bio">Ex McKinsey. 20 años en estrategia corporativa para Fortune 500 en Europa y Latinoamérica.</p>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-img"><span class="team-initials">LP</span></div>
+          <div class="team-body">
+            <div class="team-name">Laura Peña</div>
+            <div class="team-role">Socia — Transformación Digital</div>
+            <p class="team-bio">Ex Accenture Digital. Especialista en tecnología aplicada a la eficiencia operativa y adopción del cambio.</p>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-img"><span class="team-initials">JM</span></div>
+          <div class="team-body">
+            <div class="team-name">Jorge Medina</div>
+            <div class="team-role">Director — M&A y Finanzas</div>
+            <p class="team-bio">Ex Goldman Sachs. Más de 40 operaciones de M&A asesoradas en sectores industriales y tecnológicos.</p>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-img"><span class="team-initials">SG</span></div>
+          <div class="team-body">
+            <div class="team-name">Sofía García</div>
+            <div class="team-role">Directora — Operaciones</div>
+            <p class="team-bio">Especialista en lean management y rediseño de procesos. Experiencia en retail, logística e industria.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="testimonials-inner">
+      <div class="testimonials-header">
+        <p class="section-eyebrow">Clientes</p>
+        <h2>Lo que dicen <em>de nosotros</em></h2>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testi-card">
+          <div class="testi-quote">"</div>
+          <p class="testi-text">Vertex transformó por completo nuestra forma de operar. En 12 meses conseguimos resultados que habíamos estado persiguiendo durante años. Rigor, claridad y acompañamiento real.</p>
+          <div class="testi-divider"></div>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:#2f6fff;">CM</div>
+            <div><div class="testi-name">Carlos Morales</div><div class="testi-company">CEO, Meridian Retail Group</div></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-quote">"</div>
+          <p class="testi-text">Lo que más valoramos fue su capacidad de entender nuestro negocio desde el primer día. No vinieron con soluciones enlatadas, sino con preguntas muy buenas que nos hicieron pensar diferente.</p>
+          <div class="testi-divider"></div>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:#8b5cf6;">IA</div>
+            <div><div class="testi-name">Isabel Arango</div><div class="testi-company">CFO, Athos Finanzas</div></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-quote">"</div>
+          <p class="testi-text">Redujimos costes operativos en un 31% sin tocar el equipo humano. Eso es lo que hace un buen consultor: encontrar el problema real, no el síntoma. Repetiremos sin duda.</p>
+          <div class="testi-divider"></div>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:#10b981;">PR</div>
+            <div><div class="testi-name">Pedro Ruiz</div><div class="testi-company">COO, Novanta Industrial</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-banner">
+    <div class="cta-text">
+      <h3>¿Listo para tomar mejores decisiones?</h3>
+      <p>Hablemos de su empresa. Primera sesión de diagnóstico sin coste.</p>
+    </div>
+    <a href="#contacto" class="btn-white">Solicitar diagnóstico gratuito</a>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="contact" id="contacto">
+    <div class="contact-left">
+      <p class="section-eyebrow">Contacto</p>
+      <h2>Hablemos de su <em>empresa</em></h2>
+      <p>Cuéntenos el reto al que se enfrenta. En 48 horas le respondemos con una propuesta de cómo podemos ayudarle.</p>
+      <div class="contact-details">
+        <div><div class="contact-detail-label">Email</div><div class="contact-detail-value">contacto@vertexconsultoria.com</div></div>
+        <div><div class="contact-detail-label">Teléfono</div><div class="contact-detail-value">+34 91 000 0000</div></div>
+        <div><div class="contact-detail-label">Oficina</div><div class="contact-detail-value">Paseo de la Castellana 77, Madrid</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="form">
+        <div class="form-row">
+          <div><label>Nombre</label><input type="text" placeholder="Su nombre"></div>
+          <div><label>Empresa</label><input type="text" placeholder="Nombre de la empresa"></div>
+        </div>
+        <div><label>Email corporativo</label><input type="email" placeholder="nombre@empresa.com"></div>
+        <div>
+          <label>Área de interés</label>
+          <select>
+            <option value="" disabled selected>Seleccione un servicio</option>
+            <option>Estrategia Corporativa</option>
+            <option>Eficiencia Operativa</option>
+            <option>Transformación Digital</option>
+            <option>Crecimiento e Ingresos</option>
+            <option>M&A y Due Diligence</option>
+            <option>Gestión de Riesgos</option>
+          </select>
+        </div>
+        <div><label>Mensaje</label><textarea placeholder="Describa brevemente el reto o proyecto…"></textarea></div>
+        <button type="submit">Enviar solicitud →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo-block">
+      <div class="logo"><div class="logo-dot"></div>VERTEX</div>
+      <p>Consultoría estratégica para empresas que quieren crecer con rigor, velocidad e impacto medible.</p>
+    </div>
+    <div>
+      <p class="footer-col-title">Servicios</p>
+      <ul class="footer-links">
+        <li><a href="#">Estrategia Corporativa</a></li>
+        <li><a href="#">Eficiencia Operativa</a></li>
+        <li><a href="#">Transformación Digital</a></li>
+        <li><a href="#">M&A y Due Diligence</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Empresa</p>
+      <ul class="footer-links">
+        <li><a href="#">Sobre Vertex</a></li>
+        <li><a href="#">Equipo directivo</a></li>
+        <li><a href="#">Casos de éxito</a></li>
+        <li><a href="#">Publicaciones</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Contacto</p>
+      <ul class="footer-links">
+        <li><a href="#">contacto@vertexconsultoria.com</a></li>
+        <li><a href="#">+34 91 000 0000</a></li>
+        <li><a href="#">Madrid · Barcelona</a></li>
+        <li><a href="#">LinkedIn</a></li>
+      </ul>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <p>© 2026 Vertex Consultoría S.L. — Todos los derechos reservados</p>
+    <div class="footer-socials">
+      <a href="#">LinkedIn</a>
+      <a href="#">Twitter / X</a>
+      <a href="#">Aviso legal</a>
+    </div>
+  </div>
+
+</body>
+</html>

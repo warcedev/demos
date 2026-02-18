@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FORMA — Agencia Creativa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #0e0e0e;
+      --white: #f5f3ef;
+      --gray: #8a8a8a;
+      --light: #eeece8;
+      --accent: #c8b89a;
+      --font-serif: 'Cormorant Garamond', serif;
+      --font-sans: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--black);
+      font-family: var(--font-sans);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.75rem 4rem;
+      background: rgba(245,243,239,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .logo {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-size: 1.5rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--black);
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+    .nav-links a {
+      color: var(--gray);
+      text-decoration: none;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--black); }
+    .nav-cta {
+      padding: 0.6rem 1.5rem;
+      background: var(--black);
+      color: var(--white) !important;
+      transition: background 0.3s !important;
+    }
+    .nav-cta:hover { background: #333 !important; color: var(--white) !important; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 80px;
+    }
+    .hero-left {
+      padding: 8rem 4rem 6rem;
+      display: flex; flex-direction: column; justify-content: center;
+      border-right: 1px solid rgba(0,0,0,0.07);
+    }
+    .hero-eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 2rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 30px; height: 1px;
+      background: var(--accent);
+    }
+    h1 {
+      font-family: var(--font-serif);
+      font-weight: 300;
+      font-size: clamp(3.5rem, 6vw, 6rem);
+      line-height: 1.05;
+      color: var(--black);
+      letter-spacing: -0.01em;
+    }
+    h1 em {
+      font-style: italic;
+      color: var(--gray);
+    }
+    .hero-desc {
+      margin-top: 2.5rem;
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: var(--gray);
+      max-width: 420px;
+    }
+    .hero-actions {
+      margin-top: 3.5rem;
+      display: flex; gap: 1rem; align-items: center;
+    }
+    .btn-dark {
+      padding: 0.9rem 2.2rem;
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    .btn-dark:hover { background: #333; }
+    .btn-text {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 2px;
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .btn-text:hover { color: var(--black); border-color: var(--black); }
+
+    .hero-right {
+      background: var(--black);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 4rem;
+      position: relative; overflow: hidden;
+    }
+    /* Abstract geometric decoration */
+    .hero-geo {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .geo-circle {
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.06);
+      position: absolute;
+    }
+    .geo-circle:nth-child(2) { width: 350px; height: 350px; border-color: rgba(200,184,154,0.12); }
+    .geo-circle:nth-child(3) { width: 200px; height: 200px; border-color: rgba(200,184,154,0.2); }
+    .geo-line {
+      position: absolute;
+      width: 1px; height: 60%;
+      background: linear-gradient(to bottom, transparent, rgba(200,184,154,0.3), transparent);
+      transform: rotate(var(--r));
+    }
+    .hero-stat-row {
+      position: relative; z-index: 2;
+      display: grid; grid-template-columns: repeat(3,1fr);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 2.5rem;
+      gap: 2rem;
+    }
+    .hero-stat-num {
+      font-family: var(--font-serif);
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--white);
+    }
+    .hero-stat-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-top: 0.25rem;
+    }
+
+    /* CLIENTS BAR */
+    .clients-bar {
+      background: var(--light);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      padding: 2rem 4rem;
+      display: flex; align-items: center; gap: 4rem;
+      overflow: hidden;
+    }
+    .clients-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gray);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .clients-scroll { overflow: hidden; flex: 1; }
+    .clients-inner {
+      display: inline-flex; gap: 4rem;
+      animation: clientsScroll 22s linear infinite;
+      white-space: nowrap;
+    }
+    .client-name {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.2);
+      transition: color 0.3s;
+    }
+    @keyframes clientsScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* SERVICES */
+    .services {
+      padding: 8rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 6rem;
+      max-width: 1300px; margin: 0 auto;
+    }
+    .services-left { padding-top: 0.5rem; }
+    .section-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 24px; height: 1px;
+      background: var(--accent);
+    }
+    h2 {
+      font-family: var(--font-serif);
+      font-weight: 300;
+      font-size: clamp(2.5rem, 4vw, 4rem);
+      line-height: 1.1;
+      color: var(--black);
+    }
+    h2 em { font-style: italic; color: var(--gray); }
+    .services-desc {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      line-height: 1.9;
+      color: var(--gray);
+    }
+    .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(0,0,0,0.06); }
+    .service-card {
+      background: var(--white);
+      padding: 3rem 2.5rem;
+      transition: background 0.3s;
+      position: relative;
+    }
+    .service-card:hover { background: var(--black); }
+    .service-card:hover .service-num,
+    .service-card:hover .service-name,
+    .service-card:hover .service-text { color: var(--white); }
+    .service-card:hover .service-icon { border-color: rgba(255,255,255,0.15); color: var(--accent); }
+    .service-num {
+      font-family: var(--font-serif);
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      margin-bottom: 1.5rem;
+      transition: color 0.3s;
+    }
+    .service-icon {
+      width: 44px; height: 44px;
+      border: 1px solid rgba(0,0,0,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .service-name {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--black);
+      margin-bottom: 1rem;
+      transition: color 0.3s;
+    }
+    .service-text {
+      font-size: 0.78rem;
+      line-height: 1.8;
+      color: var(--gray);
+      transition: color 0.3s;
+    }
+
+    /* PROCESS */
+    .process {
+      background: var(--black);
+      padding: 8rem 4rem;
+    }
+    .process-inner { max-width: 1300px; margin: 0 auto; }
+    .process-header { margin-bottom: 5rem; }
+    .process-header .section-label { color: var(--accent); }
+    .process-header .section-label::before { background: var(--accent); }
+    .process-header h2 { color: var(--white); }
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3rem;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding-top: 3rem;
+    }
+    .step {}
+    .step-num {
+      font-family: var(--font-serif);
+      font-size: 3.5rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.08);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+    .step-name {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      color: var(--white);
+      margin-bottom: 0.75rem;
+    }
+    .step-text {
+      font-size: 0.78rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.4);
+    }
+    .step-line {
+      width: 30px; height: 1px;
+      background: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+
+    /* WORK / PORTFOLIO */
+    .work { padding: 8rem 4rem; max-width: 1300px; margin: 0 auto; }
+    .work-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 4rem;
+    }
+    .work-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 380px 280px;
+      gap: 3px;
+    }
+    .work-item {
+      position: relative; overflow: hidden; cursor: pointer;
+    }
+    .work-item:first-child { grid-row: span 2; }
+    .work-bg {
+      width: 100%; height: 100%;
+      transition: transform 0.6s ease;
+    }
+    .work-item:hover .work-bg { transform: scale(1.04); }
+    .work-item:nth-child(1) .work-bg { background: linear-gradient(135deg, #1c1c1c 0%, #2d2520 100%); }
+    .work-item:nth-child(2) .work-bg { background: linear-gradient(135deg, #1a1f2e 0%, #0e1118 100%); }
+    .work-item:nth-child(3) .work-bg { background: linear-gradient(135deg, #1e1a14 0%, #2a2218 100%); }
+    .work-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 2.5rem 2rem 2rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+    }
+    .work-tag {
+      font-size: 0.58rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .work-title {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: #fff;
+    }
+    /* Decorative shapes inside work items */
+    .work-deco {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0.06;
+    }
+    .work-deco svg { width: 60%; height: 60%; }
+
+    /* TEAM */
+    .team {
+      background: var(--light);
+      padding: 8rem 4rem;
+      border-top: 1px solid rgba(0,0,0,0.06);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .team-inner { max-width: 1300px; margin: 0 auto; }
+    .team-header { margin-bottom: 4rem; }
+    .team-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2rem; }
+    .team-card {}
+    .team-photo {
+      width: 100%;
+      aspect-ratio: 3/4;
+      position: relative; overflow: hidden;
+      margin-bottom: 1.25rem;
+    }
+    .team-photo-inner {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .team-initials {
+      font-family: var(--font-serif);
+      font-size: 3.5rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.08);
+    }
+    .team-card:nth-child(1) .team-photo { background: linear-gradient(160deg, #1e1e1e, #2e2820); }
+    .team-card:nth-child(2) .team-photo { background: linear-gradient(160deg, #1a1f28, #12161e); }
+    .team-card:nth-child(3) .team-photo { background: linear-gradient(160deg, #1e1a14, #26201a); }
+    .team-card:nth-child(4) .team-photo { background: linear-gradient(160deg, #1c1c24, #14141c); }
+    .team-name {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      color: var(--black);
+    }
+    .team-role {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-top: 0.25rem;
+    }
+
+    /* CONTACT */
+    .contact {
+      padding: 8rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8rem;
+      max-width: 1300px; margin: 0 auto;
+    }
+    .contact-left h2 { margin-bottom: 1.5rem; }
+    .contact-left p { font-size: 0.85rem; line-height: 1.9; color: var(--gray); margin-bottom: 2.5rem; }
+    .contact-detail { display: flex; flex-direction: column; gap: 1.5rem; }
+    .contact-item-label {
+      font-size: 0.58rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.25rem;
+    }
+    .contact-item-value { font-size: 0.9rem; color: var(--black); }
+    .form { display: flex; flex-direction: column; gap: 1.25rem; padding-top: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .form input, .form select, .form textarea {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(0,0,0,0.15);
+      color: var(--black);
+      padding: 0.75rem 0;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 300;
+      outline: none;
+      transition: border-color 0.3s;
+      width: 100%;
+      appearance: none;
+    }
+    .form input:focus, .form select:focus, .form textarea:focus { border-color: var(--black); }
+    .form input::placeholder, .form textarea::placeholder { color: rgba(0,0,0,0.3); }
+    .form textarea { resize: none; height: 80px; }
+    .form button {
+      align-self: flex-start;
+      padding: 0.9rem 2.5rem;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 0.5rem;
+    }
+    .form button:hover { background: #333; }
+
+    /* FOOTER */
+    footer {
+      background: var(--black);
+      padding: 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 4rem;
+      align-items: start;
+    }
+    .footer-brand .logo { color: var(--white); margin-bottom: 1rem; display: block; }
+    .footer-brand p { font-size: 0.72rem; line-height: 1.8; color: rgba(255,255,255,0.3); max-width: 220px; }
+    .footer-col-title {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 1.25rem;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+    .footer-links a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 0.8rem;
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom {
+      background: var(--black);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 1.5rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-bottom p { font-size: 0.6rem; letter-spacing: 0.15em; color: rgba(255,255,255,0.2); }
+
+    @media (max-width: 1024px) {
+      nav { padding: 1.5rem 2rem; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .services { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 2rem; }
+      .process { padding: 5rem 2rem; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .work { padding: 5rem 2rem; }
+      .work-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+      .work-item:first-child { grid-row: span 1; }
+      .team { padding: 5rem 2rem; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+      .contact { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 2rem; }
+      footer { grid-template-columns: 1fr 1fr; padding: 3rem 2rem; }
+      .footer-bottom { padding: 1.5rem 2rem; flex-direction: column; gap: 0.5rem; }
+      .hero-left { padding: 6rem 2rem 4rem; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .services-grid { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { grid-template-columns: 1fr; }
+      .work-grid { gap: 2px; }
+      .work-item { height: 260px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Forma</div>
+    <ul class="nav-links">
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#trabajo">Trabajo</a></li>
+      <li><a href="#equipo">Equipo</a></li>
+      <li><a href="#contacto" class="nav-cta">Hablemos</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <p class="hero-eyebrow">Agencia Creativa · Madrid</p>
+      <h1>Diseño que<br><em>comunica</em><br>con precisión.</h1>
+      <p class="hero-desc">Creamos identidades visuales, experiencias digitales y estrategias de comunicación para marcas que quieren destacar con inteligencia y coherencia.</p>
+      <div class="hero-actions">
+        <a href="#trabajo" class="btn-dark">Ver nuestro trabajo</a>
+        <a href="#contacto" class="btn-text">Iniciar un proyecto →</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-geo">
+        <div class="geo-circle"></div>
+        <div class="geo-circle"></div>
+        <div class="geo-circle"></div>
+        <div class="geo-line" style="--r: 0deg;"></div>
+        <div class="geo-line" style="--r: 45deg;"></div>
+        <div class="geo-line" style="--r: 90deg;"></div>
+        <div class="geo-line" style="--r: 135deg;"></div>
+      </div>
+      <div class="hero-stat-row">
+        <div>
+          <div class="hero-stat-num">12+</div>
+          <div class="hero-stat-label">Años de experiencia</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">230</div>
+          <div class="hero-stat-label">Proyectos realizados</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">48</div>
+          <div class="hero-stat-label">Clientes activos</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLIENTS BAR -->
+  <div class="clients-bar">
+    <span class="clients-label">Confían en nosotros</span>
+    <div class="clients-scroll">
+      <div class="clients-inner">
+        <span class="client-name">Meridian</span>
+        <span class="client-name">Athos Group</span>
+        <span class="client-name">Novanta</span>
+        <span class="client-name">Cetera</span>
+        <span class="client-name">Volk Studio</span>
+        <span class="client-name">Arken</span>
+        <span class="client-name">Pelorus</span>
+        <span class="client-name">Meridian</span>
+        <span class="client-name">Athos Group</span>
+        <span class="client-name">Novanta</span>
+        <span class="client-name">Cetera</span>
+        <span class="client-name">Volk Studio</span>
+        <span class="client-name">Arken</span>
+        <span class="client-name">Pelorus</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="services" id="servicios">
+    <div class="services-left">
+      <p class="section-label">Lo que hacemos</p>
+      <h2>Servicios <em>estratégicos</em></h2>
+      <p class="services-desc">Cada proyecto comienza con una escucha activa y termina con una solución que tiene sentido a largo plazo. No hacemos decoración; construimos sistemas.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-num">01</div>
+        <div class="service-name">Identidad Visual</div>
+        <p class="service-text">Desarrollamos marcas con carácter propio: logotipos, sistemas tipográficos, paletas de color y guías de estilo que perduran.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">02</div>
+        <div class="service-name">Diseño Web</div>
+        <p class="service-text">Interfaces digitales funcionales y memorables. De la arquitectura de información al pixel final, con atención al detalle.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">03</div>
+        <div class="service-name">Estrategia de Marca</div>
+        <p class="service-text">Posicionamiento, propuesta de valor y narrativa de marca. Damos sentido antes de dar forma.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">04</div>
+        <div class="service-name">Comunicación</div>
+        <p class="service-text">Contenido editorial, campañas y piezas de comunicación que hablan con coherencia en todos los canales.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process">
+    <div class="process-inner">
+      <div class="process-header">
+        <p class="section-label">Cómo trabajamos</p>
+        <h2 style="color:var(--white);">Un proceso <em style="color:rgba(255,255,255,0.4);">claro</em></h2>
+      </div>
+      <div class="process-steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-line"></div>
+          <div class="step-name">Descubrimiento</div>
+          <p class="step-text">Analizamos tu empresa, tu mercado y tus objetivos. Esta fase define si el proyecto tiene sentido y hacia dónde va.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-line"></div>
+          <div class="step-name">Estrategia</div>
+          <p class="step-text">Definimos el posicionamiento, el tono y los ejes creativos que guiarán todo lo que venga después.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-line"></div>
+          <div class="step-name">Creación</div>
+          <p class="step-text">Diseñamos, iteramos y refinamos. Trabajo colaborativo con revisiones claras y tiempos definidos.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-line"></div>
+          <div class="step-name">Entrega</div>
+          <p class="step-text">Entregamos los archivos, la documentación y el soporte necesario para que puedas usar lo que hemos creado.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="work" id="trabajo">
+    <div class="work-header">
+      <div>
+        <p class="section-label">Proyectos seleccionados</p>
+        <h2>Nuestro <em>trabajo</em></h2>
+      </div>
+      <a href="#" class="btn-text">Ver todos →</a>
+    </div>
+    <div class="work-grid">
+      <div class="work-item">
+        <div class="work-bg">
+          <div class="work-deco">
+            <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="100" cy="100" r="90" stroke="white" stroke-width="0.5"/>
+              <circle cx="100" cy="100" r="60" stroke="white" stroke-width="0.5"/>
+              <line x1="10" y1="100" x2="190" y2="100" stroke="white" stroke-width="0.5"/>
+              <line x1="100" y1="10" x2="100" y2="190" stroke="white" stroke-width="0.5"/>
+            </svg>
+          </div>
+        </div>
+        <div class="work-caption">
+          <div class="work-tag">Identidad Visual · Branding</div>
+          <div class="work-title">Meridian Capital — Rebrand corporativo</div>
+        </div>
+      </div>
+      <div class="work-item">
+        <div class="work-bg">
+          <div class="work-deco">
+            <svg viewBox="0 0 200 200" fill="none"><rect x="20" y="20" width="160" height="160" stroke="white" stroke-width="0.5"/><rect x="60" y="60" width="80" height="80" stroke="white" stroke-width="0.5"/></svg>
+          </div>
+        </div>
+        <div class="work-caption">
+          <div class="work-tag">Web Design · UX</div>
+          <div class="work-title">Novanta — Plataforma digital</div>
+        </div>
+      </div>
+      <div class="work-item">
+        <div class="work-bg">
+          <div class="work-deco">
+            <svg viewBox="0 0 200 200" fill="none"><polygon points="100,10 190,190 10,190" stroke="white" stroke-width="0.5"/></svg>
+          </div>
+        </div>
+        <div class="work-caption">
+          <div class="work-tag">Estrategia · Comunicación</div>
+          <div class="work-title">Arken — Lanzamiento de marca</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="team" id="equipo">
+    <div class="team-inner">
+      <div class="team-header">
+        <p class="section-label">Las personas detrás</p>
+        <h2>El <em>equipo</em></h2>
+      </div>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-photo"><div class="team-photo-inner"><span class="team-initials">CR</span></div></div>
+          <div class="team-name">Clara Ruiz</div>
+          <div class="team-role">Directora Creativa</div>
+        </div>
+        <div class="team-card">
+          <div class="team-photo"><div class="team-photo-inner"><span class="team-initials">MV</span></div></div>
+          <div class="team-name">Marcos Vidal</div>
+          <div class="team-role">Director de Estrategia</div>
+        </div>
+        <div class="team-card">
+          <div class="team-photo"><div class="team-photo-inner"><span class="team-initials">AL</span></div></div>
+          <div class="team-name">Andrea López</div>
+          <div class="team-role">Diseño de Producto</div>
+        </div>
+        <div class="team-card">
+          <div class="team-photo"><div class="team-photo-inner"><span class="team-initials">DS</span></div></div>
+          <div class="team-name">Diego Serra</div>
+          <div class="team-role">Desarrollo & Tecnología</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contacto">
+    <div class="contact-left">
+      <p class="section-label">Contacto</p>
+      <h2>Hablemos de tu <em>proyecto</em></h2>
+      <p>Cuéntanos qué tienes en mente. Sin compromiso, sin formularios eternos. Una conversación es suficiente para saber si podemos ayudarte.</p>
+      <div class="contact-detail">
+        <div>
+          <div class="contact-item-label">Email</div>
+          <div class="contact-item-value">hola@formaestudio.com</div>
+        </div>
+        <div>
+          <div class="contact-item-label">Teléfono</div>
+          <div class="contact-item-value">+34 910 000 000</div>
+        </div>
+        <div>
+          <div class="contact-item-label">Dirección</div>
+          <div class="contact-item-value">Calle Velázquez 34, Madrid</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="form">
+        <div class="form-row">
+          <input type="text" placeholder="Nombre">
+          <input type="text" placeholder="Empresa">
+        </div>
+        <input type="email" placeholder="Email">
+        <select>
+          <option value="" disabled selected>Tipo de proyecto</option>
+          <option>Identidad Visual</option>
+          <option>Diseño Web</option>
+          <option>Estrategia de Marca</option>
+          <option>Comunicación</option>
+          <option>Otro</option>
+        </select>
+        <textarea placeholder="Cuéntanos brevemente tu proyecto…"></textarea>
+        <button type="submit">Enviar mensaje</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <span class="logo">Forma</span>
+      <p>Agencia creativa especializada en identidad visual, diseño digital y estrategia de marca.</p>
+    </div>
+    <div>
+      <p class="footer-col-title">Servicios</p>
+      <ul class="footer-links">
+        <li><a href="#">Identidad Visual</a></li>
+        <li><a href="#">Diseño Web</a></li>
+        <li><a href="#">Estrategia de Marca</a></li>
+        <li><a href="#">Comunicación</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Empresa</p>
+      <ul class="footer-links">
+        <li><a href="#">Sobre nosotros</a></li>
+        <li><a href="#">Equipo</a></li>
+        <li><a href="#">Proyectos</a></li>
+        <li><a href="#">Blog</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Síguenos</p>
+      <ul class="footer-links">
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">Behance</a></li>
+      </ul>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <p>© 2026 Forma Estudio S.L. — Todos los derechos reservados</p>
+    <p>Madrid, España</p>
+  </div>
+
+</body>
+</html>

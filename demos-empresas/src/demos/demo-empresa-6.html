@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>STRATUM — Impresión 3D</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,500;0,700;0,900;1,700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    :root {
+      --bg: #080c10;
+      --bg2: #0d1318;
+      --bg3: #111820;
+      --cyan: #00e5ff;
+      --cyan2: #00b8d4;
+      --orange: #ff6b1a;
+      --white: #e8eef4;
+      --gray: #5a6878;
+      --line: rgba(0,229,255,0.1);
+      --font-head: 'Barlow Condensed', sans-serif;
+      --font-body: 'Barlow', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* Scanline overlay */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,229,255,0.012) 3px
+      );
+      pointer-events: none;
+      z-index: 900;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top:0; left:0; right:0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.25rem 4rem;
+      background: rgba(8,12,16,0.94);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+    }
+    .logo {
+      font-family: var(--font-head);
+      font-weight: 900;
+      font-size: 1.7rem;
+      letter-spacing: 0.2em;
+      color: var(--white);
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .logo-bracket { color: var(--cyan); font-weight: 300; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+    .nav-links a {
+      color: var(--gray);
+      text-decoration: none;
+      font-family: var(--font-head);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--cyan); }
+    .nav-btn {
+      padding: 0.55rem 1.5rem;
+      border: 1px solid var(--cyan);
+      color: var(--cyan) !important;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      transition: background 0.3s !important;
+    }
+    .nav-btn:hover { background: rgba(0,229,255,0.1) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex; align-items: center;
+      padding: 100px 4rem 4rem;
+      overflow: hidden;
+    }
+
+    /* Animated grid */
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+      animation: gridDrift 20s linear infinite;
+    }
+    @keyframes gridDrift { from { background-position: 0 0; } to { background-position: 60px 60px; } }
+
+    /* Glow blobs */
+    .hero-glow-1 {
+      position: absolute; top: 10%; left: 5%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,229,255,0.07), transparent 70%);
+      pointer-events: none;
+    }
+    .hero-glow-2 {
+      position: absolute; bottom: 0; right: 10%;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(255,107,26,0.08), transparent 70%);
+      pointer-events: none;
+    }
+
+    /* 3D wireframe object */
+    .hero-object {
+      position: absolute;
+      right: 4rem; top: 50%;
+      transform: translateY(-50%);
+      width: 500px; height: 500px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .wire-cube {
+      width: 260px; height: 260px;
+      border: 1px solid rgba(0,229,255,0.25);
+      position: relative;
+      transform: rotateX(20deg) rotateY(45deg) rotateZ(5deg);
+      transform-style: preserve-3d;
+      animation: rotateCube 18s linear infinite;
+    }
+    @keyframes rotateCube { from { transform: rotateX(20deg) rotateY(0deg) rotateZ(5deg); } to { transform: rotateX(20deg) rotateY(360deg) rotateZ(5deg); } }
+    .wire-face {
+      position: absolute;
+      width: 100%; height: 100%;
+      border: 1px solid rgba(0,229,255,0.12);
+      background: transparent;
+    }
+    .wire-face-front  { transform: translateZ(130px); border-color: rgba(0,229,255,0.3); }
+    .wire-face-back   { transform: translateZ(-130px) rotateY(180deg); }
+    .wire-face-left   { transform: translateX(-130px) rotateY(-90deg); }
+    .wire-face-right  { transform: translateX(130px) rotateY(90deg); }
+    .wire-face-top    { transform: translateY(-130px) rotateX(90deg); }
+    .wire-face-bottom { transform: translateY(130px) rotateX(-90deg); }
+
+    /* Inner smaller cube */
+    .wire-inner {
+      position: absolute; inset: 25%;
+      transform-style: preserve-3d;
+      animation: rotateCube 12s linear infinite reverse;
+    }
+    .wire-inner .wire-face { border-color: rgba(255,107,26,0.2); }
+    .wire-inner .wire-face-front { border-color: rgba(255,107,26,0.5); }
+
+    /* Scanning line */
+    .scan-line {
+      position: absolute; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--cyan), transparent);
+      animation: scan 3s ease-in-out infinite;
+      opacity: 0.6;
+    }
+    @keyframes scan { 0%,100% { top: 10%; opacity: 0; } 10% { opacity: 0.6; } 90% { opacity: 0.6; } 100% { top: 90%; opacity: 0; } }
+
+    .hero-content { position: relative; z-index: 2; max-width: 600px; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-head);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 2rem;
+      border: 1px solid rgba(0,229,255,0.2);
+      padding: 0.4rem 1rem;
+      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    }
+    .hero-tag::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--cyan);
+      border-radius: 50%;
+      animation: blink 1.5s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.2; } }
+
+    h1 {
+      font-family: var(--font-head);
+      font-weight: 900;
+      font-size: clamp(4rem, 8vw, 8rem);
+      line-height: 0.88;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+    h1 .line-cyan { color: var(--cyan); display: block; }
+    h1 .line-outline {
+      display: block;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+      color: transparent;
+    }
+
+    .hero-desc {
+      margin-top: 2rem;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--gray);
+      max-width: 480px;
+    }
+
+    .hero-actions { margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-cyan {
+      padding: 0.9rem 2.2rem;
+      background: var(--cyan);
+      color: var(--bg);
+      font-family: var(--font-head);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .btn-cyan:hover { background: #33ecff; box-shadow: 0 0 30px rgba(0,229,255,0.4); }
+    .btn-wire {
+      padding: 0.9rem 2.2rem;
+      background: transparent;
+      color: var(--white);
+      font-family: var(--font-head);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.15);
+      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+      transition: border-color 0.3s;
+    }
+    .btn-wire:hover { border-color: rgba(255,255,255,0.5); }
+
+    .hero-specs {
+      margin-top: 3.5rem;
+      display: flex; gap: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--line);
+    }
+    .spec-val {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 2rem;
+      color: var(--white);
+      line-height: 1;
+    }
+    .spec-val span { color: var(--cyan); font-size: 1rem; }
+    .spec-label { font-size: 0.7rem; color: var(--gray); margin-top: 0.3rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+    /* ── TECH STRIP ── */
+    .tech-strip {
+      background: var(--bg2);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 0;
+      overflow: hidden; white-space: nowrap;
+    }
+    .tech-strip-inner {
+      display: inline-flex; align-items: center;
+      animation: techScroll 30s linear infinite;
+      padding: 1rem 0;
+    }
+    .tech-item {
+      display: inline-flex; align-items: center; gap: 0.75rem;
+      padding: 0 3rem;
+      font-family: var(--font-head);
+      font-weight: 500;
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+    .tech-item .sep { width: 4px; height: 4px; background: var(--cyan); opacity: 0.5; transform: rotate(45deg); }
+    @keyframes techScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ── SECTION COMMON ── */
+    .eyebrow {
+      font-family: var(--font-head);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 16px; height: 2px;
+      background: var(--cyan);
+    }
+    h2 {
+      font-family: var(--font-head);
+      font-weight: 900;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      line-height: 0.95;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+    h2 em { font-style: normal; color: var(--cyan); }
+
+    /* ── MATERIALS ── */
+    .materials {
+      padding: 8rem 4rem;
+      max-width: 1300px; margin: 0 auto;
+    }
+    .materials-top {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: end;
+      margin-bottom: 4rem;
+    }
+    .materials-top-right p { font-size: 0.95rem; line-height: 1.8; color: var(--gray); }
+    .mat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--line);
+    }
+    .mat-card {
+      background: var(--bg);
+      padding: 2rem 1.75rem;
+      position: relative; overflow: hidden;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .mat-card::after {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--cyan);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+      transform-origin: left;
+    }
+    .mat-card:hover { background: var(--bg3); }
+    .mat-card:hover::after { transform: scaleX(1); }
+    .mat-card:nth-child(2)::after,
+    .mat-card:nth-child(6)::after { background: var(--orange); }
+    .mat-icon {
+      width: 48px; height: 48px;
+      border: 1px solid rgba(0,229,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1.5rem;
+      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    }
+    .mat-name {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+    .mat-desc { font-size: 0.8rem; line-height: 1.7; color: var(--gray); }
+    .mat-tag {
+      margin-top: 1.25rem;
+      display: inline-block;
+      font-family: var(--font-head);
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      border: 1px solid rgba(0,229,255,0.2);
+      padding: 0.2rem 0.6rem;
+    }
+    .mat-card:nth-child(2) .mat-tag,
+    .mat-card:nth-child(6) .mat-tag { color: var(--orange); border-color: rgba(255,107,26,0.2); }
+
+    /* ── SERVICES ── */
+    .services {
+      background: var(--bg2);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 8rem 4rem;
+    }
+    .services-inner { max-width: 1300px; margin: 0 auto; }
+    .services-header { margin-bottom: 4rem; }
+    .svc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); }
+    .svc {
+      background: var(--bg2);
+      padding: 3rem;
+      display: grid; grid-template-columns: auto 1fr;
+      gap: 2rem;
+      transition: background 0.3s;
+    }
+    .svc:hover { background: var(--bg3); }
+    .svc-num {
+      font-family: var(--font-head);
+      font-weight: 900;
+      font-size: 3rem;
+      line-height: 1;
+      color: rgba(0,229,255,0.08);
+      transition: color 0.3s;
+      padding-top: 0.25rem;
+    }
+    .svc:hover .svc-num { color: rgba(0,229,255,0.18); }
+    .svc-name {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1.4rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 0.75rem;
+    }
+    .svc-text { font-size: 0.88rem; line-height: 1.8; color: var(--gray); }
+    .svc-features {
+      margin-top: 1.25rem;
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .svc-feat {
+      font-family: var(--font-head);
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      background: rgba(0,229,255,0.06);
+      border: 1px solid rgba(0,229,255,0.12);
+      padding: 0.25rem 0.6rem;
+    }
+
+    /* ── SPECS ── */
+    .specs-section {
+      padding: 8rem 4rem;
+      max-width: 1300px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 6rem; align-items: center;
+    }
+    .specs-left h2 { margin-bottom: 1.5rem; }
+    .specs-left > p { font-size: 0.95rem; line-height: 1.8; color: var(--gray); margin-bottom: 3rem; }
+    .specs-table { display: flex; flex-direction: column; gap: 0px; border: 1px solid var(--line); }
+    .spec-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--line);
+      transition: background 0.3s;
+    }
+    .spec-row:last-child { border-bottom: none; }
+    .spec-row:hover { background: rgba(0,229,255,0.03); }
+    .spec-key, .spec-value {
+      padding: 1rem 1.25rem;
+      font-size: 0.82rem;
+    }
+    .spec-key {
+      font-family: var(--font-head);
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      border-right: 1px solid var(--line);
+    }
+    .spec-value { color: var(--white); font-weight: 400; }
+    .spec-value strong { color: var(--cyan); font-weight: 500; }
+
+    /* Specs right: animated 3D visual */
+    .specs-right { position: relative; }
+    .specs-visual {
+      background: var(--bg2);
+      border: 1px solid var(--line);
+      aspect-ratio: 1;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .specs-visual::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(0,229,255,0.06) 0%, transparent 70%);
+    }
+    .sv-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+    .sv-cube-wrap {
+      width: 200px; height: 200px;
+      position: relative; z-index: 2;
+      perspective: 600px;
+    }
+    .sv-cube {
+      width: 100%; height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: rotateCube 10s linear infinite;
+    }
+    .sv-face {
+      position: absolute; inset: 0;
+      border: 1px solid rgba(0,229,255,0.3);
+      background: rgba(0,229,255,0.02);
+    }
+    .sv-face-f { transform: translateZ(100px); background: rgba(0,229,255,0.04); }
+    .sv-face-b { transform: translateZ(-100px) rotateY(180deg); }
+    .sv-face-l { transform: translateX(-100px) rotateY(-90deg); }
+    .sv-face-r { transform: translateX(100px) rotateY(90deg); }
+    .sv-face-t { transform: translateY(-100px) rotateX(90deg); }
+    .sv-face-bo { transform: translateY(100px) rotateX(-90deg); }
+    .sv-label {
+      position: absolute;
+      font-family: var(--font-head);
+      font-size: 0.55rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      opacity: 0.5;
+    }
+    .sv-label-tl { top: 1rem; left: 1rem; }
+    .sv-label-tr { top: 1rem; right: 1rem; text-align: right; }
+    .sv-label-bl { bottom: 1rem; left: 1rem; }
+    .sv-label-br { bottom: 1rem; right: 1rem; text-align: right; }
+    .sv-scan {
+      position: absolute; left: 0; right: 0; height: 1px;
+      background: linear-gradient(to right, transparent, var(--cyan), transparent);
+      opacity: 0.5;
+      animation: scan 2.5s ease-in-out infinite;
+    }
+
+    /* ── CASES ── */
+    .cases {
+      background: var(--bg2);
+      border-top: 1px solid var(--line);
+      padding: 8rem 4rem;
+    }
+    .cases-inner { max-width: 1300px; margin: 0 auto; }
+    .cases-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; }
+    .cases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); }
+    .case-card {
+      background: var(--bg2);
+      overflow: hidden;
+      position: relative;
+      transition: background 0.3s;
+    }
+    .case-card:hover { background: var(--bg3); }
+    .case-top {
+      height: 200px;
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .case-card:nth-child(1) .case-top { background: linear-gradient(135deg, #0a1520 0%, #080c10 100%); }
+    .case-card:nth-child(2) .case-top { background: linear-gradient(135deg, #150a08 0%, #080c10 100%); }
+    .case-card:nth-child(3) .case-top { background: linear-gradient(135deg, #0a1510 0%, #080c10 100%); }
+    .case-top-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.05) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    .case-card:nth-child(2) .case-top-grid {
+      background-image:
+        linear-gradient(rgba(255,107,26,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,107,26,0.06) 1px, transparent 1px);
+    }
+    .case-glyph {
+      font-family: var(--font-head);
+      font-weight: 900;
+      font-size: 7rem;
+      color: rgba(0,229,255,0.06);
+      letter-spacing: -0.05em;
+      text-transform: uppercase;
+      position: relative; z-index: 1;
+    }
+    .case-card:nth-child(2) .case-glyph { color: rgba(255,107,26,0.06); }
+    .case-sector {
+      position: absolute; top: 1rem; left: 1rem;
+      font-family: var(--font-head);
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      background: rgba(0,229,255,0.08);
+      border: 1px solid rgba(0,229,255,0.15);
+      padding: 0.2rem 0.6rem;
+    }
+    .case-card:nth-child(2) .case-sector { color: var(--orange); background: rgba(255,107,26,0.08); border-color: rgba(255,107,26,0.15); }
+    .case-body { padding: 2rem; }
+    .case-client {
+      font-family: var(--font-head);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 0.5rem;
+    }
+    .case-title {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+    .case-text { font-size: 0.82rem; line-height: 1.7; color: var(--gray); }
+    .case-stats {
+      display: flex; gap: 1.5rem;
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--line);
+    }
+    .case-stat-num {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--cyan);
+    }
+    .case-card:nth-child(2) .case-stat-num { color: var(--orange); }
+    .case-stat-label { font-size: 0.65rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* ── PROCESS ── */
+    .process {
+      padding: 8rem 4rem;
+      max-width: 1300px; margin: 0 auto;
+    }
+    .process-header { text-align: center; margin-bottom: 5rem; }
+    .process-header p { font-size: 0.95rem; color: var(--gray); margin-top: 1rem; }
+    .process-timeline {
+      display: grid; grid-template-columns: repeat(5,1fr);
+      gap: 0;
+      position: relative;
+    }
+    .process-timeline::before {
+      content: '';
+      position: absolute;
+      top: 24px; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--line) 20%, var(--line) 80%, transparent);
+    }
+    .p-node { text-align: center; padding: 0 1rem; }
+    .p-dot {
+      width: 48px; height: 48px;
+      border: 1px solid var(--line);
+      background: var(--bg2);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.5rem;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      position: relative; z-index: 1;
+      transition: border-color 0.3s, color 0.3s, background 0.3s;
+    }
+    .p-node:hover .p-dot {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: rgba(0,229,255,0.05);
+    }
+    .p-name {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+    .p-text { font-size: 0.78rem; line-height: 1.7; color: var(--gray); }
+
+    /* ── CONTACT ── */
+    .contact {
+      background: var(--bg2);
+      border-top: 1px solid var(--line);
+      padding: 8rem 4rem;
+    }
+    .contact-inner {
+      max-width: 1300px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+    }
+    .contact-left h2 { margin-bottom: 1.5rem; }
+    .contact-left > p { font-size: 0.95rem; line-height: 1.8; color: var(--gray); margin-bottom: 3rem; }
+    .contact-items { display: flex; flex-direction: column; gap: 1.5rem; }
+    .c-item-label {
+      font-family: var(--font-head);
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 0.25rem;
+    }
+    .c-item-value { font-size: 0.9rem; color: var(--white); }
+    .form { display: flex; flex-direction: column; gap: 1.25rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .form input, .form select, .form textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      color: var(--white);
+      padding: 0.85rem 1rem;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 300;
+      outline: none;
+      transition: border-color 0.3s;
+      appearance: none;
+      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    }
+    .form input:focus, .form select:focus, .form textarea:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 1px rgba(0,229,255,0.15);
+    }
+    .form input::placeholder, .form textarea::placeholder { color: rgba(232,238,244,0.2); }
+    .form textarea { resize: none; height: 100px; }
+    .form select option { background: var(--bg2); }
+    .form button {
+      padding: 0.9rem 2.5rem;
+      background: var(--cyan);
+      color: var(--bg);
+      border: none;
+      font-family: var(--font-head);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      cursor: pointer;
+      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+      transition: background 0.3s, box-shadow 0.3s;
+      align-self: flex-start;
+    }
+    .form button:hover { background: #33ecff; box-shadow: 0 0 30px rgba(0,229,255,0.3); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #040608;
+      border-top: 1px solid var(--line);
+      padding: 4rem;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+    .footer-brand .logo { margin-bottom: 1rem; display: block; font-size: 1.4rem; }
+    .footer-brand p { font-size: 0.8rem; line-height: 1.8; color: var(--gray); max-width: 240px; }
+    .footer-col-title {
+      font-family: var(--font-head);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(232,238,244,0.2);
+      margin-bottom: 1.25rem;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+    .footer-links a {
+      color: var(--gray);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--cyan); }
+    .footer-bottom {
+      background: #040608;
+      border-top: 1px solid var(--line);
+      padding: 1.5rem 4rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-bottom p {
+      font-family: var(--font-head);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(232,238,244,0.15);
+    }
+    .footer-socials { display: flex; gap: 1.5rem; }
+    .footer-socials a {
+      font-family: var(--font-head);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .footer-socials a:hover { color: var(--cyan); }
+
+    @media (max-width: 1024px) {
+      nav { padding: 1.2rem 2rem; }
+      .nav-links li:not(:last-child) { display: none; }
+      .hero { padding: 100px 2rem 4rem; }
+      .hero-object { display: none; }
+      .materials { padding: 5rem 2rem; }
+      .materials-top { grid-template-columns: 1fr; gap: 2rem; }
+      .mat-grid { grid-template-columns: 1fr 1fr; }
+      .services { padding: 5rem 2rem; }
+      .svc-grid { grid-template-columns: 1fr; }
+      .specs-section { grid-template-columns: 1fr; padding: 5rem 2rem; }
+      .specs-right { display: none; }
+      .cases { padding: 5rem 2rem; }
+      .cases-grid { grid-template-columns: 1fr; }
+      .process { padding: 5rem 2rem; }
+      .process-timeline { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+      .process-timeline::before { display: none; }
+      .contact { padding: 5rem 2rem; }
+      .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+      footer { grid-template-columns: 1fr 1fr; padding: 3rem 2rem; }
+      .footer-bottom { padding: 1.5rem 2rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 3.5rem; }
+      .mat-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .process-timeline { grid-template-columns: 1fr; }
+      footer { grid-template-columns: 1fr; }
+      .hero-specs { flex-direction: column; gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo"><span class="logo-bracket">[</span>STRATUM<span class="logo-bracket">]</span></div>
+    <ul class="nav-links">
+      <li><a href="#materiales">Materiales</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#casos">Casos</a></li>
+      <li><a href="#contacto" class="nav-btn">Presupuesto</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
+    <div class="hero-object">
+      <div style="perspective:800px; width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+        <div class="wire-cube" style="transform-style:preserve-3d;">
+          <div class="wire-face wire-face-front"></div>
+          <div class="wire-face wire-face-back"></div>
+          <div class="wire-face wire-face-left"></div>
+          <div class="wire-face wire-face-right"></div>
+          <div class="wire-face wire-face-top"></div>
+          <div class="wire-face wire-face-bottom"></div>
+          <div class="wire-inner">
+            <div class="wire-face wire-face-front"></div>
+            <div class="wire-face wire-face-back"></div>
+            <div class="wire-face wire-face-left"></div>
+            <div class="wire-face wire-face-right"></div>
+            <div class="wire-face wire-face-top"></div>
+            <div class="wire-face wire-face-bottom"></div>
+          </div>
+        </div>
+      </div>
+      <div class="scan-line"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-tag">Impresión 3D Industrial · Madrid</div>
+      <h1>
+        Fabricación<br>
+        <span class="line-cyan">Aditiva</span>
+        <span class="line-outline">Precisa</span>
+      </h1>
+      <p class="hero-desc">Prototipado rápido, producción en serie y piezas técnicas bajo demanda. Del archivo CAD a la pieza final en horas, no semanas.</p>
+      <div class="hero-actions">
+        <a href="#contacto" class="btn-cyan">Solicitar presupuesto</a>
+        <a href="#servicios" class="btn-wire">Ver servicios</a>
+      </div>
+      <div class="hero-specs">
+        <div>
+          <div class="spec-val">50<span>μm</span></div>
+          <div class="spec-label">Resolución mínima</div>
+        </div>
+        <div>
+          <div class="spec-val">48<span>h</span></div>
+          <div class="spec-label">Entrega express</div>
+        </div>
+        <div>
+          <div class="spec-val">20<span>+</span></div>
+          <div class="spec-label">Materiales disponibles</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECH STRIP -->
+  <div class="tech-strip">
+    <div class="tech-strip-inner">
+      <span class="tech-item"><span class="sep"></span>FDM</span>
+      <span class="tech-item"><span class="sep"></span>SLA / MSLA</span>
+      <span class="tech-item"><span class="sep"></span>SLS</span>
+      <span class="tech-item"><span class="sep"></span>MJF</span>
+      <span class="tech-item"><span class="sep"></span>DMLS</span>
+      <span class="tech-item"><span class="sep"></span>PLA · PETG · ABS · ASA</span>
+      <span class="tech-item"><span class="sep"></span>Resinas Técnicas</span>
+      <span class="tech-item"><span class="sep"></span>Nylon PA12</span>
+      <span class="tech-item"><span class="sep"></span>Acero 316L</span>
+      <span class="tech-item"><span class="sep"></span>Titanio Ti64</span>
+      <span class="tech-item"><span class="sep"></span>FDM</span>
+      <span class="tech-item"><span class="sep"></span>SLA / MSLA</span>
+      <span class="tech-item"><span class="sep"></span>SLS</span>
+      <span class="tech-item"><span class="sep"></span>MJF</span>
+      <span class="tech-item"><span class="sep"></span>DMLS</span>
+      <span class="tech-item"><span class="sep"></span>PLA · PETG · ABS · ASA</span>
+      <span class="tech-item"><span class="sep"></span>Resinas Técnicas</span>
+      <span class="tech-item"><span class="sep"></span>Nylon PA12</span>
+      <span class="tech-item"><span class="sep"></span>Acero 316L</span>
+      <span class="tech-item"><span class="sep"></span>Titanio Ti64</span>
+    </div>
+  </div>
+
+  <!-- MATERIALS -->
+  <section class="materials" id="materiales">
+    <div class="materials-top">
+      <div>
+        <p class="eyebrow">Catálogo de materiales</p>
+        <h2>El material<br><em>correcto</em></h2>
+      </div>
+      <div class="materials-top-right">
+        <p>Cada aplicación requiere un material específico. Contamos con más de 20 opciones validadas para uso industrial, médico, aeroespacial y de consumo. Te asesoramos en la elección.</p>
+      </div>
+    </div>
+    <div class="mat-grid">
+      <div class="mat-card">
+        <div class="mat-icon">🧱</div>
+        <div class="mat-name">PLA / PETG</div>
+        <p class="mat-desc">Polímeros de uso general. Ideales para prototipos visuales, maquetas y piezas no estructurales. Alta facilidad de post-proceso.</p>
+        <span class="mat-tag">FDM · Estándar</span>
+      </div>
+      <div class="mat-card">
+        <div class="mat-icon">🔥</div>
+        <div class="mat-name">ABS / ASA</div>
+        <p class="mat-desc">Alta resistencia al calor y a los impactos. Recomendado para piezas de automoción y uso exterior con exposición UV.</p>
+        <span class="mat-tag">FDM · Técnico</span>
+      </div>
+      <div class="mat-card">
+        <div class="mat-icon">✨</div>
+        <div class="mat-name">Resinas SLA</div>
+        <p class="mat-desc">Resolución de hasta 25μm. Superficies lisas directamente de impresora. Opciones rígidas, flexibles, biocompatibles y transparentes.</p>
+        <span class="mat-tag">SLA · Alta Resolución</span>
+      </div>
+      <div class="mat-card">
+        <div class="mat-icon">⚙️</div>
+        <div class="mat-name">Nylon PA12</div>
+        <p class="mat-desc">Resistencia mecánica superior, baja absorción de humedad y excelente comportamiento a fatiga. El estándar industrial de SLS.</p>
+        <span class="mat-tag">SLS · Industrial</span>
+      </div>
+      <div class="mat-card">
+        <div class="mat-icon">🛡️</div>
+        <div class="mat-name">PEEK / PC</div>
+        <p class="mat-desc">Polímeros de altas prestaciones para entornos extremos: temperaturas superiores a 250°C, resistencia química y cargas estructurales.</p>
+        <span class="mat-tag">FDM · Alta Temp</span>
+      </div>
+      <div class="mat-card">
+        <div class="mat-icon">🔩</div>
+        <div class="mat-name">Metales DMLS</div>
+        <p class="mat-desc">Acero inoxidable 316L, Inconel, Titanio Ti64 y Aluminio AlSi10Mg. Piezas metálicas funcionales con geometrías imposibles en mecanizado.</p>
+        <span class="mat-tag">DMLS · Metal</span>
+      </div>
+      <div class="mat-card">
+        <div class="mat-icon">🌊</div>
+        <div class="mat-name">TPU / TPE</div>
+        <p class="mat-desc">Elastómeros flexibles y resistentes al desgaste. Para juntas, amortiguadores, calzado técnico y componentes que requieren deformación elástica.</p>
+        <span class="mat-tag">FDM · Flexible</span>
+      </div>
+      <div class="mat-card">
+        <div class="mat-icon">🏥</div>
+        <div class="mat-name">Biocompatibles</div>
+        <p class="mat-desc">Materiales certificados ISO 10993 para uso médico y dental. Resinas y polímeros aptos para contacto prolongado con tejidos.</p>
+        <span class="mat-tag">SLA · Medical</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="servicios">
+    <div class="services-inner">
+      <div class="services-header">
+        <p class="eyebrow">Servicios</p>
+        <h2>Lo que <em>fabricamos</em></h2>
+      </div>
+      <div class="svc-grid">
+        <div class="svc">
+          <div class="svc-num">01</div>
+          <div>
+            <div class="svc-name">Prototipado Rápido</div>
+            <p class="svc-text">Del modelo 3D a la pieza física en 24–48 horas. Iteraciones rápidas para validar diseño, ergonomía y funcionalidad antes de pasar a producción.</p>
+            <div class="svc-features">
+              <span class="svc-feat">Entrega 24h</span>
+              <span class="svc-feat">Múltiples materiales</span>
+              <span class="svc-feat">Post-proceso incluido</span>
+            </div>
+          </div>
+        </div>
+        <div class="svc">
+          <div class="svc-num">02</div>
+          <div>
+            <div class="svc-name">Producción en Serie</div>
+            <p class="svc-text">Lotes de 10 a 10.000 unidades con consistencia dimensional garantizada. Alternativa real al moldeo por inyección para series cortas y medias.</p>
+            <div class="svc-features">
+              <span class="svc-feat">Control de calidad</span>
+              <span class="svc-feat">Certificación dimensional</span>
+              <span class="svc-feat">Gestión de stock</span>
+            </div>
+          </div>
+        </div>
+        <div class="svc">
+          <div class="svc-num">03</div>
+          <div>
+            <div class="svc-name">Ingeniería & Diseño</div>
+            <p class="svc-text">¿Solo tienes la idea? Nuestro equipo de ingenieros transforma bocetos o especificaciones funcionales en archivos CAD optimizados para impresión.</p>
+            <div class="svc-features">
+              <span class="svc-feat">CAD / CAM</span>
+              <span class="svc-feat">Optimización topológica</span>
+              <span class="svc-feat">DFM incluido</span>
+            </div>
+          </div>
+        </div>
+        <div class="svc">
+          <div class="svc-num">04</div>
+          <div>
+            <div class="svc-name">Post-Proceso & Acabados</div>
+            <p class="svc-text">Lijado, pintura, metalizado, acetona, pulido por vibracion, inserción de insertos roscados y más. La pieza llega lista para uso final o presentación.</p>
+            <div class="svc-features">
+              <span class="svc-feat">Pintura RAL</span>
+              <span class="svc-feat">Metalizado</span>
+              <span class="svc-feat">Acabado listo para uso</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPECS -->
+  <section class="specs-section">
+    <div class="specs-left">
+      <p class="eyebrow">Capacidades técnicas</p>
+      <h2>Nuestras<br><em>máquinas</em></h2>
+      <p>Parque de maquinaria de última generación con capacidad para piezas desde 5mm hasta 600mm en un solo bloque y superficies de construcción de hasta 1m en configuración multi-impresora.</p>
+      <div class="specs-table">
+        <div class="spec-row">
+          <div class="spec-key">Volumen máx. FDM</div>
+          <div class="spec-value"><strong>600 × 600 × 600 mm</strong></div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-key">Resolución SLA</div>
+          <div class="spec-value"><strong>25 – 100 μm</strong> por capa</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-key">Tolerancia dimensional</div>
+          <div class="spec-value"><strong>±0.1 mm</strong> o ±0.1%</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-key">Temperatura extrusión</div>
+          <div class="spec-value">hasta <strong>500°C</strong> (PEEK)</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-key">Volumen cámara DMLS</div>
+          <div class="spec-value"><strong>280 × 280 × 360 mm</strong></div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-key">Capacidad simultánea</div>
+          <div class="spec-value"><strong>24 impresoras</strong> en paralelo</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-key">Normativas</div>
+          <div class="spec-value">ISO 9001 · AS9100 · ISO 13485</div>
+        </div>
+      </div>
+    </div>
+    <div class="specs-right">
+      <div class="specs-visual">
+        <div class="sv-grid"></div>
+        <div class="sv-cube-wrap">
+          <div class="sv-cube" style="transform-style:preserve-3d;">
+            <div class="sv-face sv-face-f"></div>
+            <div class="sv-face sv-face-b"></div>
+            <div class="sv-face sv-face-l"></div>
+            <div class="sv-face sv-face-r"></div>
+            <div class="sv-face sv-face-t"></div>
+            <div class="sv-face sv-face-bo"></div>
+          </div>
+        </div>
+        <div class="sv-scan"></div>
+        <span class="sv-label sv-label-tl">X: 600mm</span>
+        <span class="sv-label sv-label-tr">Y: 600mm</span>
+        <span class="sv-label sv-label-bl">Z: 600mm</span>
+        <span class="sv-label sv-label-br">±0.1mm tol.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASES -->
+  <section class="cases" id="casos">
+    <div class="cases-inner">
+      <div class="cases-header">
+        <div>
+          <p class="eyebrow">Proyectos realizados</p>
+          <h2>Casos <em>reales</em></h2>
+        </div>
+        <a href="#" style="font-family:var(--font-head);font-size:0.75rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--cyan);text-decoration:none;border:1px solid rgba(0,229,255,0.2);padding:0.6rem 1.25rem;">Ver todos →</a>
+      </div>
+      <div class="cases-grid">
+        <div class="case-card">
+          <div class="case-top">
+            <div class="case-top-grid"></div>
+            <span class="case-glyph">AE</span>
+            <span class="case-sector">Aeroespacial</span>
+          </div>
+          <div class="case-body">
+            <div class="case-client">Aerospace Dynamics</div>
+            <div class="case-title">Soporte de sensor en titanio para dron de inspección</div>
+            <p class="case-text">Pieza DMLS en Ti64 con geometría de red lattice, reducción de peso del 42% respecto al mecanizado tradicional.</p>
+            <div class="case-stats">
+              <div><div class="case-stat-num">-42%</div><div class="case-stat-label">Peso</div></div>
+              <div><div class="case-stat-num">72h</div><div class="case-stat-label">Entrega</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="case-card">
+          <div class="case-top">
+            <div class="case-top-grid"></div>
+            <span class="case-glyph">MED</span>
+            <span class="case-sector">Médico</span>
+          </div>
+          <div class="case-body">
+            <div class="case-client">Clínica Ortopédica Nortes</div>
+            <div class="case-title">Férulas ortopédicas personalizadas en TPU flexible</div>
+            <p class="case-text">Serie de 200 unidades adaptadas a escaneado 3D de pacientes. Reducción del tiempo de fabricación del 85%.</p>
+            <div class="case-stats">
+              <div><div class="case-stat-num">-85%</div><div class="case-stat-label">Tiempo fab.</div></div>
+              <div><div class="case-stat-num">200u</div><div class="case-stat-label">Unidades</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="case-card">
+          <div class="case-top">
+            <div class="case-top-grid"></div>
+            <span class="case-glyph">AUTO</span>
+            <span class="case-sector">Automoción</span>
+          </div>
+          <div class="case-body">
+            <div class="case-client">Taller Racing Components</div>
+            <div class="case-title">Kit de piezas de habitáculo en PETG-CF para competición</div>
+            <p class="case-text">12 piezas únicas para vehículo de competición. Resistencia a 130°C y acabado pintado en cabina.</p>
+            <div class="case-stats">
+              <div><div class="case-stat-num">12</div><div class="case-stat-label">Piezas únicas</div></div>
+              <div><div class="case-stat-num">130°C</div><div class="case-stat-label">Resistencia</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process">
+    <div class="process-header">
+      <p class="eyebrow">Flujo de trabajo</p>
+      <h2>Cómo <em>trabajamos</em></h2>
+      <p>De la idea a la pieza en 5 pasos. Proceso transparente, tiempos claros.</p>
+    </div>
+    <div class="process-timeline">
+      <div class="p-node">
+        <div class="p-dot">01</div>
+        <div class="p-name">Archivo</div>
+        <p class="p-text">Nos envías tu archivo STL, STEP o IGES. Si no tienes modelo, lo diseñamos nosotros.</p>
+      </div>
+      <div class="p-node">
+        <div class="p-dot">02</div>
+        <div class="p-name">Análisis</div>
+        <p class="p-text">Revisamos geometría, proponemos material y orientación de impresión óptimos.</p>
+      </div>
+      <div class="p-node">
+        <div class="p-dot">03</div>
+        <div class="p-name">Presupuesto</div>
+        <p class="p-text">Oferta detallada en menos de 2 horas. Sin sorpresas, precio cerrado desde el inicio.</p>
+      </div>
+      <div class="p-node">
+        <div class="p-dot">04</div>
+        <div class="p-name">Producción</div>
+        <p class="p-text">Impresión, post-proceso y control de calidad dimensional en nuestras instalaciones.</p>
+      </div>
+      <div class="p-node">
+        <div class="p-dot">05</div>
+        <div class="p-name">Entrega</div>
+        <p class="p-text">Envío en 24–72h con embalaje técnico y certificado de conformidad si lo requieres.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contacto">
+    <div class="contact-inner">
+      <div class="contact-left">
+        <p class="eyebrow">Presupuesto</p>
+        <h2>Solicita tu<br><em>oferta</em></h2>
+        <p>Respuesta en menos de 2 horas en horario laboral. Sube tu archivo y cuéntanos qué necesitas.</p>
+        <div class="contact-items">
+          <div><div class="c-item-label">Email</div><div class="c-item-value">info@stratum3d.es</div></div>
+          <div><div class="c-item-label">Teléfono</div><div class="c-item-value">+34 910 000 000</div></div>
+          <div><div class="c-item-label">Instalaciones</div><div class="c-item-value">Polígono Industrial Norte, Madrid</div></div>
+          <div><div class="c-item-label">Horario</div><div class="c-item-value">Lun–Vie 08:00–18:00</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="form">
+          <div class="form-row">
+            <input type="text" placeholder="Nombre y empresa">
+            <input type="email" placeholder="Email corporativo">
+          </div>
+          <select>
+            <option value="" disabled selected>Tecnología de impresión</option>
+            <option>FDM — Polímeros</option>
+            <option>SLA / MSLA — Resinas</option>
+            <option>SLS — Nylon / PA</option>
+            <option>DMLS — Metales</option>
+            <option>No lo sé, necesito asesoramiento</option>
+          </select>
+          <div class="form-row">
+            <input type="number" placeholder="Cantidad de piezas" min="1">
+            <input type="text" placeholder="Plazo necesario">
+          </div>
+          <textarea placeholder="Descripción del proyecto, requisitos técnicos, material preferido…"></textarea>
+          <button type="submit">Solicitar presupuesto →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <span class="logo"><span class="logo-bracket">[</span>STRATUM<span class="logo-bracket">]</span></span>
+      <p>Fabricación aditiva industrial en Madrid. Del prototipo a la producción en serie.</p>
+    </div>
+    <div>
+      <p class="footer-col-title">Servicios</p>
+      <ul class="footer-links">
+        <li><a href="#">Prototipado Rápido</a></li>
+        <li><a href="#">Producción en Serie</a></li>
+        <li><a href="#">Ingeniería & CAD</a></li>
+        <li><a href="#">Post-Proceso</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Tecnologías</p>
+      <ul class="footer-links">
+        <li><a href="#">FDM</a></li>
+        <li><a href="#">SLA / MSLA</a></li>
+        <li><a href="#">SLS / MJF</a></li>
+        <li><a href="#">DMLS Metal</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Empresa</p>
+      <ul class="footer-links">
+        <li><a href="#">Sobre Stratum</a></li>
+        <li><a href="#">Casos de uso</a></li>
+        <li><a href="#">Blog técnico</a></li>
+        <li><a href="#">Certificaciones</a></li>
+      </ul>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <p>© 2026 Stratum 3D S.L. — Madrid, España — ISO 9001 Certificado</p>
+    <div class="footer-socials">
+      <a href="#">LinkedIn</a>
+      <a href="#">Instagram</a>
+      <a href="#">YouTube</a>
+    </div>
+  </div>
+
+</body>
+</html>

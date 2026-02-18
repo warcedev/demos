@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Essse Caffé — Il Gusto Italiano</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+:root{
+  --espresso:#3a1f0d;
+  --brown:#6b3a1f;
+  --caramel:#c8892a;
+  --gold:#e8b84b;
+  --cream:#fdf8f2;
+  --linen:#f5ece0;
+  --sand:#e0d0bc;
+  --white:#ffffff;
+  --text:#2a1a0a;
+  --muted:#7a6a58;
+  --light:#f9f4ed;
+}
+body{font-family:'Lato',sans-serif;background:var(--white);color:var(--text);overflow-x:hidden}
+
+/* ── PAGES ── */
+.page{display:none}
+.page.active{display:block}
+
+/* ── TOP BAR ── */
+.top-bar{
+  background:var(--espresso);
+  color:#e8cfa0;
+  font-size:0.72rem;
+  letter-spacing:0.08em;
+  padding:8px 0;
+  text-align:center;
+  position:relative;
+}
+.top-bar strong{color:var(--gold)}
+
+/* ── HEADER ── */
+header{
+  background:var(--white);
+  border-bottom:1px solid var(--sand);
+  position:sticky;top:0;z-index:300;
+}
+.header-inner{
+  max-width:1280px;margin:0 auto;
+  padding:0 32px;
+  height:70px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:24px;
+}
+.logo-wrap{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none}
+.logo-img{
+  width:44px;height:44px;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, #c8892a, #6b3a1f);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;color:#fff;font-weight:700;font-family:'Playfair Display',serif;
+}
+.logo-text{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:600;color:var(--espresso);letter-spacing:0.02em}
+.logo-text em{font-style:italic;color:var(--caramel)}
+
+/* NAV */
+.main-nav{display:flex;align-items:center;gap:0;list-style:none;height:70px}
+.nav-item{position:relative;height:100%}
+.nav-item>a{
+  display:flex;align-items:center;gap:5px;
+  height:100%;padding:0 16px;
+  font-size:0.78rem;font-weight:700;
+  letter-spacing:0.06em;text-transform:uppercase;
+  color:var(--text);text-decoration:none;
+  border-bottom:3px solid transparent;
+  transition:color .2s,border-color .2s;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.nav-item>a:hover,.nav-item>a.active{color:var(--caramel);border-bottom-color:var(--caramel)}
+.nav-arrow{font-size:0.6rem;transition:transform .2s}
+.nav-item:hover .nav-arrow{transform:rotate(180deg)}
+
+/* MEGA MENU */
+.mega-menu{
+  position:absolute;top:70px;left:50%;transform:translateX(-50%);
+  background:var(--white);
+  border:1px solid var(--sand);
+  border-top:3px solid var(--caramel);
+  box-shadow:0 8px 32px rgba(58,31,13,.12);
+  min-width:520px;
+  padding:28px 32px;
+  display:none;
+  z-index:400;
+}
+.nav-item:hover .mega-menu{display:flex;gap:40px}
+.mm-col h4{
+  font-size:0.65rem;font-weight:700;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--caramel);
+  margin-bottom:12px;padding-bottom:8px;
+  border-bottom:1px solid var(--sand);
+}
+.mm-col a{
+  display:block;font-size:0.78rem;color:var(--muted);
+  text-decoration:none;padding:5px 0;
+  transition:color .2s;cursor:pointer;
+}
+.mm-col a:hover{color:var(--caramel)}
+
+/* HEADER ACTIONS */
+.header-actions{display:flex;align-items:center;gap:8px}
+.header-tel{font-size:0.75rem;color:var(--muted);margin-right:8px;font-weight:700}
+.icon-btn{
+  width:38px;height:38px;border-radius:50%;
+  border:1px solid var(--sand);background:transparent;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;cursor:pointer;transition:all .2s;color:var(--text);
+}
+.icon-btn:hover{background:var(--linen);border-color:var(--caramel)}
+
+/* ── HERO SLIDER ── */
+.hero-slider{position:relative;overflow:hidden}
+.slide{
+  display:none;
+  min-height:520px;
+  align-items:center;
+  position:relative;
+}
+.slide.active{display:flex}
+.slide-1{background:linear-gradient(110deg,#1a0a02 0%,#3a1f0d 40%,#6b3a1f 100%)}
+.slide-2{background:linear-gradient(110deg,#0d1a02 0%,#1f3a0d 40%,#3a5a1f 100%)}
+.slide-3{background:linear-gradient(110deg,#1a1002 0%,#3a2a0d 40%,#6b5a1f 100%)}
+.slide-content{
+  max-width:1280px;margin:0 auto;padding:60px 80px;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:40px;align-items:center;width:100%;
+}
+.slide-badge{
+  display:inline-block;
+  background:var(--caramel);color:#fff;
+  font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;
+  font-weight:700;padding:6px 16px;margin-bottom:20px;
+}
+.slide-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.2rem,4vw,3.6rem);
+  font-weight:600;color:#fff;line-height:1.1;
+  margin-bottom:16px;
+}
+.slide-title em{font-style:italic;color:var(--gold)}
+.slide-subtitle{
+  font-size:0.95rem;color:rgba(255,255,255,.7);
+  line-height:1.8;margin-bottom:32px;max-width:440px;
+}
+.slide-cta{
+  display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+}
+.btn-hero{
+  font-family:'Lato',sans-serif;
+  font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;
+  font-weight:700;padding:14px 32px;cursor:pointer;
+  text-decoration:none;border:none;transition:all .25s;
+  display:inline-block;
+}
+.btn-primary-hero{background:var(--caramel);color:#fff}
+.btn-primary-hero:hover{background:var(--gold);color:var(--espresso)}
+.btn-outline-hero{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4)}
+.btn-outline-hero:hover{background:rgba(255,255,255,.1)}
+
+/* Hero visual right */
+.slide-visual{
+  display:flex;align-items:center;justify-content:center;
+  position:relative;height:340px;
+}
+.hero-product-showcase{
+  position:relative;
+  width:280px;height:280px;
+  border-radius:50%;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:5rem;
+}
+.hero-product-showcase::before{
+  content:'';position:absolute;
+  width:320px;height:320px;border-radius:50%;
+  border:1px solid rgba(200,137,42,.2);
+}
+.hero-product-showcase::after{
+  content:'';position:absolute;
+  width:360px;height:360px;border-radius:50%;
+  border:1px solid rgba(200,137,42,.1);
+}
+.hero-tag-float{
+  position:absolute;
+  background:var(--caramel);color:#fff;
+  font-size:0.62rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;
+  padding:6px 14px;
+}
+.htf-1{top:30px;right:0}
+.htf-2{bottom:50px;left:0}
+
+/* Slider controls */
+.slider-dots{
+  position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
+  display:flex;gap:8px;
+}
+.dot{
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(255,255,255,.3);cursor:pointer;transition:all .2s;border:none;
+}
+.dot.active{background:var(--caramel);width:24px;border-radius:4px}
+.slider-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:44px;height:44px;border-radius:50%;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+  color:#fff;font-size:1.1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.slider-arrow:hover{background:rgba(255,255,255,.2)}
+.arrow-prev{left:20px}
+.arrow-next{right:20px}
+
+/* ── PROMO STRIP ── */
+.promo-strip{
+  background:var(--linen);
+  border-bottom:1px solid var(--sand);
+  padding:16px 0;
+}
+.promo-strip-inner{
+  max-width:1280px;margin:0 auto;padding:0 32px;
+  display:flex;justify-content:space-around;align-items:center;
+  flex-wrap:wrap;gap:16px;
+}
+.promo-item{
+  display:flex;align-items:center;gap:10px;
+}
+.promo-icon{font-size:1.4rem}
+.promo-text strong{display:block;font-size:0.78rem;font-weight:700;color:var(--espresso)}
+.promo-text span{font-size:0.7rem;color:var(--muted)}
+
+/* ── SECTION COMMONS ── */
+.section-wrap{max-width:1280px;margin:0 auto;padding:70px 32px}
+.section-header{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:40px;flex-wrap:wrap;gap:16px;
+}
+.section-eyebrow{
+  font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--caramel);font-weight:700;margin-bottom:8px;
+}
+.section-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.6rem,2.5vw,2.2rem);
+  font-weight:600;color:var(--espresso);
+}
+.section-title em{font-style:italic}
+.view-all-link{
+  font-size:0.72rem;letter-spacing:0.1em;font-weight:700;
+  color:var(--caramel);text-decoration:none;cursor:pointer;
+  border-bottom:1px solid var(--caramel);padding-bottom:2px;
+  transition:color .2s;white-space:nowrap;
+}
+.view-all-link:hover{color:var(--brown)}
+
+/* ── PRODUCT CARDS ── */
+.products-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:20px;
+}
+.products-grid-4{grid-template-columns:repeat(4,1fr)}
+.products-grid-3{grid-template-columns:repeat(3,1fr)}
+
+.product-card{
+  background:var(--white);
+  border:1px solid var(--sand);
+  border-radius:2px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:all .3s;
+  position:relative;
+}
+.product-card:hover{
+  box-shadow:0 8px 32px rgba(58,31,13,.12);
+  transform:translateY(-4px);
+  border-color:var(--caramel);
+}
+.pc-badge{
+  position:absolute;top:10px;left:10px;z-index:2;
+  background:var(--caramel);color:#fff;
+  font-size:0.58rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;
+  padding:4px 10px;
+}
+.pc-badge.new{background:#2a6b3a}
+.pc-badge.sale{background:#c0392b}
+.pc-img{
+  width:100%;height:160px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:3rem;position:relative;overflow:hidden;
+}
+.pc-img-inner{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:3.5rem;
+  transition:transform .4s;
+}
+.product-card:hover .pc-img-inner{transform:scale(1.06)}
+
+/* Coffee-themed gradients */
+.bg-maestoso{background:linear-gradient(135deg,#e8ddd0 0%,#c8a87a 50%,#6b3a1f 100%)}
+.bg-arabesco{background:linear-gradient(135deg,#f0e8d8 0%,#d4b890 50%,#8b5a2a 100%)}
+.bg-infinito{background:linear-gradient(135deg,#e0d8cc 0%,#b89870 50%,#5a3015 100%)}
+.bg-barocco{background:linear-gradient(135deg,#d8d0c8 0%,#a88860 50%,#4a2010 100%)}
+.bg-deca{background:linear-gradient(135deg,#eae8e4 0%,#c8c0b0 50%,#8a8070 100%)}
+.bg-grano{background:linear-gradient(135deg,#e0ead8 0%,#a8c890 50%,#3a5a1a 100%)}
+.bg-molido{background:linear-gradient(135deg,#e8e0d0 0%,#c0a870 50%,#6a4820 100%)}
+.bg-cafetera{background:linear-gradient(135deg,#e8e8e8 0%,#c0c0c0 50%,#606060 100%)}
+.bg-kit{background:linear-gradient(135deg,#f0e8d0 0%,#d4a850 50%,#8a5810 100%)}
+.bg-honduras{background:linear-gradient(135deg,#dce8d8 0%,#90b878 50%,#2a5a18 100%)}
+.bg-colombia{background:linear-gradient(135deg,#e8e0d8 0%,#c4a880 50%,#6a4020 100%)}
+.bg-nocciolino{background:linear-gradient(135deg,#ece4d8 0%,#c8a870 50%,#7a4818 100%)}
+.bg-s20{background:linear-gradient(135deg,#f0f0f0 0%,#d0d0d0 50%,#888 100%)}
+.bg-galileo{background:linear-gradient(135deg,#e8f0e8 0%,#a0b8a0 50%,#405840 100%)}
+.bg-s12{background:linear-gradient(135deg,#f8f0e8 0%,#e0c8a0 50%,#806020 100%)}
+
+.pc-body{padding:14px 16px 16px}
+.pc-cat{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--caramel);font-weight:700;margin-bottom:4px}
+.pc-name{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:600;color:var(--espresso);margin-bottom:6px;line-height:1.3}
+.pc-desc{font-size:0.72rem;color:var(--muted);line-height:1.6;margin-bottom:12px}
+.pc-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--linen);padding-top:10px}
+.pc-intensity{display:flex;gap:3px;align-items:center}
+.dot-i{width:7px;height:7px;border-radius:50%;background:var(--sand)}
+.dot-i.on{background:var(--caramel)}
+.pc-format{font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em}
+
+/* ── BANNER SECTIONS ── */
+.banner-duo{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0;margin:0;
+}
+.banner-item{
+  position:relative;min-height:280px;
+  display:flex;align-items:center;
+  overflow:hidden;cursor:pointer;
+}
+.banner-1{background:linear-gradient(110deg,#1a0a02,#4a2a0d)}
+.banner-2{background:linear-gradient(110deg,#0a1a02,#2a4a0d)}
+.banner-content{
+  position:relative;z-index:2;
+  padding:50px 60px;
+}
+.banner-eyebrow{
+  font-size:0.62rem;letter-spacing:0.3em;text-transform:uppercase;
+  color:rgba(232,184,75,.8);font-weight:700;margin-bottom:12px;
+}
+.banner-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.4rem,2.5vw,2rem);
+  color:#fff;line-height:1.2;margin-bottom:16px;
+}
+.banner-title em{font-style:italic;color:var(--gold)}
+.banner-subtitle{font-size:0.82rem;color:rgba(255,255,255,.65);line-height:1.7;margin-bottom:24px;max-width:320px}
+.btn-banner{
+  display:inline-block;
+  font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:700;
+  padding:11px 26px;background:var(--caramel);color:#fff;
+  text-decoration:none;cursor:pointer;transition:all .2s;border:none;
+}
+.btn-banner:hover{background:var(--gold);color:var(--espresso)}
+.banner-deco{
+  position:absolute;right:40px;top:50%;transform:translateY(-50%);
+  font-size:7rem;opacity:.06;color:#fff;
+  font-family:'Playfair Display',serif;font-style:italic;
+}
+
+/* ── BLOG CARDS ── */
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.blog-card{border:1px solid var(--sand);overflow:hidden;cursor:pointer;transition:all .3s}
+.blog-card:hover{box-shadow:0 8px 24px rgba(58,31,13,.1)}
+.bc-img{
+  width:100%;height:190px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.5rem;overflow:hidden;
+  position:relative;
+}
+.bc-img-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-style:italic;font-size:1.6rem;color:rgba(255,255,255,.4);transition:transform .4s}
+.blog-card:hover .bc-img-inner{transform:scale(1.05)}
+.bc-body{padding:20px}
+.bc-cat{font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--caramel);font-weight:700;margin-bottom:8px}
+.bc-title{font-family:'Playfair Display',serif;font-size:1rem;color:var(--espresso);line-height:1.4;margin-bottom:8px}
+.bc-excerpt{font-size:0.75rem;color:var(--muted);line-height:1.7;margin-bottom:14px}
+.bc-meta{font-size:0.62rem;color:var(--sand);text-transform:uppercase;letter-spacing:0.1em}
+
+/* ── BRAND SECTION ── */
+.brand-section{background:var(--espresso);padding:70px 0}
+.brand-inner{
+  max-width:1280px;margin:0 auto;padding:0 32px;
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
+}
+.brand-text .section-eyebrow{color:#e8cfa0}
+.brand-text .section-title{color:#fff}
+.brand-text .section-title em{color:var(--gold)}
+.brand-p{font-size:0.86rem;line-height:2;color:rgba(255,255,255,.65);margin-top:16px;margin-bottom:28px}
+.brand-stats{display:flex;gap:40px}
+.bs-item{}
+.bs-num{font-family:'Playfair Display',serif;font-size:2.4rem;color:var(--gold);line-height:1}
+.bs-label{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:4px}
+.brand-visual{
+  display:grid;grid-template-columns:1fr 1fr;gap:3px;
+}
+.bv-item{
+  height:140px;display:flex;align-items:center;justify-content:center;
+  font-size:2.8rem;position:relative;overflow:hidden;
+}
+.bv-label{
+  position:absolute;bottom:0;left:0;right:0;
+  background:rgba(0,0,0,.5);
+  font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:rgba(255,255,255,.8);padding:6px 10px;text-align:center;
+}
+
+/* ── TESTIMONIALS ── */
+.testimonials{background:var(--linen);padding:70px 0}
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+.review-card{background:var(--white);border:1px solid var(--sand);padding:28px;border-radius:2px}
+.review-stars{color:var(--gold);font-size:0.9rem;margin-bottom:12px;letter-spacing:2px}
+.review-text{font-size:0.82rem;line-height:1.8;color:var(--text);font-style:italic;margin-bottom:16px}
+.review-author strong{font-size:0.78rem;color:var(--espresso);display:block}
+.review-author span{font-size:0.68rem;color:var(--muted)}
+
+/* ── PRODUCTS PAGE ── */
+.page-banner{
+  background:linear-gradient(110deg,var(--espresso),var(--brown));
+  padding:50px 32px;
+}
+.page-banner-inner{max-width:1280px;margin:0 auto}
+.page-banner h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,3.5vw,2.8rem);color:#fff;font-weight:600;margin-bottom:8px}
+.page-banner h1 em{font-style:italic;color:var(--gold)}
+.page-banner p{font-size:0.86rem;color:rgba(255,255,255,.65);max-width:540px;line-height:1.8}
+
+.filter-bar{background:var(--white);border-bottom:1px solid var(--sand);position:sticky;top:70px;z-index:200}
+.filter-bar-inner{
+  max-width:1280px;margin:0 auto;padding:0 32px;
+  display:flex;gap:0;overflow-x:auto;
+}
+.fb-btn{
+  font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;
+  padding:16px 22px;background:transparent;border:none;border-bottom:3px solid transparent;
+  color:var(--muted);cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.fb-btn:hover,.fb-btn.active{color:var(--caramel);border-bottom-color:var(--caramel)}
+
+.products-page-grid{
+  max-width:1280px;margin:0 auto;
+  padding:40px 32px 80px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:24px;
+}
+.product-item-full{
+  background:var(--white);border:1px solid var(--sand);overflow:hidden;
+  cursor:pointer;transition:all .3s;position:relative;
+}
+.product-item-full:hover{box-shadow:0 8px 28px rgba(58,31,13,.12);transform:translateY(-4px);border-color:var(--caramel)}
+.pif-img{width:100%;height:200px;display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative}
+.pif-badge{position:absolute;top:10px;left:10px;background:var(--caramel);color:#fff;font-size:0.58rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:4px 10px}
+.pif-body{padding:18px}
+.pif-cat{font-size:0.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--caramel);font-weight:700;margin-bottom:5px}
+.pif-name{font-family:'Playfair Display',serif;font-size:1rem;color:var(--espresso);margin-bottom:6px}
+.pif-desc{font-size:0.73rem;color:var(--muted);line-height:1.65;margin-bottom:14px}
+.pif-footer{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--linen)}
+.pif-intensity{display:flex;gap:3px}
+.pif-type{font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.hidden{display:none!important}
+
+/* ── NOSOTROS PAGE ── */
+.nos-hero{
+  background:linear-gradient(110deg,var(--espresso),#8a4a1a);
+  padding:80px 32px;
+}
+.nos-hero-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:center}
+.nos-hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,4vw,3.4rem);color:#fff;font-weight:600;margin-bottom:16px}
+.nos-hero h1 em{font-style:italic;color:var(--gold)}
+.nos-hero p{font-size:0.88rem;line-height:2;color:rgba(255,255,255,.7);margin-bottom:28px}
+.nos-visual-wrap{display:flex;align-items:center;justify-content:center}
+.nos-circle{
+  width:260px;height:260px;border-radius:50%;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;font-size:5rem;
+  position:relative;
+}
+.nos-circle::before{content:'';position:absolute;width:300px;height:300px;border-radius:50%;border:1px solid rgba(232,184,75,.15)}
+.nos-circle::after{content:'';position:absolute;width:340px;height:340px;border-radius:50%;border:1px solid rgba(232,184,75,.08)}
+.nos-year{position:absolute;font-family:'Playfair Display',serif;font-size:4.5rem;color:rgba(255,255,255,.06);font-style:italic;bottom:-20px;right:-20px}
+
+.values-section{background:var(--linen);padding:70px 0}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:40px}
+.val-card{background:var(--white);padding:44px 36px;border:1px solid var(--sand);text-align:center}
+.val-letter{font-family:'Playfair Display',serif;font-size:4.5rem;font-style:italic;color:var(--caramel);opacity:.2;line-height:1;margin-bottom:10px}
+.val-title{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--espresso);margin-bottom:10px}
+.val-text{font-size:0.76rem;color:var(--muted);line-height:1.85}
+
+/* ── HISTORIA PAGE ── */
+.historia-intro{
+  background:var(--cream);
+  text-align:center;padding:70px 32px 40px;
+}
+.historia-intro h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,3.5vw,2.8rem);color:var(--espresso);margin-bottom:12px}
+.historia-intro h1 em{font-style:italic;color:var(--caramel)}
+.historia-intro p{font-size:0.88rem;line-height:2;color:var(--muted);max-width:600px;margin:0 auto}
+
+.timeline{max-width:900px;margin:0 auto;padding:60px 32px 90px;position:relative}
+.timeline::before{content:'';position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--sand);transform:translateX(-50%)}
+.tl-item{display:grid;grid-template-columns:1fr 50px 1fr;margin-bottom:56px;align-items:start}
+.tl-item:nth-child(odd) .tl-content{grid-column:1;text-align:right;padding-right:44px}
+.tl-item:nth-child(odd) .tl-empty{grid-column:3}
+.tl-item:nth-child(even) .tl-content{grid-column:3;padding-left:44px}
+.tl-item:nth-child(even) .tl-empty{grid-column:1}
+.tl-dot-col{grid-column:2;display:flex;justify-content:center;padding-top:4px}
+.tl-dot-inner{width:14px;height:14px;border-radius:50%;background:var(--caramel);border:3px solid var(--cream);box-shadow:0 0 0 2px var(--caramel)}
+.tl-year{font-family:'Playfair Display',serif;font-size:1.5rem;font-style:italic;color:var(--caramel);margin-bottom:6px}
+.tl-title{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--espresso);margin-bottom:7px;font-weight:600}
+.tl-text{font-size:0.76rem;line-height:1.85;color:var(--muted)}
+
+/* ── BLOG PAGE ── */
+.blog-featured-wrap{max-width:1280px;margin:0 auto;padding:50px 32px 20px}
+.blog-featured{display:grid;grid-template-columns:1.3fr 1fr;gap:50px;align-items:center;background:var(--linen);padding:40px;border:1px solid var(--sand)}
+.bf-img{height:300px;overflow:hidden;position:relative}
+.bf-img-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-style:italic;font-size:2rem;color:rgba(255,255,255,.35);transition:transform .4s}
+.blog-featured:hover .bf-img-inner{transform:scale(1.04)}
+.bf-badge{font-size:0.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--caramel);font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.bf-badge::before{content:'✦';font-size:.5rem}
+.bf-title{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--espresso);line-height:1.3;margin-bottom:14px}
+.bf-excerpt{font-size:0.83rem;line-height:1.9;color:var(--muted);margin-bottom:24px}
+.bf-meta{font-size:0.65rem;color:var(--sand);text-transform:uppercase;letter-spacing:.1em;margin-bottom:24px}
+
+.blog-page-grid{max-width:1280px;margin:0 auto;padding:40px 32px 80px;display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.bp-card{cursor:pointer;border:1px solid var(--sand);transition:all .3s}
+.bp-card:hover{box-shadow:0 8px 24px rgba(58,31,13,.1);border-color:var(--caramel)}
+.bp-img{height:180px;overflow:hidden}
+.bp-img-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-style:italic;font-size:1.5rem;color:rgba(255,255,255,.35);transition:transform .4s}
+.bp-card:hover .bp-img-inner{transform:scale(1.05)}
+.bp-body{padding:20px}
+.bp-cat{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--caramel);font-weight:700;margin-bottom:8px}
+.bp-title{font-family:'Playfair Display',serif;font-size:1rem;color:var(--espresso);line-height:1.4;margin-bottom:8px}
+.bp-excerpt{font-size:.74rem;color:var(--muted);line-height:1.75;margin-bottom:12px}
+.bp-meta{font-size:.62rem;color:var(--sand);text-transform:uppercase;letter-spacing:.1em}
+
+/* ── FOOTER ── */
+footer{background:var(--espresso);color:#e8cfa0}
+.footer-inner{max-width:1280px;margin:0 auto;padding:60px 32px 32px}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:50px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:28px}
+.ft-logo{font-family:'Playfair Display',serif;font-size:1.3rem;color:#e8cfa0;display:block;margin-bottom:12px}
+.ft-logo em{font-style:italic;color:var(--gold)}
+.ft-tagline{font-size:.75rem;line-height:1.9;color:rgba(255,255,255,.45);max-width:240px;margin-bottom:20px}
+.footer-col-title{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:16px}
+.footer-col a{display:block;font-size:.75rem;color:rgba(255,255,255,.45);text-decoration:none;margin-bottom:9px;cursor:pointer;transition:color .2s}
+.footer-col a:hover{color:#e8cfa0}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-copy{font-size:.65rem;color:rgba(255,255,255,.3)}
+.footer-socials{display:flex;gap:10px}
+.social-btn{width:34px;height:34px;border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:rgba(255,255,255,.45);cursor:pointer;transition:all .2s;border-radius:2px}
+.social-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.animate-in{animation:fadeUp .6s ease both}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){
+  .products-grid{grid-template-columns:repeat(3,1fr)}
+  .products-grid-4{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:900px){
+  .main-nav{display:none}
+  .hero-visual,.nos-visual-wrap,.brand-visual{display:none}
+  .slide-content,.nos-hero-inner,.brand-inner{grid-template-columns:1fr}
+  .banner-duo,.blog-grid,.reviews-grid,.values-grid,.footer-top{grid-template-columns:1fr}
+  .products-grid,.products-grid-3,.products-grid-4,.products-page-grid,.blog-page-grid{grid-template-columns:1fr 1fr}
+  .section-wrap{padding:50px 20px}
+  .timeline::before{left:20px}
+  .tl-item{grid-template-columns:28px 1fr}
+  .tl-item:nth-child(odd) .tl-content,.tl-item:nth-child(even) .tl-content{grid-column:2;text-align:left;padding:0 0 0 20px}
+  .tl-item:nth-child(odd) .tl-empty,.tl-item:nth-child(even) .tl-empty{display:none}
+  .tl-dot-col{grid-column:1}
+  .blog-featured{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="top-bar">
+    <strong>☕ ENVÍOS GRATIS</strong> a partir de Gs. 150.000 · Atención: Lun–Vie 09–18hs · 📞 <strong>0981 000 000</strong>
+  </div>
+  <div class="header-inner">
+    <a class="logo-wrap" onclick="showPage('home')">
+      <div class="logo-img">E</div>
+      <div class="logo-text">Essse <em>Caffé</em></div>
+    </a>
+
+    <ul class="main-nav">
+      <li class="nav-item">
+        <a onclick="showPage('productos')" id="nav-home" class="active">
+          Café <span class="nav-arrow">▾</span>
+        </a>
+        <div class="mega-menu">
+          <div class="mm-col">
+            <h4>Cápsulas</h4>
+            <a onclick="showPage('productos')">Cápsulas Essse Caffé</a>
+            <a onclick="showPage('productos')">Compatibles Nespresso</a>
+            <a onclick="showPage('productos')">Kit Degustación</a>
+          </div>
+          <div class="mm-col">
+            <h4>Café</h4>
+            <a onclick="showPage('productos')">Café en Grano</a>
+            <a onclick="showPage('productos')">Café Molido</a>
+            <a onclick="showPage('productos')">Café Descafeinado</a>
+          </div>
+          <div class="mm-col">
+            <h4>Para empresas</h4>
+            <a onclick="showPage('productos')">Cafeterías</a>
+            <a onclick="showPage('productos')">Hoteles</a>
+            <a onclick="showPage('productos')">Restaurantes</a>
+            <a onclick="showPage('productos')">Oficinas</a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a onclick="showPage('productos')">
+          Cafeteras <span class="nav-arrow">▾</span>
+        </a>
+        <div class="mega-menu">
+          <div class="mm-col">
+            <h4>Por tipo</h4>
+            <a onclick="showPage('productos')">Cafeteras de Cápsulas</a>
+            <a onclick="showPage('productos')">Cafeteras de Grano</a>
+            <a onclick="showPage('productos')">Molinos</a>
+          </div>
+          <div class="mm-col">
+            <h4>Destacados</h4>
+            <a onclick="showPage('productos')">Galileo — Nueva</a>
+            <a onclick="showPage('productos')">S.20 Sistema Expreso</a>
+            <a onclick="showPage('productos')">S.12 Compacta</a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item"><a onclick="showPage('productos')">Infusiones</a></li>
+      <li class="nav-item"><a onclick="showPage('nosotros')">Nosotros</a></li>
+      <li class="nav-item"><a onclick="showPage('historia')">Historia</a></li>
+      <li class="nav-item"><a onclick="showPage('blog')">Blog</a></li>
+    </ul>
+
+    <div class="header-actions">
+      <span class="header-tel">0981 000 000</span>
+      <button class="icon-btn">🔍</button>
+      <button class="icon-btn">👤</button>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════ HOME ═══════════ -->
+<div class="page active" id="page-home">
+
+  <!-- HERO SLIDER -->
+  <div class="hero-slider">
+    <div class="slide slide-1 active">
+      <div class="slide-content">
+        <div>
+          <div class="slide-badge">Nuevo · Temporada 2025</div>
+          <h1 class="slide-title">El verdadero<br><em>espresso</em><br>italiano</h1>
+          <p class="slide-subtitle">Desde Bolonia al mundo. Más de 45 años de ciencia, sabiduría y especialización condensados en cada cápsula.</p>
+          <div class="slide-cta">
+            <a class="btn-hero btn-primary-hero" onclick="showPage('productos')">Ver cápsulas</a>
+            <a class="btn-hero btn-outline-hero" onclick="showPage('nosotros')">Conocer la marca</a>
+          </div>
+        </div>
+        <div class="slide-visual">
+          <div class="hero-product-showcase">
+            ☕
+            <div class="hero-tag-float htf-1">Maestoso · 50 uds.</div>
+            <div class="hero-tag-float htf-2">50 cápsulas — Gs. 85.000</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide slide-2">
+      <div class="slide-content">
+        <div>
+          <div class="slide-badge">Nuevo modelo · Galileo</div>
+          <h1 class="slide-title">La nueva forma<br>de disfrutar<br><em>el café</em></h1>
+          <p class="slide-subtitle">Cafetera de grano Galileo. Diseño italiano, molienda integrada y tecnología de extracción de precisión.</p>
+          <div class="slide-cta">
+            <a class="btn-hero btn-primary-hero" onclick="filterProducts('cafeteras');showPage('productos')">Ver cafeteras</a>
+            <a class="btn-hero btn-outline-hero" onclick="showPage('historia')">Nuestra historia</a>
+          </div>
+        </div>
+        <div class="slide-visual">
+          <div class="hero-product-showcase" style="font-size:4rem">⚙️
+            <div class="hero-tag-float htf-1">Galileo · Grano</div>
+            <div class="hero-tag-float htf-2">Diseño Giugiaro</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide slide-3">
+      <div class="slide-content">
+        <div>
+          <div class="slide-badge">Orígenes únicos</div>
+          <h1 class="slide-title">Honduras<br><em>San Andrés</em></h1>
+          <p class="slide-subtitle">Granos de altura seleccionados. Perfil caramelizado, cuerpo medio y notas de frutos secos. Limitado.</p>
+          <div class="slide-cta">
+            <a class="btn-hero btn-primary-hero" onclick="filterProducts('grano');showPage('productos')">Ver café en grano</a>
+            <a class="btn-hero btn-outline-hero" onclick="showPage('blog')">Leer en el blog</a>
+          </div>
+        </div>
+        <div class="slide-visual">
+          <div class="hero-product-showcase" style="font-size:4rem">🌾
+            <div class="hero-tag-float htf-1">Honduras · Origen único</div>
+            <div class="hero-tag-float htf-2">500g — Gs. 95.000</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="slider-arrow arrow-prev" onclick="changeSlide(-1)">‹</button>
+    <button class="slider-arrow arrow-next" onclick="changeSlide(1)">›</button>
+    <div class="slider-dots">
+      <button class="dot active" onclick="goSlide(0)"></button>
+      <button class="dot" onclick="goSlide(1)"></button>
+      <button class="dot" onclick="goSlide(2)"></button>
+    </div>
+  </div>
+
+  <!-- PROMO STRIP -->
+  <div class="promo-strip">
+    <div class="promo-strip-inner">
+      <div class="promo-item">
+        <div class="promo-icon">🚚</div>
+        <div class="promo-text"><strong>Envío gratis</strong><span>En pedidos mayores a Gs. 150.000</span></div>
+      </div>
+      <div class="promo-item">
+        <div class="promo-icon">🇮🇹</div>
+        <div class="promo-text"><strong>Importado de Italia</strong><span>Directo desde Bolonia</span></div>
+      </div>
+      <div class="promo-item">
+        <div class="promo-icon">✅</div>
+        <div class="promo-text"><strong>Calidad certificada</strong><span>Espresso Italiano certificado</span></div>
+      </div>
+      <div class="promo-item">
+        <div class="promo-icon">📞</div>
+        <div class="promo-text"><strong>Atención personalizada</strong><span>Lun–Vie 09 a 18hs</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CÁPSULAS -->
+  <section>
+    <div class="section-wrap" style="padding-bottom:40px">
+      <div class="section-header">
+        <div>
+          <div class="section-eyebrow">Lo más pedido</div>
+          <h2 class="section-title">Cápsulas de <em>café</em></h2>
+        </div>
+        <a class="view-all-link" onclick="filterProducts('capsulas');showPage('productos')">Ver colección completa →</a>
+      </div>
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="pc-badge">Bestseller</div>
+          <div class="pc-img"><div class="pc-img-inner bg-maestoso">☕</div></div>
+          <div class="pc-body">
+            <div class="pc-cat">Cápsulas · 50 uds.</div>
+            <div class="pc-name">Maestoso</div>
+            <div class="pc-desc">Intenso y aterciopelado. Notas achocolatadas con final largo y persistente.</div>
+            <div class="pc-footer">
+              <div class="pc-intensity"><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i"></div></div>
+              <div class="pc-format">Gs. 85.000</div>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="pc-img"><div class="pc-img-inner bg-arabesco">☕</div></div>
+          <div class="pc-body">
+            <div class="pc-cat">Cápsulas · 50 uds.</div>
+            <div class="pc-name">Arabesco</div>
+            <div class="pc-desc">Arábica seleccionado. Perfil floral y afrutado con acidez equilibrada.</div>
+            <div class="pc-footer">
+              <div class="pc-intensity"><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i"></div><div class="dot-i"></div></div>
+              <div class="pc-format">Gs. 88.000</div>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="pc-img"><div class="pc-img-inner bg-infinito">☕</div></div>
+          <div class="pc-body">
+            <div class="pc-cat">Cápsulas · 50 uds.</div>
+            <div class="pc-name">Infinito</div>
+            <div class="pc-desc">Mezcla suave y cremosa. Ideal para quienes prefieren un café equilibrado.</div>
+            <div class="pc-footer">
+              <div class="pc-intensity"><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i"></div><div class="dot-i"></div><div class="dot-i"></div></div>
+              <div class="pc-format">Gs. 85.000</div>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="pc-img"><div class="pc-img-inner bg-barocco">☕</div></div>
+          <div class="pc-body">
+            <div class="pc-cat">Cápsulas · 50 uds.</div>
+            <div class="pc-name">Barocco</div>
+            <div class="pc-desc">Tostado oscuro y robusto. Para los amantes del espresso más concentrado.</div>
+            <div class="pc-footer">
+              <div class="pc-intensity"><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div></div>
+              <div class="pc-format">Gs. 85.000</div>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="pc-badge sale">Sin cafeína</div>
+          <div class="pc-img"><div class="pc-img-inner bg-deca">☕</div></div>
+          <div class="pc-body">
+            <div class="pc-cat">Cápsulas · 50 uds.</div>
+            <div class="pc-name">Decaffeinato</div>
+            <div class="pc-desc">Todo el sabor Essse Caffé sin cafeína. Proceso natural que preserva el aroma.</div>
+            <div class="pc-footer">
+              <div class="pc-intensity"><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i"></div><div class="dot-i"></div></div>
+              <div class="pc-format">Gs. 88.000</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BANNER DUO -->
+  <div class="banner-duo">
+    <div class="banner-item banner-1" onclick="filterProducts('grano');showPage('productos')">
+      <div class="banner-content">
+        <div class="banner-eyebrow">Descubrí nuestro</div>
+        <h3 class="banner-title">Café en <em>Grano</em><br>y todas sus mezclas</h3>
+        <p class="banner-subtitle">Granos seleccionados de Honduras, Colombia y Brasil. Tostados con precisión para preservar cada matiz.</p>
+        <button class="btn-banner">Explorar colección</button>
+      </div>
+      <div class="banner-deco">Grano</div>
+    </div>
+    <div class="banner-item banner-2" onclick="filterProducts('molido');showPage('productos')">
+      <div class="banner-content">
+        <div class="banner-eyebrow">Nuestras mezclas de</div>
+        <h3 class="banner-title">Café <em>Molido</em><br>con el máximo aroma</h3>
+        <p class="banner-subtitle">Molido fino, medio o para filtro. Listo para preparar con todo el sabor italiano intacto.</p>
+        <button class="btn-banner">Ver molidos</button>
+      </div>
+      <div class="banner-deco">Molido</div>
+    </div>
+  </div>
+
+  <!-- CAFETERAS -->
+  <section style="background:var(--linen)">
+    <div class="section-wrap">
+      <div class="section-header">
+        <div>
+          <div class="section-eyebrow">Tecnología italiana</div>
+          <h2 class="section-title">Nuestras <em>Cafeteras</em></h2>
+        </div>
+        <a class="view-all-link" onclick="filterProducts('cafeteras');showPage('productos')">Ver todos los modelos →</a>
+      </div>
+      <div class="products-grid-3 products-grid">
+        <div class="product-card">
+          <div class="pc-badge new">Nuevo</div>
+          <div class="pc-img" style="height:190px"><div class="pc-img-inner bg-galileo">⚙️</div></div>
+          <div class="pc-body">
+            <div class="pc-cat">Cafetera de Grano</div>
+            <div class="pc-name">Galileo — La nueva forma de disfrutar el café</div>
+            <div class="pc-desc">Molienda integrada, temperatura controlada al grado. Diseño Giugiaro. Pack suscripción disponible.</div>
+            <div class="pc-footer">
+              <div class="pc-format">Automática · Grano</div>
+              <div class="pc-format" style="color:var(--caramel);font-weight:700">Gs. 1.490.000</div>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="pc-img" style="height:190px"><div class="pc-img-inner bg-s20">⚙️</div></div>
+          <div class="pc-body">
+            <div class="pc-cat">Cafetera de Cápsulas</div>
+            <div class="pc-name">S.20 Sistema Expreso · Elige Color</div>
+            <div class="pc-desc">19 bares de presión, calentamiento rápido. Disponible en rojo, negro, blanco y gris.</div>
+            <div class="pc-footer">
+              <div class="pc-format">Cápsulas · 19 bar</div>
+              <div class="pc-format" style="color:var(--caramel);font-weight:700">Gs. 635.000</div>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="pc-img" style="height:190px"><div class="pc-img-inner bg-s12">⚙️</div></div>
+          <div class="pc-body">
+            <div class="pc-cat">Cafetera de Cápsulas</div>
+            <div class="pc-name">S.12 Compacta · Diseño Giugiaro</div>
+            <div class="pc-desc">La cafetera más compacta de la línea. Diseñada por el mismo estudio que la Ferrari Testarossa.</div>
+            <div class="pc-footer">
+              <div class="pc-format">Compacta · Hogar</div>
+              <div class="pc-format" style="color:var(--caramel);font-weight:700">Gs. 470.000</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRAND SECTION -->
+  <section class="brand-section">
+    <div class="brand-inner">
+      <div class="brand-text">
+        <div class="section-eyebrow">Quiénes somos</div>
+        <h2 class="section-title">Una filosofía<br>en cada <em>taza</em></h2>
+        <p class="brand-p">En 1979, la familia Segafredo fundó en Bolonia la marca Essse Caffé. Las tres S de su nombre representan Scienza, Sapienza y Specializzazione — los pilares que guían cada mezcla hasta el día de hoy.</p>
+        <div class="brand-stats">
+          <div class="bs-item"><div class="bs-num">45+</div><div class="bs-label">Años de historia</div></div>
+          <div class="bs-item"><div class="bs-num">12+</div><div class="bs-label">Mezclas únicas</div></div>
+          <div class="bs-item"><div class="bs-num">3S</div><div class="bs-label">Valores fundacionales</div></div>
+        </div>
+      </div>
+      <div class="brand-visual">
+        <div class="bv-item bg-maestoso">☕<div class="bv-label">Cápsulas</div></div>
+        <div class="bv-item bg-galileo">⚙️<div class="bv-label">Cafeteras</div></div>
+        <div class="bv-item bg-honduras">🌾<div class="bv-label">Café en Grano</div></div>
+        <div class="bv-item bg-molido">☕<div class="bv-label">Café Molido</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOG PREVIEW -->
+  <section>
+    <div class="section-wrap">
+      <div class="section-header">
+        <div>
+          <div class="section-eyebrow">Novedades</div>
+          <h2 class="section-title">Del <em>Blog</em></h2>
+        </div>
+        <a class="view-all-link" onclick="showPage('blog')">Ver todos los artículos →</a>
+      </div>
+      <div class="blog-grid">
+        <div class="blog-card" onclick="showPage('blog')">
+          <div class="bc-img"><div class="bc-img-inner bg-maestoso">El espresso perfecto</div></div>
+          <div class="bc-body">
+            <div class="bc-cat">Cultura del café</div>
+            <div class="bc-title">El arte del espresso perfecto: guía para aficionados</div>
+            <div class="bc-excerpt">Temperatura, presión y tiempo: los tres factores que determinan la taza perfecta.</div>
+            <div class="bc-meta">12 Enero 2025 · 5 min</div>
+          </div>
+        </div>
+        <div class="blog-card" onclick="showPage('blog')">
+          <div class="bc-img"><div class="bc-img-inner bg-honduras">Honduras San Andrés</div></div>
+          <div class="bc-body">
+            <div class="bc-cat">Orígenes</div>
+            <div class="bc-title">Honduras San Andrés: el café que conquistó a los italianos</div>
+            <div class="bc-excerpt">Un viaje a las plantaciones donde nace una de nuestras mezclas más especiales.</div>
+            <div class="bc-meta">3 Feb 2025 · 7 min</div>
+          </div>
+        </div>
+        <div class="blog-card" onclick="showPage('blog')">
+          <div class="bc-img"><div class="bc-img-inner bg-s20">Guía cafeteras</div></div>
+          <div class="bc-body">
+            <div class="bc-cat">Equipamiento</div>
+            <div class="bc-title">Cómo elegir tu cafetera Essse Caffé según tu estilo de vida</div>
+            <div class="bc-excerpt">Comparativa completa de todos los modelos para que encuentres el ideal para vos.</div>
+            <div class="bc-meta">10 Mar 2025 · 6 min</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="section-wrap" style="padding-top:0;padding-bottom:0">
+      <div class="section-header">
+        <div>
+          <div class="section-eyebrow">Lo que dicen nuestros clientes</div>
+          <h2 class="section-title">Reseñas <em>verificadas</em></h2>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span style="color:var(--gold);font-size:1.1rem">★★★★★</span>
+          <span style="font-size:0.78rem;color:var(--muted);font-weight:700">4.9 / 5</span>
+        </div>
+      </div>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">"El Maestoso es una experiencia diferente. Crema perfecta, aroma increíble. No volví a probar otra marca."</div>
+          <div class="review-author"><strong>María L.</strong><span>Cliente desde 2022</span></div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">"Compré la Galileo y es un sueño. El café sale perfecto cada vez, y el diseño es hermoso para tener en la cocina."</div>
+          <div class="review-author"><strong>Carlos M.</strong><span>Cliente desde 2023</span></div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★☆</div>
+          <div class="review-text">"Probé el kit de degustación y me encantó el Honduras. Ahora lo pido mensualmente. La atención al cliente es excelente."</div>
+          <div class="review-author"><strong>Ana R.</strong><span>Cliente desde 2024</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end home -->
+
+<!-- ═══════════ PRODUCTOS ═══════════ -->
+<div class="page" id="page-productos">
+  <div class="page-banner">
+    <div class="page-banner-inner">
+      <div class="section-eyebrow" style="color:#e8cfa0">Catálogo completo</div>
+      <h1>Nuestros <em>Productos</em></h1>
+      <p>Cápsulas, cafeteras, molinos y café en todas sus formas. Cada producto diseñado para acercarte al auténtico espresso italiano.</p>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-bar-inner">
+      <button class="fb-btn active" onclick="filterProducts('all',this)">Todos</button>
+      <button class="fb-btn" onclick="filterProducts('capsulas',this)">Cápsulas</button>
+      <button class="fb-btn" onclick="filterProducts('grano',this)">Café en Grano</button>
+      <button class="fb-btn" onclick="filterProducts('molido',this)">Café Molido</button>
+      <button class="fb-btn" onclick="filterProducts('cafeteras',this)">Cafeteras</button>
+      <button class="fb-btn" onclick="filterProducts('molinos',this)">Molinos</button>
+      <button class="fb-btn" onclick="filterProducts('infusiones',this)">Infusiones</button>
+      <button class="fb-btn" onclick="filterProducts('kits',this)">Kits</button>
+    </div>
+  </div>
+
+  <div class="products-page-grid">
+
+    <!-- CÁPSULAS -->
+    <div class="product-item-full" data-cat="capsulas">
+      <div class="pif-img bg-maestoso"><span>☕</span><div class="pif-badge">Bestseller</div></div>
+      <div class="pif-body">
+        <div class="pif-cat">Cápsulas</div>
+        <div class="pif-name">Maestoso — 50 cápsulas</div>
+        <div class="pif-desc">Intenso y aterciopelado. Notas achocolatadas, cuerpo pleno y crema densa. La más solicitada de la colección.</div>
+        <div class="pif-footer">
+          <div class="pif-intensity"><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i"></div></div>
+          <div class="pif-type" style="color:var(--caramel);font-weight:700">Gs. 85.000</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-item-full" data-cat="capsulas">
+      <div class="pif-img bg-arabesco"><span>☕</span></div>
+      <div class="pif-body">
+        <div class="pif-cat">Cápsulas</div>
+        <div class="pif-name">Arabesco — 50 cápsulas</div>
+        <div class="pif-desc">100% Arábica seleccionado. Perfil floral y afrutado, acidez elegante y textura sedosa en taza.</div>
+        <div class="pif-footer">
+          <div class="pif-intensity"><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i"></div><div class="dot-i"></div></div>
+          <div class="pif-type" style="color:var(--caramel);font-weight:700">Gs. 88.000</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-item-full" data-cat="capsulas">
+      <div class="pif-img bg-infinito"><span>☕</span></div>
+      <div class="pif-body">
+        <div class="pif-cat">Cápsulas</div>
+        <div class="pif-name">Infinito — 50 cápsulas</div>
+        <div class="pif-desc">Mezcla suave y cremosa. Perfecta para quienes buscan un café equilibrado, sin amargor.</div>
+        <div class="pif-footer">
+          <div class="pif-intensity"><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i"></div><div class="dot-i"></div><div class="dot-i"></div></div>
+          <div class="pif-type" style="color:var(--caramel);font-weight:700">Gs. 85.000</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-item-full" data-cat="capsulas">
+      <div class="pif-img bg-barocco"><span>☕</span></div>
+      <div class="pif-body">
+        <div class="pif-cat">Cápsulas</div>
+        <div class="pif-name">Barocco — 50 cápsulas</div>
+        <div class="pif-desc">Tostado oscuro e intenso. Para los amantes del espresso más concentrado y de carácter fuerte.</div>
+        <div class="pif-footer">
+          <div class="pif-intensity"><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div></div>
+          <div class="pif-type" style="color:var(--caramel);font-weight:700">Gs. 85.000</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-item-full" data-cat="capsulas">
+      <div class="pif-img bg-deca"><span>☕</span><div class="pif-badge" style="background:#7a6a58">Sin cafeína</div></div>
+      <div class="pif-body">
+        <div class="pif-cat">Cápsulas</div>
+        <div class="pif-name">Decaffeinato — 50 cápsulas</div>
+        <div class="pif-desc">Todo el sabor Essse Caffé sin cafeína. Proceso natural de descafeinado que preserva el aroma original.</div>
+        <div class="pif-footer">
+          <div class="pif-intensity"><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i"></div><div class="dot-i"></div></div>
+          <div class="pif-type" style="color:var(--caramel);font-weight:700">Gs. 88.000</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-item-full" data-cat="capsulas">
+      <div class="pif-img bg-nocciolino"><span>☕</span></div>
+      <div class="pif-body">
+        <div class="pif-cat">Cápsulas Saborizadas</div>
+        <div class="pif-name">Nocciolino — 50 cápsulas</div>
+        <div class="pif-desc">Café con sabor a avellana tostada. Un placer italiano que combina tradición y creatividad.</div>
+        <div class="pif-footer">
+          <div class="pif-intensity"><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i"></div><div class="dot-i"></div><div class="dot-i"></div></div>
+          <div class="pif-type" style="color:var(--caramel);font-weight:700">Gs. 95.000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAFÉ EN GRANO -->
+    <div class="product-item-full" data-cat="grano">
+      <div class="pif-img bg-grano"><span>🌾</span><div class="pif-badge" style="background:#2a6b3a">Premium</div></div>
+      <div class="pif-body">
+        <div class="pif-cat">Café en Grano · 500g</div>
+        <div class="pif-name">Selección Masini</div>
+        <div class="pif-desc">Certificado Espresso Italiano. La mezcla de referencia para baristas y cafeterías de excelencia.</div>
+        <div class="pif-footer">
+          <div class="pif-intensity"><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div></div>
+          <div class="pif-type" style="color:var(--caramel);font-weight:700">Gs. 115.000</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-item-full" data-cat="grano">
+      <div class="pif-img bg-honduras"><span>🌾</span></div>
+      <div class="pif-body">
+        <div class="pif-cat">Café en Grano · Origen único</div>
+        <div class="pif-name">Honduras San Andrés</div>
+        <div class="pif-desc">De las tierras altas centroamericanas. Caramelizado, cuerpo medio y notas de frutos secos.</div>
+        <div class="pif-footer">
+          <div class="pif-intensity"><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i"></div><div class="dot-i"></div></div>
+          <div class="pif-type" style="color:var(--caramel);font-weight:700">Gs. 95.000</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-item-full" data-cat="grano">
+      <div class="pif-img bg-colombia"><span>🌾</span></div>
+      <div class="pif-body">
+        <div class="pif-cat">Café en Grano · Origen único</div>
+        <div class="pif-name">Colombia Supremo</div>
+        <div class="pif-desc">100% Arábica colombiano de altura. Acidez brillante, cuerpo medio y retrogusto afrutado.</div>
+        <div class="pif-footer">
+          <div class="pif-intensity"><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i"></div><div class="dot-i"></div><div class="dot-i"></div></div>
+          <div class="pif-type" style="color:var(--caramel);font-weight:700">Gs. 95.000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAFÉ MOLIDO -->
+    <div class="product-item-full" data-cat="molido">
+      <div class="pif-img bg-molido"><span>☕</span></div>
+      <div class="pif-body">
+        <div class="pif-cat">Café Molido · 250g</div>
+        <div class="pif-name">Espresso Casa</div>
+        <div class="pif-desc">Molido fino para cafetera espresso. Cuerpo intenso y crema densa garantizada en cada taza.</div>
+        <div class="pif-footer">
+          <div class="pif-intensity"><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i"></div></div>
+          <div class="pif-type" style="color:var(--caramel);font-weight:700">Gs. 36.000</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-item-full" data-cat="molido">
+      <div class="pif-img bg-barocco"><span>☕</span></div>
+      <div class="pif-body">
+        <div class="pif-cat">Café Molido · 250g</div>
+        <div class="pif-name">Rosso Moka</div>
+        <div class="pif-desc">Molido medio ideal para cafetera italiana moka. Sabor redondo, dulce y sin amargor.</div>
+        <div class="pif-footer">
+          <div class="pif-intensity"><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i on"></div><div class="dot-i"></div><div class="dot-i"></div></div>
+          <div class="pif-type" style="color:var(--caramel);font-weight:700">Gs. 36.000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAFETERAS -->
+    <div class="product-item-full" data-cat="cafeteras">
+      <div class="pif-img bg-galileo"><span>⚙️</span><div class="pif-badge" style="background:#2a6b3a">Nuevo</div></div>
+      <div class="pif-body">
+        <div class="pif-cat">Cafetera de Grano</div>
+        <div class="pif-name">Galileo — Nueva generación</div>
+        <div class="pif-desc">Molienda integrada, temperatura controlada al grado. La nueva forma de disfrutar el café en grano.</div>
+        <div class="pif-footer">
+          <div class="pif-type">Automática · Grano</div>
+          <div class="pif-type" style="color:var(--caramel);font-weight:700">Gs. 1.490.000</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-item-full" data-cat="cafeteras">
+      <div class="pif-img bg-s20"><span>⚙️</span></div>
+      <div class="pif-body">
+        <div class="pif-cat">Cafetera de Cápsulas</div>
+        <div class="pif-name">S.20 Sistema Expreso</div>
+        <div class="pif-desc">19 bares de presión, calentamiento en 30 segundos. Disponible en rojo, negro, blanco y gris.</div>
+        <div class="pif-footer">
+          <div class="pif-type">Cápsulas · 19 bar</div>
+          <div class="pif-type" style="color:var(--caramel);font-weight:700">Gs. 635.000</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-item-full" data-cat="cafeteras">
+      <div class="pif-img bg-s12"><span>⚙️</span></div>
+      <div class="pif-body">
+        <div class="pif-cat">Cafetera de Cápsulas</div>
+        <div class="pif-name">S.12 Compacta · Giugiaro</div>
+        <div class="pif-desc">Diseño icónico del estudio Giugiaro. Compacta, potente, perfecta para el hogar.</div>
+        <div class="pif-footer">
+          <div class="pif-type">Compacta · Hogar</div>
+          <div class="pif-type" style="color:var(--caramel);font-weight:700">Gs. 470.000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOLINOS -->
+    <div class="product-item-full" data-cat="molinos">
+      <div class="pif-img bg-cafetera"><span>⚙️</span><div class="pif-badge">Pro</div></div>
+      <div class="pif-body">
+        <div class="pif-cat">Molino</div>
+        <div class="pif-name">Macinino Doserless Pro</div>
+        <div class="pif-desc">Muelas cónicas en acero inoxidable. 40 niveles de molienda, desde turco fino hasta prensa francesa.</div>
+        <div class="pif-footer">
+          <div class="pif-type">40 niveles · Acero</div>
+          <div class="pif-type" style="color:var(--caramel);font-weight:700">Gs. 380.000</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-item-full" data-cat="molinos">
+      <div class="pif-img bg-s12"><span>⚙️</span></div>
+      <div class="pif-body">
+        <div class="pif-cat">Molino</div>
+        <div class="pif-name">Macinino Hogar</div>
+        <div class="pif-desc">Motor silencioso y muelas de cerámica. Dosificador integrado para mayor comodidad diaria.</div>
+        <div class="pif-footer">
+          <div class="pif-type">Cerámica · Silencioso</div>
+          <div class="pif-type" style="color:var(--caramel);font-weight:700">Gs. 220.000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INFUSIONES -->
+    <div class="product-item-full" data-cat="infusiones">
+      <div class="pif-img bg-grano"><span>🫖</span></div>
+      <div class="pif-body">
+        <div class="pif-cat">Infusiones · 50 cápsulas</div>
+        <div class="pif-name">Ginseng</div>
+        <div class="pif-desc">Bebida energizante a base de ginseng. Dulce y reconfortante, perfecta como alternativa al café.</div>
+        <div class="pif-footer">
+          <div class="pif-type">Sin cafeína</div>
+          <div class="pif-type" style="color:var(--caramel);font-weight:700">Gs. 88.000</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-item-full" data-cat="infusiones">
+      <div class="pif-img bg-deca"><span>🫖</span></div>
+      <div class="pif-body">
+        <div class="pif-cat">Infusiones · 50 cápsulas</div>
+        <div class="pif-name">Té de Limón</div>
+        <div class="pif-desc">Té negro con limón en cápsula. Refrescante, aromático y de preparación instantánea.</div>
+        <div class="pif-footer">
+          <div class="pif-type">Sin cafeína</div>
+          <div class="pif-type" style="color:var(--caramel);font-weight:700">Gs. 88.000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KITS -->
+    <div class="product-item-full" data-cat="kits">
+      <div class="pif-img bg-kit"><span>🎁</span><div class="pif-badge" style="background:#c0392b">Oferta</div></div>
+      <div class="pif-body">
+        <div class="pif-cat">Kit · Degustación</div>
+        <div class="pif-name">Kit Degustación 18 cápsulas</div>
+        <div class="pif-desc">Probá todas las variedades de Essse Caffé. Incluye Maestoso, Arabesco, Infinito, Barocco y más.</div>
+        <div class="pif-footer">
+          <div class="pif-type">18 cápsulas mixtas</div>
+          <div class="pif-type" style="color:var(--caramel);font-weight:700">Gs. 65.000</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-item-full" data-cat="kits">
+      <div class="pif-img bg-s12"><span>🎁</span></div>
+      <div class="pif-body">
+        <div class="pif-cat">Kit · Iniciación</div>
+        <div class="pif-name">Kit Iniciación S.12 + 36 Cápsulas + Tazas</div>
+        <div class="pif-desc">Todo lo que necesitás para empezar. Cafetera S.12, caja degustación de 36 cápsulas y 2 tazas.</div>
+        <div class="pif-footer">
+          <div class="pif-type">Cafetera + café + tazas</div>
+          <div class="pif-type" style="color:var(--caramel);font-weight:700">Gs. 590.000</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- end productos -->
+
+<!-- ═══════════ NOSOTROS ═══════════ -->
+<div class="page" id="page-nosotros">
+  <div class="nos-hero">
+    <div class="nos-hero-inner">
+      <div>
+        <div class="section-eyebrow" style="color:#e8cfa0">Quiénes somos</div>
+        <h1>Una filosofía<br><em>destilada</em><br>en cada taza</h1>
+        <p>En 1979, la familia Segafredo fundó en Bolonia la marca Essse Caffé. Las tres S de su nombre representan Scienza, Sapienza y Specializzazione — los tres pilares que guían cada decisión, desde la selección del grano hasta la taza final.</p>
+        <a class="btn-hero btn-primary-hero" onclick="showPage('historia')" style="display:inline-block">Ver nuestra historia</a>
+      </div>
+      <div class="nos-visual-wrap">
+        <div class="nos-circle">☕<div class="nos-year">1979</div></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="values-section">
+    <div class="section-wrap" style="padding-top:60px;padding-bottom:0">
+      <div class="section-eyebrow">Nuestros pilares</div>
+      <h2 class="section-title">Los tres valores que nos <em>definen</em></h2>
+    </div>
+    <div style="max-width:1280px;margin:32px auto 0;padding:0 32px 70px">
+      <div class="values-grid">
+        <div class="val-card">
+          <div class="val-letter">S</div>
+          <div class="val-title">Scienza — Ciencia</div>
+          <div class="val-text">Aplicamos rigor científico en cada etapa del proceso. Desde el análisis del grano hasta los parámetros de extracción, cada variable es medida y optimizada para garantizar consistencia absoluta.</div>
+        </div>
+        <div class="val-card">
+          <div class="val-letter">S</div>
+          <div class="val-title">Sapienza — Sabiduría</div>
+          <div class="val-text">Más de 45 años de experiencia acumulada en el arte del tostado y el blending. El conocimiento de generaciones de maestros tostadores italianos guía cada mezcla que producimos.</div>
+        </div>
+        <div class="val-card">
+          <div class="val-letter">S</div>
+          <div class="val-title">Specializzazione — Especialización</div>
+          <div class="val-text">Nos dedicamos exclusivamente al café. Esa especialización nos permite llevar cada aspecto al máximo nivel posible, sin compromisos ni distracciones hacia otros rubros.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="brand-section" style="padding:60px 0">
+    <div style="max-width:1280px;margin:0 auto;padding:0 32px;text-align:center">
+      <div class="section-eyebrow" style="justify-content:center;display:flex">Nuestra presencia</div>
+      <h2 class="section-title" style="color:#fff;margin-bottom:40px">Una marca con <em>presencia global</em></h2>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:40px">
+        <div style="background:rgba(255,255,255,.06);padding:36px 20px;text-align:center;border:1px solid rgba(255,255,255,.08)">
+          <div style="font-family:'Playfair Display',serif;font-size:2.8rem;color:var(--gold);line-height:1">45+</div>
+          <div style="font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:6px">Años de historia</div>
+        </div>
+        <div style="background:rgba(255,255,255,.06);padding:36px 20px;text-align:center;border:1px solid rgba(255,255,255,.08)">
+          <div style="font-family:'Playfair Display',serif;font-size:2.8rem;color:var(--gold);line-height:1">12+</div>
+          <div style="font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:6px">Mezclas únicas</div>
+        </div>
+        <div style="background:rgba(255,255,255,.06);padding:36px 20px;text-align:center;border:1px solid rgba(255,255,255,.08)">
+          <div style="font-family:'Playfair Display',serif;font-size:2.8rem;color:var(--gold);line-height:1">15+</div>
+          <div style="font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:6px">Países</div>
+        </div>
+        <div style="background:rgba(255,255,255,.06);padding:36px 20px;text-align:center;border:1px solid rgba(255,255,255,.08)">
+          <div style="font-family:'Playfair Display',serif;font-size:2.8rem;color:var(--gold);line-height:1">3</div>
+          <div style="font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:6px">Valores fundacionales</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div><!-- end nosotros -->
+
+<!-- ═══════════ HISTORIA ═══════════ -->
+<div class="page" id="page-historia">
+  <div class="historia-intro">
+    <div class="section-eyebrow" style="justify-content:center;display:flex">Nuestra historia</div>
+    <h1>Cuatro décadas de <em>excelencia</em></h1>
+    <p>Desde los talleres de Bolonia hasta las mesas del mundo entero. La historia de Essse Caffé es la de una familia que creyó que el café podía ser arte.</p>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-content"><div class="tl-year">1979</div><div class="tl-title">Fundación en Bolonia</div><div class="tl-text">La familia Segafredo funda Essse Caffé en Bolonia, eligiendo las tres S como símbolo de sus valores: Scienza, Sapienza y Specializzazione. El primer tostador comienza con granos de Brasil y Colombia.</div></div>
+      <div class="tl-dot-col"><div class="tl-dot-inner"></div></div>
+      <div class="tl-empty"></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-empty"></div>
+      <div class="tl-dot-col"><div class="tl-dot-inner"></div></div>
+      <div class="tl-content"><div class="tl-year">1985</div><div class="tl-title">Nace el Maestoso</div><div class="tl-text">Se lanza la primera mezcla icónica: el Maestoso. Cuerpo intenso, notas achocolatadas y crema persistente que definen hasta hoy el estilo inconfundible de la marca.</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-content"><div class="tl-year">1993</div><div class="tl-title">Expansión europea</div><div class="tl-text">Las mezclas cruzan las fronteras italianas. Los primeros distribuidores en Francia, Alemania y España llevan el café boloñés a nuevos mercados exigentes.</div></div>
+      <div class="tl-dot-col"><div class="tl-dot-inner"></div></div>
+      <div class="tl-empty"></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-empty"></div>
+      <div class="tl-dot-col"><div class="tl-dot-inner"></div></div>
+      <div class="tl-content"><div class="tl-year">2004</div><div class="tl-title">Sistema de cápsulas</div><div class="tl-text">Essse Caffé lanza su sistema propio de cápsulas. Los consumidores domésticos pueden disfrutar de la misma calidad profesional con la comodidad de una máquina compacta.</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-content"><div class="tl-year">2012</div><div class="tl-title">Diseño Giugiaro</div><div class="tl-text">La cafetera S.12, diseñada por el legendario estudio Giugiaro —responsable del diseño de la Ferrari Testarossa— combina ingeniería de precisión con una estética atemporal.</div></div>
+      <div class="tl-dot-col"><div class="tl-dot-inner"></div></div>
+      <div class="tl-empty"></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-empty"></div>
+      <div class="tl-dot-col"><div class="tl-dot-inner"></div></div>
+      <div class="tl-content"><div class="tl-year">2019</div><div class="tl-title">Nuevos mercados</div><div class="tl-text">La marca continúa su expansión global, llegando a nuevas regiones de América Latina y abriendo un nuevo capítulo en la historia de Essse Caffé fuera de Europa.</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-content"><div class="tl-year">2024</div><div class="tl-title">Galileo — Nueva generación</div><div class="tl-text">Se lanza la cafetera Galileo, la más avanzada de la línea. Molienda integrada, control de temperatura al grado y conectividad smart. El futuro del espresso italiano en casa.</div></div>
+      <div class="tl-dot-col"><div class="tl-dot-inner" style="background:var(--espresso)"></div></div>
+      <div class="tl-empty"></div>
+    </div>
+  </div>
+</div><!-- end historia -->
+
+<!-- ═══════════ BLOG ═══════════ -->
+<div class="page" id="page-blog">
+  <div class="page-banner">
+    <div class="page-banner-inner">
+      <div class="section-eyebrow" style="color:#e8cfa0">Notas y artículos</div>
+      <h1>El <em>Blog</em> de Essse Caffé</h1>
+      <p>Cultura del café, orígenes, recetas, guías de preparación y novedades desde el mundo del espresso italiano.</p>
+    </div>
+  </div>
+
+  <div class="blog-featured-wrap">
+    <div class="blog-featured">
+      <div class="bf-img"><div class="bf-img-inner bg-maestoso">El espresso perfecto</div></div>
+      <div>
+        <div class="bf-badge">Artículo destacado</div>
+        <div class="bf-title">El arte del espresso perfecto: la guía definitiva para aficionados</div>
+        <div class="bf-meta">12 Enero 2025 · Cultura del café · 8 min lectura</div>
+        <div class="bf-excerpt">Desde la temperatura ideal del agua hasta el tiempo de extracción, pasando por el grosor de la molienda y la presión del tamper. Cada variable importa. Cada detalle construye la taza perfecta.</div>
+        <button class="btn-banner">Leer artículo completo</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="blog-page-grid">
+    <div class="bp-card">
+      <div class="bp-img"><div class="bp-img-inner bg-honduras">Honduras</div></div>
+      <div class="bp-body"><div class="bp-cat">Orígenes</div><div class="bp-title">Honduras San Andrés: el café que conquistó a los italianos</div><div class="bp-excerpt">Un viaje a las plantaciones de altura donde nace una de nuestras mezclas más especiales.</div><div class="bp-meta">3 Feb 2025 · 7 min</div></div>
+    </div>
+    <div class="bp-card">
+      <div class="bp-img"><div class="bp-img-inner bg-s20">Cafeteras</div></div>
+      <div class="bp-body"><div class="bp-cat">Equipamiento</div><div class="bp-title">Cómo elegir tu cafetera Essse Caffé según tu estilo de vida</div><div class="bp-excerpt">Comparativa completa de todos los modelos para encontrar el ideal para vos.</div><div class="bp-meta">10 Mar 2025 · 6 min</div></div>
+    </div>
+    <div class="bp-card">
+      <div class="bp-img"><div class="bp-img-inner bg-grano">Tostado</div></div>
+      <div class="bp-body"><div class="bp-cat">Proceso</div><div class="bp-title">El tostado del café: la ciencia detrás del aroma</div><div class="bp-excerpt">Qué sucede químicamente durante el tostado y por qué la temperatura cambia completamente el perfil.</div><div class="bp-meta">22 Mar 2025 · 5 min</div></div>
+    </div>
+    <div class="bp-card">
+      <div class="bp-img"><div class="bp-img-inner bg-colombia">Colombia</div></div>
+      <div class="bp-body"><div class="bp-cat">Orígenes</div><div class="bp-title">Colombia Supremo: viaje al corazón del mejor arábica</div><div class="bp-excerpt">La historia del café colombiano y por qué el Supremo es uno de los granos más codiciados.</div><div class="bp-meta">5 Abr 2025 · 6 min</div></div>
+    </div>
+    <div class="bp-card">
+      <div class="bp-img"><div class="bp-img-inner bg-molido">Moka</div></div>
+      <div class="bp-body"><div class="bp-cat">Preparación</div><div class="bp-title">Cómo preparar el mejor café en cafetera moka italiana</div><div class="bp-excerpt">Paso a paso para dominar la cafetera moka y extraer todo el potencial del Rosso Moka.</div><div class="bp-meta">18 Abr 2025 · 4 min</div></div>
+    </div>
+    <div class="bp-card">
+      <div class="bp-img"><div class="bp-img-inner bg-kit">Maridaje</div></div>
+      <div class="bp-body"><div class="bp-cat">Gastronomía</div><div class="bp-title">Café y gastronomía: cómo maridar tu espresso con la cocina italiana</div><div class="bp-excerpt">La guía definitiva para combinar cada mezcla con los mejores sabores de Italia.</div><div class="bp-meta">2 May 2025 · 4 min</div></div>
+    </div>
+  </div>
+</div><!-- end blog -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <span class="ft-logo">Essse <em>Caffé</em></span>
+        <p class="ft-tagline">Il gusto italiano auténtico desde Bolonia al mundo. Ciencia, sabiduría y especialización en cada taza desde 1979.</p>
+        <div class="footer-socials">
+          <div class="social-btn">fb</div>
+          <div class="social-btn">ig</div>
+          <div class="social-btn">yt</div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Navegación</div>
+        <a onclick="showPage('home')">Inicio</a>
+        <a onclick="showPage('nosotros')">Nosotros</a>
+        <a onclick="showPage('productos')">Productos</a>
+        <a onclick="showPage('historia')">Historia</a>
+        <a onclick="showPage('blog')">Blog</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Productos</div>
+        <a onclick="filterProducts('capsulas');showPage('productos')">Cápsulas</a>
+        <a onclick="filterProducts('grano');showPage('productos')">Café en Grano</a>
+        <a onclick="filterProducts('molido');showPage('productos')">Café Molido</a>
+        <a onclick="filterProducts('cafeteras');showPage('productos')">Cafeteras</a>
+        <a onclick="filterProducts('molinos');showPage('productos')">Molinos</a>
+        <a onclick="filterProducts('infusiones');showPage('productos')">Infusiones</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Contacto</div>
+        <a>📞 0981 000 000</a>
+        <a>✉ info@essecaffe.com.py</a>
+        <a>📍 Asunción, Paraguay</a>
+        <a>🕐 Lun–Vie 09:00–18:00</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 Essse Caffé — Todos los derechos reservados · Bolonia, Italia · Desde 1979</p>
+      <p class="footer-copy">Desarrollado por <strong style="color:#e8cfa0">CodeByWill</strong></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── PAGE NAVIGATION ──
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── PRODUCT FILTERS ──
+function filterProducts(cat, btn) {
+  if (btn) {
+    document.querySelectorAll('.fb-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  document.querySelectorAll('.product-item-full').forEach(item => {
+    if (cat === 'all' || item.dataset.cat === cat) {
+      item.classList.remove('hidden');
+    } else {
+      item.classList.add('hidden');
+    }
+  });
+}
+
+// ── SLIDER ──
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.dot');
+
+function goSlide(n) {
+  slides[currentSlide].classList.remove('active');
+  dots[currentSlide].classList.remove('active');
+  currentSlide = (n + slides.length) % slides.length;
+  slides[currentSlide].classList.add('active');
+  dots[currentSlide].classList.add('active');
+}
+
+function changeSlide(dir) { goSlide(currentSlide + dir); }
+
+// Auto-advance slider
+setInterval(() => changeSlide(1), 5000);
+</script>
+</body>
+</html>

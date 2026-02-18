@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NEXUS — Club Nocturno</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --neon-pink: #ff0080;
+      --neon-cyan: #00f5ff;
+      --neon-yellow: #f5ff00;
+      --dark: #050509;
+      --mid: #0a0a14;
+      --glass: rgba(255,255,255,0.04);
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Space Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--dark);
+      color: #e0e0e0;
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* CURSOR */
+    .cursor {
+      width: 12px; height: 12px;
+      background: var(--neon-pink);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.1s, width 0.2s, height 0.2s;
+      mix-blend-mode: screen;
+    }
+    .cursor-trail {
+      width: 32px; height: 32px;
+      border: 1px solid var(--neon-cyan);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transition: left 0.12s ease-out, top 0.12s ease-out;
+      mix-blend-mode: screen;
+    }
+
+    /* NOISE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 4rem;
+      background: linear-gradient(to bottom, rgba(5,5,9,0.95), transparent);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      letter-spacing: 0.15em;
+      color: #fff;
+      text-shadow: 0 0 20px var(--neon-pink), 0 0 60px var(--neon-pink);
+    }
+    .nav-links {
+      display: flex; gap: 2.5rem; list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0; right: 0;
+      height: 1px;
+      background: var(--neon-cyan);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+    .nav-links a:hover { color: var(--neon-cyan); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    /* HERO */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 100%, rgba(255,0,128,0.15) 0%, transparent 70%),
+        radial-gradient(ellipse 80% 40% at 20% 50%, rgba(0,245,255,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 80% 30%, rgba(245,255,0,0.05) 0%, transparent 60%),
+        var(--dark);
+    }
+
+    /* Grid lines */
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,0,128,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,0,128,0.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+      perspective: 800px;
+      transform: rotateX(60deg) translateY(40%);
+      transform-origin: bottom center;
+      animation: gridMove 8s linear infinite;
+    }
+    @keyframes gridMove {
+      from { background-position: 0 0; }
+      to { background-position: 0 -60px; }
+    }
+
+    /* Spotlight beams */
+    .beam {
+      position: absolute; bottom: 0;
+      width: 2px;
+      height: 70%;
+      transform-origin: bottom center;
+      opacity: 0.6;
+    }
+    .beam::after {
+      content: '';
+      position: absolute; bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(to top, transparent, currentColor);
+    }
+    .beam-1 { left: 20%; color: var(--neon-pink); animation: beam1 4s ease-in-out infinite; }
+    .beam-2 { left: 40%; color: var(--neon-cyan); animation: beam2 5s ease-in-out infinite; }
+    .beam-3 { left: 60%; color: var(--neon-yellow); animation: beam1 3.5s ease-in-out infinite reverse; }
+    .beam-4 { left: 80%; color: var(--neon-pink); animation: beam2 4.5s ease-in-out infinite reverse; }
+    @keyframes beam1 { 0%,100% { transform: rotate(-15deg); } 50% { transform: rotate(15deg); } }
+    @keyframes beam2 { 0%,100% { transform: rotate(10deg); } 50% { transform: rotate(-20deg); } }
+
+    /* Floating particles */
+    .particles { position: absolute; inset: 0; overflow: hidden; }
+    .particle {
+      position: absolute;
+      width: 2px; height: 2px;
+      background: var(--neon-cyan);
+      border-radius: 50%;
+      animation: float linear infinite;
+    }
+    @keyframes float {
+      from { transform: translateY(100vh) translateX(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      to { transform: translateY(-10vh) translateX(var(--drift)); opacity: 0; }
+    }
+
+    .hero-eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--neon-cyan);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 1s 0.3s forwards;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(6rem, 18vw, 18rem);
+      line-height: 0.85;
+      color: #fff;
+      text-shadow:
+        0 0 40px var(--neon-pink),
+        0 0 100px rgba(255,0,128,0.4),
+        0 0 200px rgba(255,0,128,0.2);
+      opacity: 0;
+      animation: fadeUp 1s 0.5s forwards;
+      position: relative; z-index: 2;
+    }
+    .hero-title span {
+      color: var(--neon-pink);
+      -webkit-text-stroke: 2px var(--neon-pink);
+      color: transparent;
+      text-shadow:
+        0 0 20px var(--neon-pink),
+        0 0 60px var(--neon-pink);
+    }
+    .hero-sub {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-top: 2rem;
+      opacity: 0;
+      animation: fadeUp 1s 0.8s forwards;
+    }
+    .hero-cta {
+      margin-top: 3rem;
+      display: flex; gap: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 1s 1s forwards;
+    }
+    .btn-primary {
+      padding: 1rem 2.5rem;
+      background: var(--neon-pink);
+      color: #000;
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border: none;
+      cursor: none;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 0 40px var(--neon-pink), 0 0 80px rgba(255,0,128,0.4);
+    }
+    .btn-secondary {
+      padding: 1rem 2.5rem;
+      background: transparent;
+      color: var(--neon-cyan);
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border: 1px solid var(--neon-cyan);
+      cursor: none;
+      transition: background 0.3s, box-shadow 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-secondary:hover {
+      background: rgba(0,245,255,0.1);
+      box-shadow: 0 0 30px rgba(0,245,255,0.3);
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Scroll indicator */
+    .scroll-indicator {
+      position: absolute; bottom: 2rem; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      opacity: 0; animation: fadeUp 1s 1.5s forwards;
+    }
+    .scroll-indicator span { font-size: 0.6rem; letter-spacing: 0.3em; color: rgba(255,255,255,0.3); }
+    .scroll-line {
+      width: 1px; height: 50px;
+      background: linear-gradient(to bottom, var(--neon-cyan), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+    /* SECTIONS COMMON */
+    section { padding: 8rem 4rem; position: relative; }
+
+    .section-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--neon-pink);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 8vw, 7rem);
+      line-height: 0.9;
+      color: #fff;
+    }
+
+    /* EVENTS */
+    .events { background: var(--mid); }
+    .events-header { max-width: 1200px; margin: 0 auto 4rem; }
+    .events-grid {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px;
+    }
+    .event-card {
+      background: var(--glass);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      cursor: none;
+      transition: transform 0.4s, border-color 0.4s;
+    }
+    .event-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 1px;
+      background: var(--neon-pink);
+      transform: scaleX(0);
+      transition: transform 0.4s;
+    }
+    .event-card:hover { transform: translateY(-4px); border-color: rgba(255,0,128,0.3); }
+    .event-card:hover::before { transform: scaleX(1); }
+    .event-date {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      color: var(--neon-pink);
+      line-height: 1;
+    }
+    .event-month {
+      font-size: 0.6rem; letter-spacing: 0.3em; color: rgba(255,255,255,0.4); text-transform: uppercase;
+    }
+    .event-name {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: #fff;
+      margin: 1.5rem 0 0.5rem;
+    }
+    .event-genre {
+      font-size: 0.6rem; letter-spacing: 0.3em;
+      color: var(--neon-cyan); text-transform: uppercase;
+    }
+    .event-time {
+      font-size: 0.65rem; color: rgba(255,255,255,0.4);
+      margin-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 1rem;
+    }
+    .event-tag {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: rgba(245,255,0,0.1);
+      border: 1px solid rgba(245,255,0,0.3);
+      color: var(--neon-yellow);
+      font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
+      margin-top: 1rem;
+    }
+
+    /* DJs */
+    .djs { background: var(--dark); }
+    .djs-header { max-width: 1200px; margin: 0 auto 4rem; }
+    .djs-row {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; gap: 2rem; overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .djs-row::-webkit-scrollbar { display: none; }
+    .dj-card {
+      flex: 0 0 260px;
+      position: relative; cursor: none;
+    }
+    .dj-img {
+      width: 100%; aspect-ratio: 3/4;
+      background: var(--mid);
+      position: relative; overflow: hidden;
+    }
+    .dj-img-inner {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .dj-avatar {
+      font-family: var(--font-display);
+      font-size: 5rem;
+      color: rgba(255,255,255,0.05);
+    }
+    .dj-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(255,0,128,0.4), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+      display: flex; align-items: flex-end; padding: 1.5rem;
+    }
+    .dj-card:hover .dj-overlay { opacity: 1; }
+    .dj-play {
+      width: 44px; height: 44px;
+      border: 1px solid #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 1rem;
+    }
+    /* Colorful gradient overlays per card */
+    .dj-card:nth-child(1) .dj-img { background: linear-gradient(135deg, #1a0020, #050509); }
+    .dj-card:nth-child(2) .dj-img { background: linear-gradient(135deg, #001a1a, #050509); }
+    .dj-card:nth-child(3) .dj-img { background: linear-gradient(135deg, #1a1a00, #050509); }
+    .dj-card:nth-child(4) .dj-img { background: linear-gradient(135deg, #00001a, #050509); }
+    .dj-card:nth-child(5) .dj-img { background: linear-gradient(135deg, #1a0010, #050509); }
+    .dj-name {
+      font-family: var(--font-display);
+      font-size: 1.6rem; color: #fff; margin-top: 1rem;
+    }
+    .dj-style { font-size: 0.6rem; letter-spacing: 0.3em; color: rgba(255,255,255,0.4); text-transform: uppercase; }
+
+    /* GALLERY */
+    .gallery { background: var(--mid); padding: 8rem 0; }
+    .gallery-header { padding: 0 4rem; max-width: 1200px; margin: 0 auto 3rem; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: repeat(2, 250px);
+      gap: 3px;
+      padding: 0 4px;
+    }
+    .gallery-item {
+      position: relative; overflow: hidden; cursor: none;
+    }
+    .gallery-item:first-child { grid-row: span 2; }
+    .gallery-inner {
+      width: 100%; height: 100%;
+      transition: transform 0.6s ease;
+    }
+    .gallery-item:hover .gallery-inner { transform: scale(1.04); }
+    .gallery-item:nth-child(1) .gallery-inner { background: linear-gradient(135deg, #1a0030 0%, #200010 40%, #050509 100%); }
+    .gallery-item:nth-child(2) .gallery-inner { background: linear-gradient(135deg, #001530 0%, #050509 100%); }
+    .gallery-item:nth-child(3) .gallery-inner { background: linear-gradient(45deg, #200020 0%, #050509 100%); }
+    .gallery-item:nth-child(4) .gallery-inner { background: linear-gradient(135deg, #001a10 0%, #050509 100%); }
+    .gallery-item:nth-child(5) .gallery-inner { background: linear-gradient(225deg, #1a1500 0%, #050509 100%); }
+    .gallery-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 2rem 1.5rem 1.5rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+      font-size: 0.6rem; letter-spacing: 0.3em; color: rgba(255,255,255,0.6); text-transform: uppercase;
+    }
+    /* Visual content for gallery */
+    .gallery-visual {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .gallery-visual span {
+      font-family: var(--font-display);
+      font-size: 6rem;
+      opacity: 0.08; color: #fff;
+      user-select: none;
+    }
+
+    /* BOOKING */
+    .booking {
+      background: var(--dark);
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0; padding: 0; min-height: 80vh;
+    }
+    .booking-left {
+      padding: 8rem 4rem;
+      background: linear-gradient(135deg, rgba(255,0,128,0.08), var(--dark));
+      border-right: 1px solid rgba(255,255,255,0.04);
+    }
+    .booking-right { padding: 8rem 4rem; }
+    .booking-form { margin-top: 3rem; display: flex; flex-direction: column; gap: 1.5rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-label { font-size: 0.6rem; letter-spacing: 0.3em; color: rgba(255,255,255,0.4); text-transform: uppercase; }
+    .form-input, .form-select {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #fff;
+      padding: 0.9rem 1rem;
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      outline: none;
+      transition: border-color 0.3s;
+      appearance: none;
+      cursor: none;
+    }
+    .form-input:focus, .form-select:focus { border-color: var(--neon-pink); }
+    .form-input::placeholder { color: rgba(255,255,255,0.2); }
+
+    /* INFO BOXES */
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+    .info-box {
+      padding: 2rem;
+      border: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+    }
+    .info-box::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 3px; height: 40px;
+      background: var(--neon-pink);
+    }
+    .info-box-title { font-size: 0.6rem; letter-spacing: 0.3em; color: var(--neon-cyan); text-transform: uppercase; margin-bottom: 0.75rem; }
+    .info-box-value { font-family: var(--font-display); font-size: 1.5rem; color: #fff; }
+    .info-box-sub { font-size: 0.6rem; color: rgba(255,255,255,0.3); margin-top: 0.25rem; }
+
+    /* TICKER */
+    .ticker {
+      background: var(--neon-pink);
+      overflow: hidden; white-space: nowrap;
+      padding: 0.9rem 0;
+    }
+    .ticker-inner {
+      display: inline-block;
+      animation: ticker 20s linear infinite;
+    }
+    .ticker-inner span {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #000;
+      padding: 0 3rem;
+    }
+    .ticker-inner span::after { content: '★'; padding-left: 3rem; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid rgba(255,255,255,0.04);
+      padding: 5rem 4rem 3rem;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 4rem; max-width: 1200px; margin: 0 auto 4rem;
+    }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 4rem;
+      color: #fff;
+      text-shadow: 0 0 30px var(--neon-pink);
+      margin-bottom: 1rem;
+    }
+    .footer-desc { font-size: 0.65rem; color: rgba(255,255,255,0.3); line-height: 1.8; max-width: 280px; }
+    .footer-col-title { font-size: 0.6rem; letter-spacing: 0.3em; color: var(--neon-cyan); text-transform: uppercase; margin-bottom: 1.5rem; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+    .footer-links a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 0.65rem; transition: color 0.3s; }
+    .footer-links a:hover { color: #fff; }
+    .footer-bottom {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      padding-top: 2rem;
+    }
+    .footer-copy { font-size: 0.55rem; color: rgba(255,255,255,0.2); letter-spacing: 0.2em; }
+    .socials { display: flex; gap: 1.5rem; }
+    .social-link {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none; font-size: 0.7rem;
+      transition: border-color 0.3s, color 0.3s;
+      cursor: none;
+    }
+    .social-link:hover { border-color: var(--neon-pink); color: var(--neon-pink); }
+
+    /* EQUALIZER ANIMATION */
+    .eq { display: flex; gap: 3px; align-items: flex-end; height: 40px; margin-top: 2rem; }
+    .eq-bar {
+      width: 4px;
+      background: var(--neon-pink);
+      animation: eq linear infinite;
+      border-radius: 2px;
+    }
+    .eq-bar:nth-child(1) { animation-duration: 0.7s; height: 20px; }
+    .eq-bar:nth-child(2) { animation-duration: 0.4s; height: 35px; background: var(--neon-cyan); }
+    .eq-bar:nth-child(3) { animation-duration: 0.6s; height: 25px; }
+    .eq-bar:nth-child(4) { animation-duration: 0.5s; height: 38px; background: var(--neon-yellow); }
+    .eq-bar:nth-child(5) { animation-duration: 0.8s; height: 15px; }
+    .eq-bar:nth-child(6) { animation-duration: 0.45s; height: 30px; background: var(--neon-cyan); }
+    .eq-bar:nth-child(7) { animation-duration: 0.65s; height: 22px; }
+    @keyframes eq {
+      0%,100% { transform: scaleY(0.3); }
+      50% { transform: scaleY(1); }
+    }
+
+    /* GLITCH effect on title hover */
+    .hero-title:hover {
+      animation: glitch 0.3s steps(1) forwards;
+    }
+    @keyframes glitch {
+      0% { text-shadow: 0 0 40px var(--neon-pink), 2px 0 var(--neon-cyan), -2px 0 var(--neon-yellow); }
+      25% { text-shadow: 0 0 40px var(--neon-pink), -3px 0 var(--neon-cyan), 3px 0 var(--neon-yellow); }
+      50% { text-shadow: 0 0 40px var(--neon-pink), 3px 2px var(--neon-cyan), -3px -2px var(--neon-yellow); }
+      75% { text-shadow: 0 0 40px var(--neon-pink), -2px 1px var(--neon-cyan), 2px -1px var(--neon-yellow); }
+      100% { text-shadow: 0 0 40px var(--neon-pink), 0 0 60px rgba(255,0,128,0.4); }
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      nav { padding: 1.5rem 2rem; }
+      .nav-links { display: none; }
+      section { padding: 6rem 2rem; }
+      .events-grid { grid-template-columns: 1fr; }
+      .booking { grid-template-columns: 1fr; }
+      .booking-left, .booking-right { padding: 4rem 2rem; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3,200px); }
+      .gallery-item:first-child { grid-row: span 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-trail" id="cursorTrail"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">NEXUS</div>
+    <ul class="nav-links">
+      <li><a href="#events">Eventos</a></li>
+      <li><a href="#djs">DJs</a></li>
+      <li><a href="#galeria">Galería</a></li>
+      <li><a href="#booking">Reservas</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="particles" id="particles"></div>
+    <div class="beam beam-1"></div>
+    <div class="beam beam-2"></div>
+    <div class="beam beam-3"></div>
+    <div class="beam beam-4"></div>
+
+    <p class="hero-eyebrow">Est. 2018 — Barcelona, España</p>
+    <h1 class="hero-title">NEX<span>US</span></h1>
+    <p class="hero-sub">Donde el sonido se convierte en experiencia</p>
+    <div class="hero-cta">
+      <a href="#events" class="btn-primary">Ver Eventos</a>
+      <a href="#booking" class="btn-secondary">Reservar Mesa</a>
+    </div>
+
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-inner">
+      <span>Viernes & Sábado</span>
+      <span>23:00 — 06:00h</span>
+      <span>Techno · House · Bass</span>
+      <span>Aforo Limitado</span>
+      <span>Terraza Privada</span>
+      <span>Sistema de Sonido Funktion One</span>
+      <span>Viernes & Sábado</span>
+      <span>23:00 — 06:00h</span>
+      <span>Techno · House · Bass</span>
+      <span>Aforo Limitado</span>
+      <span>Terraza Privada</span>
+      <span>Sistema de Sonido Funktion One</span>
+    </div>
+  </div>
+
+  <!-- EVENTS -->
+  <section class="events" id="events">
+    <div class="events-header">
+      <p class="section-label">Próximos eventos</p>
+      <h2 class="section-title">ESTA<br>SEMANA</h2>
+    </div>
+    <div class="events-grid">
+      <div class="event-card">
+        <div class="event-date">22</div>
+        <div class="event-month">Febrero 2026</div>
+        <div class="event-name">DARKROOM</div>
+        <div class="event-genre">Techno Industrial</div>
+        <div class="event-time">SAB 23:00 → DOM 06:00</div>
+        <div class="event-tag">Sold Out</div>
+        <div class="eq" style="margin-top:1.5rem;">
+          <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+          <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+        </div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">28</div>
+        <div class="event-month">Febrero 2026</div>
+        <div class="event-name">CHROME</div>
+        <div class="event-genre">Deep House · Melodic</div>
+        <div class="event-time">VIE 23:00 → SAB 05:00</div>
+        <div class="event-tag">Últimas Entradas</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">07</div>
+        <div class="event-month">Marzo 2026</div>
+        <div class="event-name">VOLTAGE</div>
+        <div class="event-genre">Acid · EBM · Rave</div>
+        <div class="event-time">SAB 23:00 → DOM 07:00</div>
+        <div class="event-tag">Disponible</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">14</div>
+        <div class="event-month">Marzo 2026</div>
+        <div class="event-name">RITUAL</div>
+        <div class="event-genre">Afro House · Tribal</div>
+        <div class="event-time">SAB 23:00 → DOM 06:00</div>
+        <div class="event-tag">Disponible</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">21</div>
+        <div class="event-month">Marzo 2026</div>
+        <div class="event-name">NEON CITY</div>
+        <div class="event-genre">Synthwave · Retro</div>
+        <div class="event-time">SAB 22:00 → DOM 06:00</div>
+        <div class="event-tag">Disponible</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">04</div>
+        <div class="event-month">Abril 2026</div>
+        <div class="event-name">ZERO G</div>
+        <div class="event-genre">Bass Music · Breaks</div>
+        <div class="event-time">SAB 23:00 → DOM 07:00</div>
+        <div class="event-tag">Pronto</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DJs -->
+  <section class="djs" id="djs">
+    <div class="djs-header">
+      <p class="section-label">Residentes & Invitados</p>
+      <h2 class="section-title">LINE<br>UP</h2>
+    </div>
+    <div class="djs-row">
+      <div class="dj-card">
+        <div class="dj-img">
+          <div class="dj-img-inner"><span class="dj-avatar">KR</span></div>
+          <div class="dj-overlay">
+            <div class="dj-play">▶</div>
+          </div>
+        </div>
+        <div class="dj-name">KRATER</div>
+        <div class="dj-style">Techno · Residente</div>
+      </div>
+      <div class="dj-card">
+        <div class="dj-img">
+          <div class="dj-img-inner"><span class="dj-avatar">LX</span></div>
+          <div class="dj-overlay">
+            <div class="dj-play">▶</div>
+          </div>
+        </div>
+        <div class="dj-name">LEXIS</div>
+        <div class="dj-style">Deep House · Residente</div>
+      </div>
+      <div class="dj-card">
+        <div class="dj-img">
+          <div class="dj-img-inner"><span class="dj-avatar">MV</span></div>
+          <div class="dj-overlay">
+            <div class="dj-play">▶</div>
+          </div>
+        </div>
+        <div class="dj-name">MAVEN</div>
+        <div class="dj-style">Acid · EBM · Invitado</div>
+      </div>
+      <div class="dj-card">
+        <div class="dj-img">
+          <div class="dj-img-inner"><span class="dj-avatar">SL</span></div>
+          <div class="dj-overlay">
+            <div class="dj-play">▶</div>
+          </div>
+        </div>
+        <div class="dj-name">SOLIS</div>
+        <div class="dj-style">Afro House · Invitada</div>
+      </div>
+      <div class="dj-card">
+        <div class="dj-img">
+          <div class="dj-img-inner"><span class="dj-avatar">VX</span></div>
+          <div class="dj-overlay">
+            <div class="dj-play">▶</div>
+          </div>
+        </div>
+        <div class="dj-name">VOXEL</div>
+        <div class="dj-style">Melodic · Breaks · Invitado</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery" id="galeria" style="padding-left:0;padding-right:0;">
+    <div class="gallery-header">
+      <p class="section-label">El espacio</p>
+      <h2 class="section-title">DENTRO<br>DE NEXUS</h2>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <div class="gallery-inner">
+          <div class="gallery-visual"><span>MAIN</span></div>
+        </div>
+        <div class="gallery-label">Main Floor — Capacidad 800</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-inner">
+          <div class="gallery-visual"><span>BAR</span></div>
+        </div>
+        <div class="gallery-label">Bar Central</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-inner">
+          <div class="gallery-visual"><span>VIP</span></div>
+        </div>
+        <div class="gallery-label">Zona VIP</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-inner">
+          <div class="gallery-visual"><span>2ND</span></div>
+        </div>
+        <div class="gallery-label">Second Room</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-inner">
+          <div class="gallery-visual"><span>OUT</span></div>
+        </div>
+        <div class="gallery-label">Terraza Exterior</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOKING -->
+  <section class="booking" id="booking">
+    <div class="booking-left">
+      <p class="section-label">Reserva ahora</p>
+      <h2 class="section-title">MESA<br>VIP</h2>
+      <div class="info-grid">
+        <div class="info-box">
+          <div class="info-box-title">Horario</div>
+          <div class="info-box-value">23:00</div>
+          <div class="info-box-sub">Apertura de puertas</div>
+        </div>
+        <div class="info-box">
+          <div class="info-box-title">Cierre</div>
+          <div class="info-box-value">06:00</div>
+          <div class="info-box-sub">Fin de la sesión</div>
+        </div>
+        <div class="info-box">
+          <div class="info-box-title">Capacidad</div>
+          <div class="info-box-value">1200</div>
+          <div class="info-box-sub">Aforo total del club</div>
+        </div>
+        <div class="info-box">
+          <div class="info-box-title">Mín. Consumo</div>
+          <div class="info-box-value">150€</div>
+          <div class="info-box-sub">Por mesa VIP</div>
+        </div>
+      </div>
+    </div>
+    <div class="booking-right">
+      <p class="section-label">Formulario de reserva</p>
+      <h3 style="font-family:var(--font-display);font-size:2rem;color:#fff;margin-bottom:0.5rem;">CONTACTO VIP</h3>
+      <div class="booking-form">
+        <div class="form-group">
+          <label class="form-label">Nombre completo</label>
+          <input class="form-input" type="text" placeholder="Tu nombre">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" type="email" placeholder="tu@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Teléfono</label>
+          <input class="form-input" type="tel" placeholder="+34 600 000 000">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Evento</label>
+          <select class="form-select form-input">
+            <option value="" disabled selected>Selecciona el evento</option>
+            <option>DARKROOM — 22 Feb</option>
+            <option>CHROME — 28 Feb</option>
+            <option>VOLTAGE — 07 Mar</option>
+            <option>RITUAL — 14 Mar</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nº de personas</label>
+          <input class="form-input" type="number" placeholder="4" min="2" max="20">
+        </div>
+        <button class="btn-primary" style="margin-top:0.5rem;width:100%;padding:1.2rem;font-size:0.75rem;">
+          Solicitar Reserva
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">NEXUS</div>
+        <p class="footer-desc">El club de referencia de la escena electrónica de Barcelona. Sonido Funktion One, iluminación de última generación y los mejores DJs nacionales e internacionales.</p>
+      </div>
+      <div>
+        <p class="footer-col-title">Ubicación</p>
+        <ul class="footer-links">
+          <li><a href="#">Carrer de l'Arc del Teatre, 12</a></li>
+          <li><a href="#">Barcelona, 08001</a></li>
+          <li><a href="#">Metro: Drassanes (L3)</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Club</p>
+        <ul class="footer-links">
+          <li><a href="#">Sobre Nexus</a></li>
+          <li><a href="#">DJs Residentes</a></li>
+          <li><a href="#">Prensa</a></li>
+          <li><a href="#">Booking artistas</a></li>
+          <li><a href="#">Trabaja con nosotros</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Info</p>
+        <ul class="footer-links">
+          <li><a href="#">Política de acceso</a></li>
+          <li><a href="#">Guardarropa</a></li>
+          <li><a href="#">Seguridad</a></li>
+          <li><a href="#">Privacidad</a></li>
+          <li><a href="#">Cookies</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 NEXUS CLUB S.L. — Todos los derechos reservados</p>
+      <div class="socials">
+        <a href="#" class="social-link">IG</a>
+        <a href="#" class="social-link">TK</a>
+        <a href="#" class="social-link">SC</a>
+        <a href="#" class="social-link">RA</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const trail = document.getElementById('cursorTrail');
+    let mx = 0, my = 0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx - 6 + 'px';
+      cursor.style.top = my - 6 + 'px';
+      setTimeout(() => {
+        trail.style.left = mx - 16 + 'px';
+        trail.style.top = my - 16 + 'px';
+      }, 80);
+    });
+
+    // Particles
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 40; i++) {
+      const p = document.createElement('div');
+      p.classList.add('particle');
+      const colors = ['#ff0080','#00f5ff','#f5ff00'];
+      p.style.cssText = `
+        left: ${Math.random()*100}%;
+        --drift: ${(Math.random()-0.5)*200}px;
+        animation-duration: ${5 + Math.random()*10}s;
+        animation-delay: ${Math.random()*10}s;
+        background: ${colors[Math.floor(Math.random()*3)]};
+        width: ${Math.random()*3+1}px;
+        height: ${Math.random()*3+1}px;
+      `;
+      particlesContainer.appendChild(p);
+    }
+
+    // Cursor scale on hover
+    document.querySelectorAll('a, button, .event-card, .dj-card, .gallery-item').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.transform = 'scale(3)';
+        cursor.style.background = '#00f5ff';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'scale(1)';
+        cursor.style.background = '#ff0080';
+      });
+    });
+
+    // Smooth reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.event-card, .dj-card, .info-box').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = `opacity 0.6s ${i * 0.1}s, transform 0.6s ${i * 0.1}s`;
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
