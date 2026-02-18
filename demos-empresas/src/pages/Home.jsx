@@ -1,11 +1,11 @@
 const empresas = [
-    { id: 1, nombre: 'TechCorp Solutions', tag: 'Tecnología' },
-    { id: 2, nombre: 'FinanceGroup', tag: 'Finanzas' },
-    { id: 3, nombre: 'MediCare Plus', tag: 'Salud' },
-    { id: 4, nombre: 'EduFuture', tag: 'Educación' },
-    { id: 5, nombre: 'MegaStore', tag: 'Retail' },
-    { id: 6, nombre: 'ConstructPro', tag: 'Construcción' },
-    { id: 7, nombre: 'ServiTotal', tag: 'Servicios' },
+    { id: 1, nombre: 'empresa de marketing', tag: 'marketing' },
+    { id: 2, nombre: 'empresa de caligrafia', tag: 'caligrafia' },
+    { id: 3, nombre: 'consultoria', tag: 'servicios' },
+    { id: 4, nombre: 'discuteca diseño full', tag: 'disco' },
+    { id: 5, nombre: 'disco simple', tag: 'disco' },
+    { id: 6, nombre: 'empresa de impresiones 3d', tag: 'servicios' },
+    { id: 7, nombre: 'tienda de productos/presentacion', tag: 'tienda' },
 ];
 
 const Home = () => {
