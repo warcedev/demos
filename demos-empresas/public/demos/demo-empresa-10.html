@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>VELOX | Alto Rendimiento. Sin Compromisos.</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,200;0,300;0,400;0,500;0,700;0,900;1,200;1,700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --negro:    #050608;
+  --carbon:   #0e0f11;
+  --grafito:  #1c1d21;
+  --gris:     #3a3b40;
+  --gris-med: #7c7d84;
+  --gris-cla: #b4b5bc;
+  --blanco:   #f0f0f0;
+  --rojo:     #c8102e;
+  --rojo-bri: #e8112e;
+  --rojo-apa: rgba(200,16,46,.15);
+  --oro:      #9a8057;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Barlow',sans-serif;background:var(--negro);color:var(--blanco);overflow-x:hidden;cursor:none;}
+
+/* ─── CURSOR ─── */
+#cur{position:fixed;top:0;left:0;z-index:9999;pointer-events:none;mix-blend-mode:difference;}
+#cur-dot{position:absolute;width:8px;height:8px;background:var(--blanco);border-radius:50%;transform:translate(-50%,-50%);transition:width .25s,height .25s;}
+#cur-ring{position:absolute;width:38px;height:38px;border:1px solid rgba(255,255,255,.5);border-radius:50%;transform:translate(-50%,-50%);transition:width .4s,height .4s,opacity .3s;opacity:.6;}
+body:hover #cur-dot.big{width:48px;height:48px;}
+
+/* ─── LOADING SCREEN ─── */
+#loader{
+  position:fixed;inset:0;z-index:9000;
+  background:var(--negro);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity .8s ease;
+}
+.loader-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:5rem;letter-spacing:12px;color:var(--blanco);
+  animation:logoIn .6s ease both .2s;
+  opacity:0;
+}
+.loader-bar-wrap{
+  width:200px;height:2px;background:var(--grafito);
+  margin-top:2rem;border-radius:2px;overflow:hidden;
+  animation:logoIn .4s ease both .5s;opacity:0;
+}
+.loader-bar{height:100%;background:var(--rojo);width:0;animation:loadBar 1.6s ease both .6s;}
+.loader-pct{
+  font-size:.75rem;letter-spacing:4px;color:var(--gris-med);
+  margin-top:.8rem;
+  animation:logoIn .4s ease both .6s;opacity:0;
+}
+@keyframes logoIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes loadBar{from{width:0}to{width:100%}}
+#loader.gone{opacity:0;pointer-events:none;}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.5rem 5%;
+  transition:background .5s,padding .4s;
+}
+nav.scrolled{
+  background:rgba(5,6,8,.92);
+  backdrop-filter:blur(20px);
+  padding:1rem 5%;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.nav-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.8rem;letter-spacing:8px;
+  color:var(--blanco);text-decoration:none;
+}
+.nav-logo span{color:var(--rojo);}
+nav ul{list-style:none;display:flex;gap:2.5rem;}
+nav ul a{
+  font-size:.72rem;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(255,255,255,.55);text-decoration:none;transition:color .3s;
+}
+nav ul a:hover{color:var(--blanco);}
+.nav-right{display:flex;align-items:center;gap:1.5rem;}
+.nav-reserve{
+  background:var(--rojo);color:var(--blanco);
+  padding:.6rem 1.8rem;border-radius:1px;
+  font-size:.7rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  text-decoration:none;transition:all .3s;
+}
+.nav-reserve:hover{background:var(--rojo-bri);transform:translateY(-1px);}
+
+/* ─── HERO CINEMATICO ─── */
+.hero{
+  position:relative;height:100vh;overflow:hidden;
+  display:flex;align-items:flex-end;
+}
+.hero-video-wrap{
+  position:absolute;inset:0;
+}
+.hero-video-wrap img{
+  width:100%;height:100%;object-fit:cover;
+  animation:heroZoom 14s ease-out both;
+}
+@keyframes heroZoom{from{transform:scale(1.08)}to{transform:scale(1)}}
+
+.hero-gradient{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(to right, rgba(5,6,8,.85) 0%, rgba(5,6,8,.4) 55%, transparent 100%),
+    linear-gradient(to top, rgba(5,6,8,.8) 0%, transparent 50%);
+}
+.hero-content{
+  position:relative;z-index:2;
+  padding:0 5% 7rem;
+  max-width:800px;
+}
+.hero-tagline{
+  font-size:.72rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;
+  color:var(--rojo);margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:12px;
+  animation:fadeUp .7s ease both .3s;opacity:0;
+}
+.hero-tagline::before{content:'';width:32px;height:1px;background:var(--rojo);}
+.hero-model{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(5rem,10vw,12rem);
+  line-height:.88;
+  color:var(--blanco);
+  letter-spacing:2px;
+  animation:fadeUp .8s ease both .5s;opacity:0;
+}
+.hero-model span{
+  display:block;font-size:.35em;letter-spacing:14px;
+  color:var(--gris-cla);font-weight:200;
+  font-family:'Barlow',sans-serif;
+  text-transform:uppercase;
+}
+.hero-desc{
+  font-size:1.05rem;font-weight:200;line-height:1.8;
+  color:rgba(255,255,255,.6);max-width:520px;
+  margin:2rem 0 3rem;
+  animation:fadeUp .7s ease both .7s;opacity:0;
+}
+.hero-btns{
+  display:flex;gap:1.2rem;align-items:center;
+  animation:fadeUp .7s ease both .85s;opacity:0;
+}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--rojo);color:var(--blanco);
+  padding:1.1rem 2.8rem;border-radius:1px;
+  text-decoration:none;font-size:.75rem;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;
+  transition:all .3s;
+}
+.btn-primary:hover{background:var(--rojo-bri);transform:translateY(-2px);box-shadow:0 12px 40px rgba(200,16,46,.4);}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:10px;
+  border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.8);
+  padding:1.1rem 2.4rem;border-radius:1px;
+  text-decoration:none;font-size:.75rem;font-weight:500;
+  letter-spacing:2.5px;text-transform:uppercase;
+  transition:all .3s;
+}
+.btn-ghost:hover{border-color:var(--blanco);color:var(--blanco);}
+
+/* HERO SPECS STRIP */
+.hero-specs{
+  position:absolute;right:5%;bottom:7rem;z-index:3;
+  display:flex;flex-direction:column;gap:2rem;
+  animation:fadeLeft .8s ease both .9s;opacity:0;
+}
+@keyframes fadeLeft{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+.hspec{text-align:right;}
+.hspec-val{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:3rem;color:var(--blanco);line-height:1;
+}
+.hspec-val sub{font-size:.4em;color:var(--gris-med);}
+.hspec-label{font-size:.62rem;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--gris-med);}
+
+/* SCROLL INDICATOR */
+.scroll-ind{
+  position:absolute;left:5%;bottom:3rem;z-index:3;
+  display:flex;align-items:center;gap:12px;
+  animation:fadeUp .6s ease both 1.2s;opacity:0;
+}
+.scroll-line{width:48px;height:1px;background:rgba(255,255,255,.25);position:relative;overflow:hidden;}
+.scroll-line::after{
+  content:'';position:absolute;top:0;left:-100%;
+  width:100%;height:100%;background:var(--rojo);
+  animation:scrollAnim 2s ease-in-out infinite;
+}
+@keyframes scrollAnim{from{left:-100%}to{left:100%}}
+.scroll-txt{font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+
+/* ─── INTRO SPECS ─── */
+.intro{
+  background:var(--carbon);
+  display:grid;grid-template-columns:1fr 1fr;
+  min-height:90vh;
+  position:relative;overflow:hidden;
+}
+.intro-left{
+  padding:8rem 5% 8rem 8%;
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;z-index:2;
+}
+.section-over{
+  font-size:.65rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;
+  color:var(--rojo);margin-bottom:1.2rem;
+  display:flex;align-items:center;gap:10px;
+}
+.section-over::before{content:'';width:28px;height:1px;background:var(--rojo);}
+.section-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3.5rem,5.5vw,6rem);
+  letter-spacing:3px;line-height:.93;
+  color:var(--blanco);margin-bottom:2rem;
+}
+.section-body{
+  font-size:.98rem;font-weight:200;line-height:1.9;
+  color:var(--gris-cla);max-width:460px;
+}
+.intro-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:2rem;margin-top:4rem;
+  padding-top:3rem;border-top:1px solid rgba(255,255,255,.06);
+}
+.istat-val{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:3rem;color:var(--blanco);line-height:1;
+}
+.istat-val sub{font-size:.4em;color:var(--gris-med);}
+.istat-label{font-size:.62rem;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--gris-med);margin-top:.4rem;}
+
+.intro-right{
+  position:relative;overflow:hidden;
+}
+.intro-right img{
+  width:100%;height:100%;object-fit:cover;
+  filter:brightness(.85);
+  transition:transform 8s ease;
+}
+.intro:hover .intro-right img{transform:scale(1.04);}
+.intro-right-num{
+  position:absolute;bottom:3rem;right:3rem;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:12rem;color:rgba(255,255,255,.03);
+  line-height:1;user-select:none;pointer-events:none;
+}
+
+/* ─── MODELO PRESENTATION ─── */
+.model-section{
+  background:var(--negro);
+  padding:0;
+  position:relative;
+}
+.model-full{
+  width:100%;display:block;
+  filter:brightness(.9) contrast(1.05);
+}
+.model-caption{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(to top,var(--negro) 0%,transparent 100%);
+  padding:6rem 8% 4rem;
+  display:flex;justify-content:space-between;align-items:flex-end;
+}
+.model-caption-left{}
+.model-name-big{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3rem,6vw,7rem);
+  letter-spacing:4px;color:var(--blanco);line-height:1;
+}
+.model-name-big span{color:var(--rojo);}
+.model-sub{
+  font-size:.8rem;font-weight:200;letter-spacing:3px;
+  text-transform:uppercase;color:var(--gris-cla);margin-top:.5rem;
+}
+.model-price-wrap{text-align:right;}
+.model-price-from{font-size:.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gris-med);}
+.model-price{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2.5rem,4vw,4rem);
+  color:var(--blanco);letter-spacing:2px;
+}
+.model-price sup{font-size:.4em;color:var(--gris-med);}
+
+/* ─── SPECS TABLE ─── */
+.specs-section{
+  background:var(--carbon);
+  padding:7rem 8%;
+  display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;
+}
+.specs-left{}
+.specs-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.04);
+  margin-top:3rem;
+}
+.spec-cell{
+  background:var(--carbon);
+  padding:2rem 2.5rem;
+  transition:background .3s;
+}
+.spec-cell:hover{background:var(--grafito);}
+.spec-cat{
+  font-size:.6rem;font-weight:700;letter-spacing:2.5px;
+  text-transform:uppercase;color:var(--rojo);margin-bottom:.5rem;
+}
+.spec-name{
+  font-size:.82rem;font-weight:300;color:var(--gris-cla);margin-bottom:.4rem;
+}
+.spec-val{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2rem;color:var(--blanco);line-height:1;
+}
+.spec-val sub{font-size:.45em;color:var(--gris-med);}
+
+.specs-right{}
+.feature-list{display:flex;flex-direction:column;gap:0;margin-top:3rem;}
+.feature-row{
+  display:flex;align-items:center;gap:1.5rem;
+  padding:1.5rem 0;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  transition:padding-left .3s;
+}
+.feature-row:hover{padding-left:.8rem;}
+.feature-icon{
+  width:48px;height:48px;flex-shrink:0;
+  border:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;border-radius:2px;
+  transition:border-color .3s,background .3s;
+}
+.feature-row:hover .feature-icon{border-color:var(--rojo);background:var(--rojo-apa);}
+.feature-text-name{font-weight:500;font-size:.9rem;color:var(--blanco);margin-bottom:.2rem;}
+.feature-text-desc{font-size:.78rem;font-weight:200;color:var(--gris-med);}
+
+/* ─── GALERÍA 360 ─── */
+.galeria{
+  background:var(--negro);
+  padding:7rem 8%;
+}
+.galeria-header{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:4rem;
+}
+.ver-mas{
+  font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--rojo);text-decoration:none;
+  border-bottom:1px solid var(--rojo);padding-bottom:2px;
+}
+.galeria-main{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  grid-template-rows:420px 220px;
+  gap:1rem;
+}
+.gal-item{overflow:hidden;position:relative;border-radius:1px;}
+.gal-item img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .6s ease,filter .4s;
+  filter:brightness(.8);
+}
+.gal-item:hover img{transform:scale(1.05);filter:brightness(.95);}
+.gal-item:first-child{grid-row:span 2;}
+.gal-label{
+  position:absolute;bottom:1.2rem;left:1.5rem;
+  font-size:.62rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(255,255,255,.4);
+}
+
+/* ─── VARIANTES ─── */
+.variantes{
+  background:var(--grafito);
+  padding:7rem 8%;
+}
+.variantes-header{text-align:center;margin-bottom:5rem;}
+.variantes-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:rgba(255,255,255,.04);
+}
+.var-card{
+  background:var(--carbon);
+  padding:3.5rem 3rem;
+  position:relative;overflow:hidden;
+  transition:background .4s;
+}
+.var-card.featured{background:var(--negro);}
+.var-card:hover{background:rgba(14,15,17,.9);}
+.var-badge{
+  position:absolute;top:2rem;right:2rem;
+  background:var(--rojo);
+  padding:.25rem .9rem;
+  font-size:.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--blanco);
+}
+.var-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2.8rem;letter-spacing:3px;
+  color:var(--blanco);margin-bottom:.5rem;
+}
+.var-sub{
+  font-size:.7rem;font-weight:300;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gris-med);margin-bottom:2.5rem;
+}
+.var-price{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:3.5rem;color:var(--blanco);
+  line-height:1;margin-bottom:2.5rem;
+}
+.var-price sub{font-size:.35em;color:var(--rojo);}
+.var-price span{font-size:.3em;color:var(--gris-med);font-family:'Barlow',sans-serif;font-weight:300;letter-spacing:2px;}
+.var-features{list-style:none;display:flex;flex-direction:column;gap:.85rem;margin-bottom:3rem;}
+.var-features li{
+  font-size:.82rem;font-weight:300;color:var(--gris-cla);
+  display:flex;align-items:center;gap:.8rem;
+}
+.var-features li::before{content:'›';color:var(--rojo);font-size:1.1rem;font-weight:700;}
+.var-btn{
+  display:block;text-align:center;text-decoration:none;
+  padding:1rem;border-radius:1px;
+  font-size:.7rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  transition:all .3s;
+}
+.var-btn-outline{border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);}
+.var-btn-outline:hover{border-color:var(--rojo);color:var(--rojo);}
+.var-btn-solid{background:var(--rojo);color:var(--blanco);}
+.var-btn-solid:hover{background:var(--rojo-bri);}
+
+/* ─── TECNOLOGIA SPLIT ─── */
+.tech{
+  display:grid;grid-template-columns:1fr 1fr;
+  min-height:80vh;
+}
+.tech-img{position:relative;overflow:hidden;}
+.tech-img img{width:100%;height:100%;object-fit:cover;filter:brightness(.7);}
+.tech-img-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to right,transparent 50%,var(--negro) 100%);
+}
+.tech-content{
+  background:var(--negro);
+  padding:7rem 7% 7rem 5%;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.tech-list{display:flex;flex-direction:column;gap:2.5rem;margin-top:3rem;}
+.tech-item{
+  display:grid;grid-template-columns:56px 1fr;gap:1.5rem;
+  align-items:start;
+  padding-bottom:2.5rem;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.tech-item:last-child{border-bottom:none;padding-bottom:0;}
+.tech-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2.5rem;color:rgba(200,16,46,.2);line-height:1;
+}
+.tech-item-title{font-weight:700;font-size:1rem;color:var(--blanco);margin-bottom:.5rem;}
+.tech-item-desc{font-size:.85rem;font-weight:200;line-height:1.8;color:var(--gris-med);}
+
+/* ─── CONFIGURADOR CTA ─── */
+.config-cta{
+  position:relative;height:80vh;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;
+}
+.config-cta img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;filter:brightness(.35);
+}
+.config-content{position:relative;z-index:2;max-width:700px;padding:0 2rem;}
+.config-over{
+  font-size:.68rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;
+  color:var(--rojo);margin-bottom:1.5rem;
+}
+.config-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(4rem,8vw,9rem);
+  letter-spacing:4px;line-height:.9;
+  color:var(--blanco);margin-bottom:2rem;
+}
+.config-title em{
+  font-family:'Barlow',sans-serif;
+  font-style:italic;font-weight:200;
+  font-size:.35em;letter-spacing:6px;
+  display:block;color:var(--gris-cla);
+}
+.config-sub{font-size:.95rem;font-weight:200;color:rgba(255,255,255,.55);max-width:460px;margin:0 auto 3rem;}
+.btn-large{
+  display:inline-flex;align-items:center;gap:14px;
+  background:var(--rojo);color:var(--blanco);
+  padding:1.3rem 3.5rem;border-radius:1px;
+  text-decoration:none;font-size:.8rem;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;
+  transition:all .3s;
+}
+.btn-large:hover{background:var(--rojo-bri);transform:translateY(-3px);box-shadow:0 20px 60px rgba(200,16,46,.5);}
+
+/* ─── COLORES STRIP ─── */
+.colores{
+  background:var(--carbon);
+  padding:6rem 8%;
+}
+.colores-header{margin-bottom:4rem;}
+.colores-grid{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:1.5rem;
+}
+.color-card{
+  cursor:none;
+  transition:transform .3s;
+}
+.color-card:hover{transform:translateY(-6px);}
+.color-swatch{
+  height:140px;border-radius:2px;margin-bottom:1rem;
+  border:1px solid rgba(255,255,255,.04);
+  position:relative;overflow:hidden;
+  transition:box-shadow .3s;
+}
+.color-card:hover .color-swatch{box-shadow:0 15px 40px rgba(0,0,0,.4);}
+.color-swatch-shine{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 60%);
+}
+.color-name{font-size:.72rem;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--gris-cla);}
+.color-type{font-size:.65rem;font-weight:300;color:var(--gris-med);margin-top:.2rem;}
+
+/* ─── CONCESIONARIOS ─── */
+.dealers{
+  background:var(--negro);
+  padding:7rem 8%;
+  display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;
+}
+.dealers-map{
+  position:relative;border-radius:2px;overflow:hidden;
+  background:var(--grafito);aspect-ratio:4/3;
+}
+.dealers-map img{width:100%;height:100%;object-fit:cover;opacity:.5;filter:grayscale(1) brightness(.5);}
+.dealers-map-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(200,16,46,.08),transparent);
+}
+.map-pins{position:absolute;inset:0;}
+.map-pin{
+  position:absolute;
+  width:12px;height:12px;
+  background:var(--rojo);border-radius:50%;
+  transform:translate(-50%,-50%);
+  animation:pinPulse 2s ease infinite;
+}
+.map-pin::before{
+  content:'';position:absolute;inset:-5px;
+  border-radius:50%;border:1px solid var(--rojo);
+  animation:pinPulse 2s ease infinite .5s;
+}
+@keyframes pinPulse{0%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}50%{opacity:.6;transform:translate(-50%,-50%) scale(1.3)}}
+
+.dealers-list{display:flex;flex-direction:column;gap:1.5rem;margin-top:3rem;}
+.dealer-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.3rem 1.5rem;
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:1px;transition:all .3s;
+}
+.dealer-row:hover{border-color:rgba(200,16,46,.3);background:var(--rojo-apa);}
+.dealer-city{font-weight:500;color:var(--blanco);font-size:.9rem;}
+.dealer-address{font-size:.75rem;color:var(--gris-med);margin-top:.2rem;}
+.dealer-link{
+  font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--rojo);text-decoration:none;white-space:nowrap;
+}
+
+/* ─── FOOTER ─── */
+footer{background:var(--carbon);border-top:1px solid rgba(255,255,255,.04);}
+.footer-top{
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;
+  padding:5rem 8% 4rem;
+}
+.footer-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2.5rem;letter-spacing:8px;color:var(--blanco);
+  margin-bottom:1.2rem;display:block;text-decoration:none;
+}
+.footer-logo span{color:var(--rojo);}
+.footer-about{font-size:.82rem;font-weight:200;line-height:1.9;color:rgba(255,255,255,.3);max-width:280px;}
+.footer-social{display:flex;gap:1rem;margin-top:2rem;}
+.fsoc{
+  width:36px;height:36px;border:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;color:rgba(255,255,255,.35);font-size:.8rem;
+  transition:all .3s;border-radius:1px;
+}
+.fsoc:hover{border-color:var(--rojo);color:var(--rojo);}
+.footer-col-title{
+  font-size:.65rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  color:var(--rojo);margin-bottom:1.5rem;
+}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:.85rem;}
+.footer-links a{
+  font-size:.82rem;font-weight:200;color:rgba(255,255,255,.35);
+  text-decoration:none;transition:color .3s;
+}
+.footer-links a:hover{color:var(--blanco);}
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,.04);
+  padding:1.5rem 8%;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:1rem;
+}
+.footer-copy{font-size:.7rem;color:rgba(255,255,255,.15);}
+.footer-legal{display:flex;gap:2rem;}
+.footer-legal a{font-size:.68rem;color:rgba(255,255,255,.2);text-decoration:none;transition:color .3s;}
+.footer-legal a:hover{color:rgba(255,255,255,.6);}
+
+/* ─── UTILS ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">VELOX</div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+  <div class="loader-pct" id="loaderPct">0%</div>
+</div>
+
+<!-- CURSOR -->
+<div id="cur">
+  <div id="cur-dot"></div>
+  <div id="cur-ring"></div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">VEL<span>O</span>X</a>
+  <ul>
+    <li><a href="#modelos">Modelos</a></li>
+    <li><a href="#specs">Especificaciones</a></li>
+    <li><a href="#galeria">Galería</a></li>
+    <li><a href="#tecnologia">Tecnología</a></li>
+    <li><a href="#dealers">Concesionarios</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="#config" class="nav-reserve">Reservar →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-video-wrap">
+    <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1800&q=85&auto=format&fit=crop" alt="VELOX GT-R en carretera"/>
+  </div>
+  <div class="hero-gradient"></div>
+
+  <div class="hero-content">
+    <div class="hero-tagline">Alto rendimiento — Sin compromisos</div>
+    <div class="hero-model">
+      GT-R
+      <span>Sport Coupé — 2025</span>
+    </div>
+    <p class="hero-desc">Cuatro siglos de ingeniería condensados en cada curva. El GT-R redefine lo que significa conducir: 580 CV, 0 a 100 en 3.2 segundos, con el alma intacta.</p>
+    <div class="hero-btns">
+      <a href="#modelos" class="btn-primary">Descubrir el modelo</a>
+      <a href="#galeria" class="btn-ghost">Ver galería</a>
+    </div>
+  </div>
+
+  <div class="hero-specs">
+    <div class="hspec">
+      <div class="hspec-val">580<sub>cv</sub></div>
+      <div class="hspec-label">Potencia</div>
+    </div>
+    <div class="hspec">
+      <div class="hspec-val">3.2<sub>s</sub></div>
+      <div class="hspec-label">0 – 100 km/h</div>
+    </div>
+    <div class="hspec">
+      <div class="hspec-val">320<sub>km/h</sub></div>
+      <div class="hspec-label">Vel. máxima</div>
+    </div>
+  </div>
+
+  <div class="scroll-ind">
+    <div class="scroll-line"></div>
+    <span class="scroll-txt">Scroll para explorar</span>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section class="intro" id="modelos">
+  <div class="intro-left">
+    <div class="section-over">El espíritu VELOX</div>
+    <h2 class="section-title">DONDE LA<br>FÍSICA SE<br>RINDE</h2>
+    <p class="section-body">Desarrollado en las pistas de Nürburgring y refinado en las carreteras del mundo. El GT-R no es simplemente rápido: es preciso, brutal y extraordinariamente elegante. Una obra de ingeniería que se siente viva.</p>
+    <div class="intro-stats">
+      <div>
+        <div class="istat-val">580<sub>cv</sub></div>
+        <div class="istat-label">Biturbo V8</div>
+      </div>
+      <div>
+        <div class="istat-val">1.380<sub>kg</sub></div>
+        <div class="istat-label">Peso seco</div>
+      </div>
+      <div>
+        <div class="istat-val">760<sub>Nm</sub></div>
+        <div class="istat-label">Par motor</div>
+      </div>
+    </div>
+  </div>
+  <div class="intro-right">
+    <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=900&q=85&auto=format&fit=crop" alt="VELOX GT-R lateral"/>
+    <div class="intro-right-num">GT</div>
+  </div>
+</section>
+
+<!-- MODELO FULL -->
+<div class="model-section">
+  <img class="model-full" src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1800&q=85&auto=format&fit=crop" alt="VELOX GT-R frontal"/>
+  <div class="model-caption">
+    <div class="model-caption-left">
+      <div class="model-name-big">VELOX <span>GT-R</span></div>
+      <div class="model-sub">Sport Coupé — Edición 2025 — Tracción total AWD</div>
+    </div>
+    <div class="model-price-wrap">
+      <div class="model-price-from">Precio desde</div>
+      <div class="model-price"><sup>USD </sup>189.500</div>
+    </div>
+  </div>
+</div>
+
+<!-- SPECS -->
+<section class="specs-section" id="specs">
+  <div class="specs-left">
+    <div class="section-over">Ficha técnica</div>
+    <h2 class="section-title">RENDIMIENTO<br>SIN IGUAL</h2>
+    <div class="specs-grid">
+      <div class="spec-cell">
+        <div class="spec-cat">Motor</div>
+        <div class="spec-name">Cilindrada</div>
+        <div class="spec-val">4.0<sub>L</sub></div>
+      </div>
+      <div class="spec-cell">
+        <div class="spec-cat">Motor</div>
+        <div class="spec-name">Configuración</div>
+        <div class="spec-val">V8<sub>biturbo</sub></div>
+      </div>
+      <div class="spec-cell">
+        <div class="spec-cat">Prestaciones</div>
+        <div class="spec-name">0 – 100 km/h</div>
+        <div class="spec-val">3.2<sub>seg</sub></div>
+      </div>
+      <div class="spec-cell">
+        <div class="spec-cat">Prestaciones</div>
+        <div class="spec-name">Velocidad máx.</div>
+        <div class="spec-val">320<sub>km/h</sub></div>
+      </div>
+      <div class="spec-cell">
+        <div class="spec-cat">Potencia</div>
+        <div class="spec-name">Caballos de vapor</div>
+        <div class="spec-val">580<sub>cv</sub></div>
+      </div>
+      <div class="spec-cell">
+        <div class="spec-cat">Transmisión</div>
+        <div class="spec-name">Caja PDK</div>
+        <div class="spec-val">8<sub>vel</sub></div>
+      </div>
+    </div>
+  </div>
+  <div class="specs-right">
+    <div class="section-over">Equipamiento destacado</div>
+    <h2 class="section-title">TECNOLOGÍA<br>DE PISTA</h2>
+    <div class="feature-list">
+      <div class="feature-row">
+        <div class="feature-icon">🔴</div>
+        <div>
+          <div class="feature-text-name">Modo Sport+ & Pista</div>
+          <div class="feature-text-desc">Calibración dinámica en tiempo real del diferencial activo, suspensión y vectorizado de par.</div>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon">⚡</div>
+        <div>
+          <div class="feature-text-name">Frenos Cerámicos PCCB</div>
+          <div class="feature-text-desc">Discos de carbono-cerámica de 420mm con pinzas de 10 pistones. Temperatura de operación hasta 900°C.</div>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon">🛡</div>
+        <div>
+          <div class="feature-text-name">Chasis de Aluminio-Acero</div>
+          <div class="feature-text-desc">Estructura multi-material que reduce el peso en 85kg respecto a la generación anterior.</div>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon">🎯</div>
+        <div>
+          <div class="feature-text-name">Aerodinámica Activa</div>
+          <div class="feature-text-desc">Alerón trasero adaptativo y difusor activo que generan 320kg de carga aerodinámica a velocidad máxima.</div>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="feature-icon">🧠</div>
+        <div>
+          <div class="feature-text-name">Cockpit Digital 4K</div>
+          <div class="feature-text-desc">Pantalla curva de 16" con HUD en parabrisas y telemetría en tiempo real para uso en pista.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIA -->
+<section class="galeria" id="galeria">
+  <div class="galeria-header">
+    <div>
+      <div class="section-over">Fotografía oficial</div>
+      <h2 class="section-title">GALERÍA GT-R</h2>
+    </div>
+    <a href="#" class="ver-mas">Ver todas las fotos →</a>
+  </div>
+  <div class="galeria-main">
+    <div class="gal-item">
+      <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=900&q=80&auto=format&fit=crop" alt="Exterior frontal"/>
+      <div class="gal-label">Exterior — Frontal</div>
+    </div>
+    <div class="gal-item">
+      <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=500&q=80&auto=format&fit=crop" alt="Posterior"/>
+      <div class="gal-label">Posterior</div>
+    </div>
+    <div class="gal-item">
+      <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=500&q=80&auto=format&fit=crop" alt="Interior"/>
+      <div class="gal-label">Interior</div>
+    </div>
+    <div class="gal-item">
+      <img src="https://images.unsplash.com/photo-1541348263662-e068662d82af?w=500&q=80&auto=format&fit=crop" alt="Detalle motor"/>
+      <div class="gal-label">Motor V8</div>
+    </div>
+    <div class="gal-item">
+      <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=500&q=80&auto=format&fit=crop" alt="Detalle llantas"/>
+      <div class="gal-label">Llantas Forjadas 21"</div>
+    </div>
+  </div>
+</section>
+
+<!-- VARIANTES -->
+<section class="variantes" id="variantes">
+  <div class="variantes-header">
+    <div class="section-over" style="justify-content:center;margin-bottom:.8rem;">
+      <span style="display:flex;align-items:center;gap:10px;font-size:.65rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--rojo);">— Línea GT-R —</span>
+    </div>
+    <h2 class="section-title" style="font-size:clamp(3rem,5vw,5.5rem);letter-spacing:3px;text-align:center;">ELIGE TU VERSIÓN</h2>
+  </div>
+  <div class="variantes-grid">
+    <div class="var-card">
+      <div class="var-name">GT-R S</div>
+      <div class="var-sub">Base — Sport Coupé</div>
+      <div class="var-price">USD 189.500<span> desde</span></div>
+      <ul class="var-features">
+        <li>Motor V8 Biturbo 480 CV</li>
+        <li>0–100 en 3.8 segundos</li>
+        <li>Llantas forjadas 20"</li>
+        <li>Cockpit digital 12"</li>
+        <li>Suspensión adaptativa</li>
+      </ul>
+      <a href="#" class="var-btn var-btn-outline">Configurar</a>
+    </div>
+    <div class="var-card featured">
+      <div class="var-badge">Más popular</div>
+      <div class="var-name">GT-R R</div>
+      <div class="var-sub">Premium — Sport Coupé</div>
+      <div class="var-price">USD 224.900<span> desde</span></div>
+      <ul class="var-features">
+        <li>Motor V8 Biturbo 580 CV</li>
+        <li>0–100 en 3.2 segundos</li>
+        <li>Llantas forjadas 21"</li>
+        <li>Cockpit curvo 4K 16"</li>
+        <li>Frenos cerámicos PCCB</li>
+        <li>Aerodinámica activa</li>
+      </ul>
+      <a href="#" class="var-btn var-btn-solid">Configurar</a>
+    </div>
+    <div class="var-card">
+      <div class="var-name">GT-R RS</div>
+      <div class="var-sub">Track Edition</div>
+      <div class="var-price">USD 289.000<span> desde</span></div>
+      <ul class="var-features">
+        <li>Motor V8 Biturbo 640 CV</li>
+        <li>0–100 en 2.8 segundos</li>
+        <li>Chasis de fibra de carbono</li>
+        <li>Paquete Clubsport Pro</li>
+        <li>Jaula de seguridad FIA</li>
+        <li>Telemetría de pista avanzada</li>
+      </ul>
+      <a href="#" class="var-btn var-btn-outline">Configurar</a>
+    </div>
+  </div>
+</section>
+
+<!-- TECNOLOGÍA -->
+<section class="tech" id="tecnologia">
+  <div class="tech-img">
+    <img src="https://images.unsplash.com/photo-1543854589-fcd01f15ce90?w=900&q=80&auto=format&fit=crop" alt="Tecnología VELOX"/>
+    <div class="tech-img-overlay"></div>
+  </div>
+  <div class="tech-content">
+    <div class="section-over">Ingeniería VELOX</div>
+    <h2 class="section-title">INTELIGENCIA<br>EN CADA<br>METRO</h2>
+    <div class="tech-list">
+      <div class="tech-item">
+        <div class="tech-num">01</div>
+        <div>
+          <div class="tech-item-title">Plataforma VELOX-F</div>
+          <div class="tech-item-desc">Arquitectura multi-material de última generación. Monocasco con zonas de deformación progresiva y núcleo en aluminio aeroespacial que reduce el peso total en 180kg.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-num">02</div>
+        <div>
+          <div class="tech-item-title">Vector Control 4.0</div>
+          <div class="tech-item-desc">Sistema de vectorizado de par activo con ECU dedicada. Distribuye la potencia individualmente en cada rueda 200 veces por segundo para máxima tracción y estabilidad.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-num">03</div>
+        <div>
+          <div class="tech-item-title">Suspensión Magnética PASM+</div>
+          <div class="tech-item-desc">Amortiguadores de fluido magnetoreológico que ajustan la firmeza en microsegundos según el perfil de la carretera y el modo de conducción seleccionado.</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-num">04</div>
+        <div>
+          <div class="tech-item-title">Asistente de Pista AI</div>
+          <div class="tech-item-desc">IA embarcada que aprende el estilo de conducción del piloto y optimiza frenada, punto de apexe y aceleración en cada vuelta para mejorar progresivamente los tiempos.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONFIG CTA -->
+<section class="config-cta" id="config">
+  <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1800&q=80&auto=format&fit=crop" alt="Configura tu VELOX"/>
+  <div class="config-content">
+    <div class="config-over">Configurador Online</div>
+    <div class="config-title">
+      TU GT-R
+      <em>a tu medida</em>
+    </div>
+    <p class="config-sub">Más de 40.000 combinaciones posibles. Color, interiores, llantas, paquetes técnicos y acabados exclusivos. Crea el GT-R que nadie más tendrá.</p>
+    <a href="#" class="btn-large">Iniciar Configuración →</a>
+  </div>
+</section>
+
+<!-- COLORES -->
+<section class="colores">
+  <div class="colores-header">
+    <div class="section-over">Paleta exterior</div>
+    <h2 class="section-title">COLORES GT-R 2025</h2>
+  </div>
+  <div class="colores-grid">
+    <div class="color-card">
+      <div class="color-swatch" style="background:#0d0e10;">
+        <div class="color-swatch-shine"></div>
+      </div>
+      <div class="color-name">Midnight Black</div>
+      <div class="color-type">Metalizado</div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#c0c4cc;">
+        <div class="color-swatch-shine"></div>
+      </div>
+      <div class="color-name">Arctic Silver</div>
+      <div class="color-type">Metalizado</div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#c8102e;">
+        <div class="color-swatch-shine"></div>
+      </div>
+      <div class="color-name">Racing Red</div>
+      <div class="color-type">Sólido</div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#1a2840;">
+        <div class="color-swatch-shine"></div>
+      </div>
+      <div class="color-name">Midnight Blue</div>
+      <div class="color-type">Metalizado</div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#e8e2d4;">
+        <div class="color-swatch-shine"></div>
+      </div>
+      <div class="color-name">Chalk</div>
+      <div class="color-type">Mate especial</div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#2a4a2a;">
+        <div class="color-swatch-shine"></div>
+      </div>
+      <div class="color-name">British Racing</div>
+      <div class="color-type">Sólido</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONCESIONARIOS -->
+<section class="dealers" id="dealers">
+  <div>
+    <div class="section-over">Red oficial</div>
+    <h2 class="section-title">CENTROS<br>VELOX</h2>
+    <p class="section-body" style="margin-top:1rem;">Nuestra red de concesionarios oficiales ofrece experiencia de compra premium, servicio certificado y acceso exclusivo a track days y eventos de la marca.</p>
+    <div class="dealers-list">
+      <div class="dealer-row">
+        <div>
+          <div class="dealer-city">Buenos Aires — Palermo</div>
+          <div class="dealer-address">Av. del Libertador 6800 · +54 11 4800-0000</div>
+        </div>
+        <a href="#" class="dealer-link">Ver →</a>
+      </div>
+      <div class="dealer-row">
+        <div>
+          <div class="dealer-city">Córdoba — Nueva Córdoba</div>
+          <div class="dealer-address">Bv. San Juan 1240 · +54 351 4500-000</div>
+        </div>
+        <a href="#" class="dealer-link">Ver →</a>
+      </div>
+      <div class="dealer-row">
+        <div>
+          <div class="dealer-city">Rosario — Centro</div>
+          <div class="dealer-address">Pellegrini 1850 · +54 341 4800-000</div>
+        </div>
+        <a href="#" class="dealer-link">Ver →</a>
+      </div>
+      <div class="dealer-row">
+        <div>
+          <div class="dealer-city">Mendoza — Ciudad</div>
+          <div class="dealer-address">Arístides Villanueva 420 · +54 261 4200-000</div>
+        </div>
+        <a href="#" class="dealer-link">Ver →</a>
+      </div>
+    </div>
+  </div>
+  <div class="dealers-map">
+    <img src="https://images.unsplash.com/photo-1569336415962-a4bd9f69c07a?w=700&q=60&auto=format&fit=crop" alt="Mapa"/>
+    <div class="dealers-map-overlay"></div>
+    <div class="map-pins">
+      <div class="map-pin" style="top:62%;left:48%;"></div>
+      <div class="map-pin" style="top:50%;left:44%;"></div>
+      <div class="map-pin" style="top:54%;left:42%;"></div>
+      <div class="map-pin" style="top:58%;left:38%;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <a href="#" class="footer-logo">VEL<span>O</span>X</a>
+      <p class="footer-about">Alto rendimiento sin compromisos. Diseño alemán, alma de pista, para quienes saben que conducir es mucho más que llegar.</p>
+      <div class="footer-social">
+        <a href="#" class="fsoc">ig</a>
+        <a href="#" class="fsoc">𝕏</a>
+        <a href="#" class="fsoc">yt</a>
+        <a href="#" class="fsoc">fb</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Modelos</div>
+      <ul class="footer-links">
+        <li><a href="#">GT-R S</a></li>
+        <li><a href="#">GT-R R</a></li>
+        <li><a href="#">GT-R RS Track</a></li>
+        <li><a href="#">Ediciones especiales</a></li>
+        <li><a href="#">Configurador</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Servicios</div>
+      <ul class="footer-links">
+        <li><a href="#">Servicio oficial</a></li>
+        <li><a href="#">Garantía VELOX</a></li>
+        <li><a href="#">Financiamiento</a></li>
+        <li><a href="#">VELOX Approved</a></li>
+        <li><a href="#">Track Days</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Empresa</div>
+      <ul class="footer-links">
+        <li><a href="#">Sobre VELOX</a></li>
+        <li><a href="#">Motorsport</a></li>
+        <li><a href="#">Sustentabilidad</a></li>
+        <li><a href="#">Prensa</a></li>
+        <li><a href="#">Carreras</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 VELOX Automobil AG — Todos los derechos reservados. Las especificaciones pueden variar según mercado.</div>
+    <div class="footer-legal">
+      <a href="#">Privacidad</a>
+      <a href="#">Términos</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── LOADER
+let pct = 0;
+const loaderPct = document.getElementById('loaderPct');
+const loaderBar = document.querySelector('.loader-bar');
+const loader = document.getElementById('loader');
+const iv = setInterval(()=>{
+  pct += Math.floor(Math.random()*12)+3;
+  if(pct>=100){pct=100;clearInterval(iv);setTimeout(()=>{loader.classList.add('gone');},300);}
+  loaderPct.textContent = pct+'%';
+},80);
+
+// ── CURSOR
+const curDot = document.getElementById('cur-dot');
+const curRing = document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  curDot.style.left=mx+'px';curDot.style.top=my+'px';
+});
+(function animR(){
+  rx+=(mx-rx)*.1; ry+=(my-ry)*.1;
+  curRing.style.left=rx+'px'; curRing.style.top=ry+'px';
+  requestAnimationFrame(animR);
+})();
+document.querySelectorAll('a,button,.gal-item,.var-card,.color-card,.dealer-row').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    curDot.style.width='40px';curDot.style.height='40px';
+    curRing.style.width='64px';curRing.style.height='64px';curRing.style.opacity='.2';
+  });
+  el.addEventListener('mouseleave',()=>{
+    curDot.style.width='8px';curDot.style.height='8px';
+    curRing.style.width='38px';curRing.style.height='38px';curRing.style.opacity='.6';
+  });
+});
+
+// ── NAVBAR SCROLL
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>80);
+});
+
+// ── TABS (variantes no necesitan JS, ya están en HTML)
+</script>
+</body>
+</html>

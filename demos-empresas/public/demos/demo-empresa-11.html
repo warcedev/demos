@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MAISON NOIR | Tienda de Ropa</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,600;0,900;1,400;1,600&family=Jost:wght@200;300;400;500;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --negro: #0d0d0d;
+  --carbon: #1a1a1a;
+  --gris-oscuro: #2e2e2e;
+  --gris-medio: #7a7a7a;
+  --gris-claro: #c8c8c8;
+  --crema: #f5f0e8;
+  --crema-oscuro: #ede5d5;
+  --arena: #d4c5a9;
+  --acento: #b8956a;
+  --acento-claro: #d4ab7f;
+  --blanco: #fafaf8;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Jost',sans-serif;
+  color:var(--negro);
+  background:var(--blanco);
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ─── CURSOR PERSONALIZADO ─── */
+.cursor{
+  position:fixed;top:0;left:0;
+  width:10px;height:10px;
+  background:var(--negro);
+  border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:transform .1s, width .3s, height .3s, background .3s;
+  mix-blend-mode:difference;
+}
+.cursor-ring{
+  position:fixed;top:0;left:0;
+  width:36px;height:36px;
+  border:1px solid var(--negro);
+  border-radius:50%;
+  pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:transform .12s ease-out, width .4s, height .4s, opacity .3s;
+  mix-blend-mode:difference;
+  opacity:.6;
+}
+.cursor.expand{width:40px;height:40px;}
+.cursor-ring.expand{width:60px;height:60px;opacity:.3;}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.6rem 5%;
+  background:rgba(250,250,248,0.92);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(0,0,0,0.06);
+  transition:padding .4s;
+}
+.nav-logo{
+  font-family:'Bodoni Moda',serif;
+  font-size:1.4rem;font-weight:900;
+  letter-spacing:6px;text-transform:uppercase;
+  color:var(--negro);text-decoration:none;
+}
+.nav-center ul{
+  list-style:none;display:flex;gap:2.8rem;
+}
+.nav-center ul a{
+  text-decoration:none;color:var(--gris-oscuro);
+  font-size:.72rem;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;
+  transition:color .3s;
+}
+.nav-center ul a:hover{color:var(--negro);}
+.nav-right{
+  display:flex;align-items:center;gap:1.8rem;
+}
+.nav-icon{
+  font-size:1.1rem;cursor:none;color:var(--negro);
+  transition:transform .3s;position:relative;
+}
+.nav-icon:hover{transform:scale(1.15);}
+.cart-badge{
+  position:absolute;top:-6px;right:-6px;
+  width:16px;height:16px;
+  background:var(--acento);color:var(--blanco);
+  border-radius:50%;font-size:.6rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+.nav-btn{
+  background:var(--negro);color:var(--blanco);
+  padding:.55rem 1.6rem;border-radius:1px;
+  text-decoration:none;font-size:.68rem;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;
+  transition:all .3s;
+}
+.nav-btn:hover{background:var(--acento);}
+
+/* ─── PROMO BAR ─── */
+.promo-bar{
+  background:var(--negro);
+  text-align:center;padding:.6rem;
+  margin-top:73px;
+  overflow:hidden;
+}
+.promo-bar-inner{
+  display:inline-block;
+  animation:marquee 20s linear infinite;
+  white-space:nowrap;
+}
+.promo-bar-inner span{
+  font-size:.68rem;font-weight:500;letter-spacing:3px;
+  text-transform:uppercase;color:var(--crema);
+  margin:0 3rem;
+}
+.promo-bar-inner span b{color:var(--acento-claro);}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ─── HERO ─── */
+.hero{
+  display:grid;grid-template-columns:1fr 1fr;
+  min-height:calc(100vh - 105px);
+  background:var(--crema);
+}
+.hero-left{
+  display:flex;flex-direction:column;
+  justify-content:flex-end;
+  padding:5rem 5% 6rem 7%;
+  position:relative;
+  overflow:hidden;
+}
+.hero-bg-num{
+  position:absolute;top:3rem;left:5%;
+  font-family:'Bodoni Moda',serif;
+  font-size:22rem;font-weight:900;
+  color:rgba(0,0,0,0.04);
+  line-height:1;user-select:none;pointer-events:none;
+}
+.hero-season{
+  font-size:.68rem;font-weight:500;letter-spacing:4px;
+  text-transform:uppercase;color:var(--acento);
+  margin-bottom:1.5rem;display:flex;align-items:center;gap:12px;
+}
+.hero-season::before{content:'';width:28px;height:1px;background:var(--acento);}
+
+.hero-title{
+  font-family:'Bodoni Moda',serif;
+  font-size:clamp(4rem,6.5vw,7.5rem);
+  font-weight:900;line-height:.92;
+  color:var(--negro);
+  margin-bottom:2.5rem;
+  position:relative;z-index:2;
+}
+.hero-title em{
+  font-style:italic;font-weight:400;
+  color:var(--gris-medio);display:block;
+}
+
+.hero-sub{
+  font-size:.92rem;line-height:1.9;color:var(--gris-oscuro);
+  font-weight:300;max-width:360px;margin-bottom:3rem;
+}
+
+.hero-actions{display:flex;gap:1rem;align-items:center;}
+.btn-dark{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--negro);color:var(--blanco);
+  padding:1.05rem 2.4rem;
+  text-decoration:none;font-size:.72rem;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;
+  border-radius:1px;transition:all .3s;
+}
+.btn-dark:hover{background:var(--acento);}
+.btn-text{
+  font-size:.72rem;font-weight:500;letter-spacing:2px;
+  text-transform:uppercase;color:var(--negro);
+  text-decoration:none;
+  border-bottom:1px solid var(--negro);padding-bottom:2px;
+  transition:color .3s,border-color .3s;
+}
+.btn-text:hover{color:var(--acento);border-color:var(--acento);}
+
+.hero-right{
+  position:relative;overflow:hidden;
+}
+.hero-right img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:top center;
+  display:block;
+  transition:transform 8s ease;
+}
+.hero:hover .hero-right img{transform:scale(1.04);}
+
+.hero-right-tag{
+  position:absolute;bottom:3rem;left:3rem;
+  background:var(--blanco);
+  padding:1.2rem 1.8rem;
+  display:flex;flex-direction:column;gap:.3rem;
+  border-left:3px solid var(--acento);
+}
+.hero-tag-label{font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gris-medio);}
+.hero-tag-val{font-family:'Bodoni Moda',serif;font-size:1.2rem;font-weight:600;color:var(--negro);}
+
+/* ─── CATEGORÍAS ─── */
+.cats{
+  padding:6rem 5%;
+  background:var(--blanco);
+}
+.cats-header{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:3.5rem;
+}
+.sec-label{
+  font-size:.68rem;font-weight:700;letter-spacing:3px;
+  text-transform:uppercase;color:var(--acento);margin-bottom:.7rem;
+  display:flex;align-items:center;gap:10px;
+}
+.sec-label::before{content:'';width:24px;height:1px;background:var(--acento);}
+.sec-title{
+  font-family:'Bodoni Moda',serif;
+  font-size:clamp(2rem,3vw,2.8rem);
+  font-weight:900;line-height:1.1;color:var(--negro);
+}
+.ver-todo{
+  font-size:.68rem;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--negro);text-decoration:none;
+  border-bottom:1px solid var(--negro);padding-bottom:3px;
+  white-space:nowrap;
+}
+.cats-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1.5rem;
+}
+.cat-item{
+  position:relative;overflow:hidden;
+  aspect-ratio:3/4;border-radius:2px;
+  cursor:none;
+}
+.cat-item img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .6s ease;
+}
+.cat-item:hover img{transform:scale(1.08);}
+.cat-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.6) 0%,transparent 55%);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:1.8rem;
+}
+.cat-name{
+  font-family:'Bodoni Moda',serif;
+  font-size:1.5rem;font-weight:600;color:var(--blanco);
+  margin-bottom:.3rem;
+}
+.cat-count{font-size:.68rem;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.6);}
+.cat-arrow{
+  position:absolute;top:1.5rem;right:1.5rem;
+  width:36px;height:36px;
+  background:var(--blanco);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;
+  transform:scale(0);opacity:0;
+  transition:all .35s;
+}
+.cat-item:hover .cat-arrow{transform:scale(1);opacity:1;}
+
+/* ─── DESTACADOS ─── */
+.destacados{
+  padding:7rem 5%;
+  background:var(--crema);
+}
+.destacados-header{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:4rem;
+}
+.tabs{display:flex;gap:0;}
+.tab-btn{
+  padding:.7rem 1.8rem;
+  font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gris-medio);cursor:none;
+  border:1px solid transparent;
+  border-bottom:1px solid var(--gris-claro);
+  transition:all .3s;
+  background:transparent;
+}
+.tab-btn.active,.tab-btn:hover{
+  color:var(--negro);
+  border:1px solid var(--negro);
+  background:var(--negro);color:var(--blanco);
+}
+.productos-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:2rem;
+}
+.prod-card{cursor:none;}
+.prod-img-wrap{
+  position:relative;overflow:hidden;
+  aspect-ratio:3/4;border-radius:2px;margin-bottom:1.2rem;
+  background:var(--crema-oscuro);
+}
+.prod-img-wrap img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .55s ease, opacity .4s;
+}
+.prod-hover-img{
+  position:absolute;inset:0;opacity:0;
+  transition:opacity .4s;
+}
+.prod-card:hover .prod-img-wrap img:first-child{opacity:0;}
+.prod-card:hover .prod-hover-img{opacity:1;}
+.prod-badge{
+  position:absolute;top:1rem;left:1rem;
+  padding:.3rem .8rem;border-radius:1px;
+  font-size:.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+}
+.badge-new{background:var(--negro);color:var(--blanco);}
+.badge-sale{background:var(--acento);color:var(--blanco);}
+.prod-actions{
+  position:absolute;bottom:1rem;left:1rem;right:1rem;
+  display:flex;gap:.5rem;
+  transform:translateY(12px);opacity:0;
+  transition:all .35s;
+}
+.prod-card:hover .prod-actions{transform:translateY(0);opacity:1;}
+.prod-btn-cart{
+  flex:1;background:var(--negro);color:var(--blanco);
+  border:none;padding:.75rem;cursor:none;
+  font-family:'Jost',sans-serif;
+  font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  transition:background .3s;
+}
+.prod-btn-cart:hover{background:var(--acento);}
+.prod-btn-wish{
+  width:42px;background:var(--blanco);border:none;
+  cursor:none;font-size:1.1rem;transition:background .3s;
+}
+.prod-btn-wish:hover{background:var(--crema);}
+.prod-name{
+  font-family:'Bodoni Moda',serif;
+  font-size:1.05rem;font-weight:600;color:var(--negro);
+  margin-bottom:.3rem;
+}
+.prod-brand{font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--gris-medio);margin-bottom:.6rem;}
+.prod-price{display:flex;align-items:center;gap:.8rem;}
+.price-now{font-size:1rem;font-weight:700;color:var(--negro);}
+.price-old{font-size:.88rem;color:var(--gris-claro);text-decoration:line-through;}
+.price-discount{font-size:.68rem;font-weight:700;color:var(--acento);}
+.prod-colors{display:flex;gap:.5rem;margin-top:.8rem;}
+.color-dot{
+  width:16px;height:16px;border-radius:50%;
+  border:2px solid transparent;cursor:none;
+  transition:border-color .2s;
+}
+.color-dot:hover,.color-dot.active{border-color:var(--negro);}
+
+/* ─── BANNER CENTRAL ─── */
+.banner-mid{
+  display:grid;grid-template-columns:1fr 1fr;
+  min-height:600px;
+}
+.banner-img-left{
+  position:relative;overflow:hidden;
+}
+.banner-img-left img{width:100%;height:100%;object-fit:cover;display:block;}
+.banner-content{
+  background:var(--negro);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:6rem 7%;
+  position:relative;overflow:hidden;
+}
+.banner-content::before{
+  content:'SALE';
+  position:absolute;right:-2rem;top:50%;transform:translateY(-50%) rotate(90deg);
+  font-family:'Bodoni Moda',serif;
+  font-size:10rem;font-weight:900;
+  color:rgba(255,255,255,.03);
+  letter-spacing:1rem;
+  pointer-events:none;user-select:none;
+  white-space:nowrap;
+}
+.banner-eyebrow{
+  font-size:.68rem;font-weight:700;letter-spacing:4px;
+  text-transform:uppercase;color:var(--acento-claro);
+  margin-bottom:1.5rem;
+}
+.banner-title{
+  font-family:'Bodoni Moda',serif;
+  font-size:clamp(3rem,5vw,5.5rem);
+  font-weight:900;line-height:.95;
+  color:var(--blanco);margin-bottom:.5rem;
+}
+.banner-title em{
+  font-style:italic;font-weight:400;color:var(--arena);display:block;
+}
+.banner-pct{
+  font-family:'Bodoni Moda',serif;
+  font-size:clamp(5rem,9vw,10rem);
+  font-weight:900;line-height:1;
+  color:var(--acento);
+  margin:1rem 0 2rem;
+}
+.banner-pct sup{font-size:.35em;vertical-align:super;}
+.banner-sub{font-size:.88rem;color:rgba(255,255,255,.5);font-weight:300;margin-bottom:3rem;max-width:340px;}
+.btn-light{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--blanco);color:var(--negro);
+  padding:1.05rem 2.4rem;
+  text-decoration:none;font-size:.72rem;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;
+  border-radius:1px;transition:all .3s;width:fit-content;
+}
+.btn-light:hover{background:var(--acento);color:var(--blanco);}
+
+/* ─── LOOKBOOK ─── */
+.lookbook{
+  padding:7rem 5%;
+  background:var(--blanco);
+}
+.lookbook-header{text-align:center;margin-bottom:5rem;}
+.lookbook-header .sec-label{justify-content:center;}
+.lookbook-header .sec-label::before{display:none;}
+.lookbook-grid{
+  display:grid;
+  grid-template-columns:1.3fr 1fr 1fr 1.3fr;
+  grid-template-rows:340px 340px;
+  gap:1.2rem;
+}
+.lk{position:relative;overflow:hidden;border-radius:2px;cursor:none;}
+.lk img{width:100%;height:100%;object-fit:cover;transition:transform .6s;}
+.lk:hover img{transform:scale(1.06);}
+.lk-overlay{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,0);
+  transition:background .4s;
+  display:flex;align-items:center;justify-content:center;
+}
+.lk:hover .lk-overlay{background:rgba(0,0,0,.35);}
+.lk-cta{
+  opacity:0;transform:scale(.8);
+  transition:all .35s;
+  background:var(--blanco);color:var(--negro);
+  padding:.75rem 2rem;
+  font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  border:none;cursor:none;
+}
+.lk:hover .lk-cta{opacity:1;transform:scale(1);}
+.lk:nth-child(1){grid-row:span 2;}
+.lk:nth-child(4){grid-row:2;}
+.lk:nth-child(6){grid-row:span 2;grid-column:4;}
+
+/* ─── MARQUEE ─── */
+.brand-marquee{
+  background:var(--negro);
+  padding:1.6rem 0;
+  overflow:hidden;
+  border-top:1px solid rgba(255,255,255,.05);
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+.marquee-track{
+  display:flex;gap:4rem;
+  animation:mar 25s linear infinite;
+  white-space:nowrap;
+}
+.marquee-item{
+  font-family:'Bodoni Moda',serif;
+  font-size:1rem;font-weight:400;
+  letter-spacing:4px;text-transform:uppercase;
+  color:rgba(255,255,255,.25);
+  flex-shrink:0;
+  transition:color .3s;
+}
+.marquee-item:hover{color:var(--acento);}
+.marquee-sep{color:var(--acento);opacity:.4;}
+@keyframes mar{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ─── NUEVOS INGRESOS ─── */
+.nuevos{
+  padding:7rem 5%;
+  background:var(--crema);
+}
+.nuevos-header{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:4rem;
+}
+.nuevos-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  grid-template-rows:500px 260px;
+  gap:1.5rem;
+}
+.new-item{
+  position:relative;overflow:hidden;border-radius:2px;
+  cursor:none;
+}
+.new-item img{width:100%;height:100%;object-fit:cover;transition:transform .6s;}
+.new-item:hover img{transform:scale(1.05);}
+.new-item:first-child{grid-row:span 2;}
+.new-tag{
+  position:absolute;top:1.2rem;left:1.2rem;
+  background:var(--blanco);
+  padding:.35rem 1rem;
+  font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--negro);
+}
+.new-info{
+  position:absolute;bottom:1.2rem;left:1.2rem;right:1.2rem;
+}
+.new-name{
+  font-family:'Bodoni Moda',serif;
+  font-size:1.1rem;font-weight:600;color:var(--blanco);
+}
+.new-item:first-child .new-name{font-size:1.6rem;}
+.new-price{font-size:.88rem;color:rgba(255,255,255,.7);margin-top:.3rem;}
+.new-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.65) 0%,transparent 55%);
+}
+
+/* ─── SERVICIOS ─── */
+.servicios{
+  padding:5rem 5%;
+  background:var(--blanco);
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:0;
+  border-top:1px solid var(--crema-oscuro);
+  border-bottom:1px solid var(--crema-oscuro);
+}
+.svc{
+  padding:3rem 2.5rem;
+  text-align:center;
+  border-right:1px solid var(--crema-oscuro);
+  transition:background .3s;
+}
+.svc:last-child{border-right:none;}
+.svc:hover{background:var(--crema);}
+.svc-icon{font-size:2rem;margin-bottom:1.2rem;display:block;}
+.svc-name{
+  font-family:'Bodoni Moda',serif;
+  font-size:1rem;font-weight:600;color:var(--negro);margin-bottom:.5rem;
+}
+.svc-text{font-size:.82rem;color:var(--gris-medio);font-weight:300;line-height:1.7;}
+
+/* ─── NEWSLETTER ─── */
+.newsletter{
+  background:var(--negro);
+  padding:7rem 5%;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.newsletter::before{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,rgba(184,149,106,.08) 0%,transparent 70%);
+  pointer-events:none;
+}
+.nl-eyebrow{
+  font-size:.68rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;
+  color:var(--acento);margin-bottom:1.5rem;
+}
+.nl-title{
+  font-family:'Bodoni Moda',serif;
+  font-size:clamp(2.5rem,5vw,5rem);
+  font-weight:900;color:var(--blanco);
+  line-height:1;margin-bottom:.7rem;
+}
+.nl-title em{font-style:italic;font-weight:400;color:var(--arena);}
+.nl-sub{font-size:.9rem;color:rgba(255,255,255,.4);font-weight:300;max-width:420px;margin:0 auto 3rem;}
+.nl-form{
+  display:flex;gap:0;max-width:500px;margin:0 auto;
+}
+.nl-input{
+  flex:1;
+  padding:1.1rem 1.8rem;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);
+  border-right:none;
+  border-radius:1px 0 0 1px;
+  font-family:'Jost',sans-serif;
+  font-size:.88rem;color:var(--blanco);outline:none;
+  transition:border-color .3s;
+}
+.nl-input::placeholder{color:rgba(255,255,255,.3);}
+.nl-input:focus{border-color:rgba(184,149,106,.5);}
+.nl-submit{
+  background:var(--acento);color:var(--blanco);
+  border:1px solid var(--acento);
+  padding:1.1rem 2rem;border-radius:0 1px 1px 0;
+  font-family:'Jost',sans-serif;
+  font-size:.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  cursor:none;transition:background .3s;
+}
+.nl-submit:hover{background:var(--acento-claro);}
+.nl-note{font-size:.68rem;color:rgba(255,255,255,.2);margin-top:1.2rem;letter-spacing:1px;}
+
+/* ─── FOOTER ─── */
+footer{
+  background:var(--negro);
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.footer-main{
+  padding:5rem 5% 4rem;
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;
+}
+.footer-brand{
+  font-family:'Bodoni Moda',serif;
+  font-size:2rem;font-weight:900;letter-spacing:5px;
+  text-transform:uppercase;color:var(--blanco);
+  margin-bottom:1.2rem;
+}
+.footer-about{font-size:.82rem;line-height:1.9;color:rgba(255,255,255,.3);max-width:280px;}
+.footer-social{display:flex;gap:1rem;margin-top:2rem;}
+.fsoc{
+  width:36px;height:36px;
+  border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;cursor:none;
+  transition:all .3s;color:rgba(255,255,255,.4);text-decoration:none;
+}
+.fsoc:hover{border-color:var(--acento);color:var(--acento);}
+.footer-col-title{
+  font-size:.65rem;font-weight:700;letter-spacing:3px;
+  text-transform:uppercase;color:var(--acento);margin-bottom:1.5rem;
+}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:.85rem;}
+.footer-links a{
+  text-decoration:none;color:rgba(255,255,255,.35);
+  font-size:.85rem;transition:color .3s;
+}
+.footer-links a:hover{color:var(--blanco);}
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,.05);
+  padding:1.5rem 5%;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:1rem;
+}
+.footer-copy{font-size:.72rem;color:rgba(255,255,255,.18);}
+.footer-pay{display:flex;gap:1rem;align-items:center;}
+.pay-icon{
+  background:rgba(255,255,255,.06);
+  padding:.3rem .8rem;border-radius:2px;
+  font-size:.65rem;font-weight:700;letter-spacing:1px;
+  color:rgba(255,255,255,.3);text-transform:uppercase;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.hero-season{animation:fadeUp .6s ease both .3s;opacity:0;}
+.hero-title  {animation:fadeUp .7s ease both .5s;opacity:0;}
+.hero-sub    {animation:fadeUp .6s ease both .7s;opacity:0;}
+.hero-actions{animation:fadeUp .6s ease both .85s;opacity:0;}
+
+@keyframes shimmer{0%,100%{opacity:.04}50%{opacity:.07}}
+.hero-bg-num{animation:shimmer 4s ease infinite;}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Maison Noir</a>
+  <div class="nav-center">
+    <ul>
+      <li><a href="#categorias">Mujer</a></li>
+      <li><a href="#categorias">Hombre</a></li>
+      <li><a href="#nuevos">Novedades</a></li>
+      <li><a href="#lookbook">Lookbook</a></li>
+      <li><a href="#banner">Rebajas</a></li>
+    </ul>
+  </div>
+  <div class="nav-right">
+    <span class="nav-icon">🔍</span>
+    <span class="nav-icon">♡</span>
+    <span class="nav-icon" style="position:relative;">
+      🛍
+      <span class="cart-badge">3</span>
+    </span>
+    <a href="#" class="nav-btn">Mi Cuenta</a>
+  </div>
+</nav>
+
+<!-- PROMO BAR -->
+<div class="promo-bar">
+  <div class="promo-bar-inner">
+    <span>Envío gratis en compras mayores a <b>$50.000</b></span>
+    <span>Nuevas colecciones <b>SS25</b> ya disponibles</span>
+    <span>Rebajas de hasta <b>50% OFF</b> en temporada anterior</span>
+    <span>Devoluciones gratuitas en <b>30 días</b></span>
+    <span>Envío gratis en compras mayores a <b>$50.000</b></span>
+    <span>Nuevas colecciones <b>SS25</b> ya disponibles</span>
+    <span>Rebajas de hasta <b>50% OFF</b> en temporada anterior</span>
+    <span>Devoluciones gratuitas en <b>30 días</b></span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-bg-num">SS</div>
+    <div class="hero-season">Colección Primavera — Verano 2025</div>
+    <h1 class="hero-title">
+      Viste<br>
+      tu<br>
+      <em>esencia.</em>
+    </h1>
+    <p class="hero-sub">Piezas diseñadas para quienes entienden que la moda es una forma de hablar sin palabras. Minimalismo audaz, texturas impecables.</p>
+    <div class="hero-actions">
+      <a href="#destacados" class="btn-dark">Ver Colección →</a>
+      <a href="#lookbook" class="btn-text">Lookbook SS25</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=900&q=80&auto=format&fit=crop" alt="Modelo con outfit de moda"/>
+    <div class="hero-right-tag">
+      <span class="hero-tag-label">Tendencia del momento</span>
+      <span class="hero-tag-val">Minimal Luxe</span>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORÍAS -->
+<section class="cats" id="categorias">
+  <div class="cats-header">
+    <div>
+      <div class="sec-label">Explorar</div>
+      <div class="sec-title">Categorías</div>
+    </div>
+    <a href="#" class="ver-todo">Ver todo →</a>
+  </div>
+  <div class="cats-grid">
+    <div class="cat-item">
+      <img src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=400&q=80&auto=format&fit=crop" alt="Vestidos"/>
+      <div class="cat-overlay">
+        <div class="cat-name">Vestidos</div>
+        <div class="cat-count">48 piezas</div>
+      </div>
+      <div class="cat-arrow">→</div>
+    </div>
+    <div class="cat-item">
+      <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&q=80&auto=format&fit=crop" alt="Sacos & Blazers"/>
+      <div class="cat-overlay">
+        <div class="cat-name">Blazers</div>
+        <div class="cat-count">32 piezas</div>
+      </div>
+      <div class="cat-arrow">→</div>
+    </div>
+    <div class="cat-item">
+      <img src="https://images.unsplash.com/photo-1542295669297-4d352b042bca?w=400&q=80&auto=format&fit=crop" alt="Pantalones"/>
+      <div class="cat-overlay">
+        <div class="cat-name">Pantalones</div>
+        <div class="cat-count">55 piezas</div>
+      </div>
+      <div class="cat-arrow">→</div>
+    </div>
+    <div class="cat-item">
+      <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400&q=80&auto=format&fit=crop" alt="Accesorios"/>
+      <div class="cat-overlay">
+        <div class="cat-name">Accesorios</div>
+        <div class="cat-count">76 piezas</div>
+      </div>
+      <div class="cat-arrow">→</div>
+    </div>
+  </div>
+</section>
+
+<!-- DESTACADOS -->
+<section class="destacados" id="destacados">
+  <div class="destacados-header">
+    <div>
+      <div class="sec-label">Selección editorial</div>
+      <div class="sec-title">Lo más deseado</div>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active">Nuevos</button>
+      <button class="tab-btn">Más vendidos</button>
+      <button class="tab-btn">Rebajas</button>
+    </div>
+  </div>
+  <div class="productos-grid">
+
+    <!-- PRODUCTO 1 -->
+    <div class="prod-card">
+      <div class="prod-img-wrap">
+        <img src="https://images.unsplash.com/photo-1551803091-e20673f15770?w=400&q=80&auto=format&fit=crop" alt="Blazer cruzado"/>
+        <img class="prod-hover-img" src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&q=80&auto=format&fit=crop" alt="Blazer cruzado detalle"/>
+        <span class="prod-badge badge-new">Nuevo</span>
+        <div class="prod-actions">
+          <button class="prod-btn-cart">Agregar al carrito</button>
+          <button class="prod-btn-wish">♡</button>
+        </div>
+      </div>
+      <div class="prod-brand">Maison Noir</div>
+      <div class="prod-name">Blazer Estructurado Negro</div>
+      <div class="prod-price">
+        <span class="price-now">$89.900</span>
+      </div>
+      <div class="prod-colors">
+        <div class="color-dot active" style="background:#0d0d0d;"></div>
+        <div class="color-dot" style="background:#c8c8c8;"></div>
+        <div class="color-dot" style="background:#d4c5a9;"></div>
+      </div>
+    </div>
+
+    <!-- PRODUCTO 2 -->
+    <div class="prod-card">
+      <div class="prod-img-wrap">
+        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80&auto=format&fit=crop" alt="Vestido midi"/>
+        <img class="prod-hover-img" src="https://images.unsplash.com/photo-1583846552345-6e42c2d22be4?w=400&q=80&auto=format&fit=crop" alt="Vestido midi alt"/>
+        <span class="prod-badge badge-sale">−30%</span>
+        <div class="prod-actions">
+          <button class="prod-btn-cart">Agregar al carrito</button>
+          <button class="prod-btn-wish">♡</button>
+        </div>
+      </div>
+      <div class="prod-brand">Maison Noir</div>
+      <div class="prod-name">Vestido Midi Crema</div>
+      <div class="prod-price">
+        <span class="price-now">$62.300</span>
+        <span class="price-old">$89.000</span>
+        <span class="price-discount">−30%</span>
+      </div>
+      <div class="prod-colors">
+        <div class="color-dot active" style="background:#f5f0e8;border:1.5px solid #c8c8c8;"></div>
+        <div class="color-dot" style="background:#2e2e2e;"></div>
+      </div>
+    </div>
+
+    <!-- PRODUCTO 3 -->
+    <div class="prod-card">
+      <div class="prod-img-wrap">
+        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&q=80&auto=format&fit=crop" alt="Trench coat"/>
+        <img class="prod-hover-img" src="https://images.unsplash.com/photo-1596609548086-85bbf8ddb6b9?w=400&q=80&auto=format&fit=crop" alt="Trench alt"/>
+        <span class="prod-badge badge-new">Nuevo</span>
+        <div class="prod-actions">
+          <button class="prod-btn-cart">Agregar al carrito</button>
+          <button class="prod-btn-wish">♡</button>
+        </div>
+      </div>
+      <div class="prod-brand">Maison Noir</div>
+      <div class="prod-name">Trench Coat Clásico</div>
+      <div class="prod-price">
+        <span class="price-now">$134.500</span>
+      </div>
+      <div class="prod-colors">
+        <div class="color-dot active" style="background:#d4c5a9;"></div>
+        <div class="color-dot" style="background:#0d0d0d;"></div>
+        <div class="color-dot" style="background:#7a5c3a;"></div>
+      </div>
+    </div>
+
+    <!-- PRODUCTO 4 -->
+    <div class="prod-card">
+      <div class="prod-img-wrap">
+        <img src="https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=400&q=80&auto=format&fit=crop" alt="Pantalón palazzo"/>
+        <img class="prod-hover-img" src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&q=80&auto=format&fit=crop" alt="Pantalón alt"/>
+        <div class="prod-actions">
+          <button class="prod-btn-cart">Agregar al carrito</button>
+          <button class="prod-btn-wish">♡</button>
+        </div>
+      </div>
+      <div class="prod-brand">Maison Noir</div>
+      <div class="prod-name">Pantalón Palazzo Wide</div>
+      <div class="prod-price">
+        <span class="price-now">$54.900</span>
+      </div>
+      <div class="prod-colors">
+        <div class="color-dot active" style="background:#0d0d0d;"></div>
+        <div class="color-dot" style="background:#f5f0e8;border:1.5px solid #c8c8c8;"></div>
+        <div class="color-dot" style="background:#8b8b8b;"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BANNER SALE -->
+<div class="banner-mid" id="banner">
+  <div class="banner-img-left">
+    <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=700&q=80&auto=format&fit=crop" alt="Modelo con ropa en oferta"/>
+  </div>
+  <div class="banner-content">
+    <div class="banner-eyebrow">Temporada pasada — Liquidación final</div>
+    <div class="banner-title">Gran<br><em>Rebajas</em></div>
+    <div class="banner-pct"><sup>Hasta</sup>50<sup>% OFF</sup></div>
+    <p class="banner-sub">Piezas de colecciones anteriores a precios irrepetibles. Stock limitado, no te quedes sin tu favorita.</p>
+    <a href="#" class="btn-light">Ver ofertas →</a>
+  </div>
+</div>
+
+<!-- LOOKBOOK -->
+<section class="lookbook" id="lookbook">
+  <div class="lookbook-header">
+    <div class="sec-label">Inspiración</div>
+    <h2 class="sec-title">Lookbook SS25</h2>
+  </div>
+  <div class="lookbook-grid">
+    <div class="lk">
+      <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=500&q=80&auto=format&fit=crop" alt="Look 1"/>
+      <div class="lk-overlay"><button class="lk-cta">Ver Look</button></div>
+    </div>
+    <div class="lk">
+      <img src="https://images.unsplash.com/photo-1558171813-8f5e9ac6b3b1?w=400&q=80&auto=format&fit=crop" alt="Look 2"/>
+      <div class="lk-overlay"><button class="lk-cta">Ver Look</button></div>
+    </div>
+    <div class="lk">
+      <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&q=80&auto=format&fit=crop" alt="Look 3"/>
+      <div class="lk-overlay"><button class="lk-cta">Ver Look</button></div>
+    </div>
+    <div class="lk">
+      <img src="https://images.unsplash.com/photo-1566479580776-e25a3cf42b88?w=400&q=80&auto=format&fit=crop" alt="Look 4"/>
+      <div class="lk-overlay"><button class="lk-cta">Ver Look</button></div>
+    </div>
+    <div class="lk">
+      <img src="https://images.unsplash.com/photo-1475180098004-ca77a66827be?w=400&q=80&auto=format&fit=crop" alt="Look 5"/>
+      <div class="lk-overlay"><button class="lk-cta">Ver Look</button></div>
+    </div>
+    <div class="lk">
+      <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=500&q=80&auto=format&fit=crop" alt="Look 6"/>
+      <div class="lk-overlay"><button class="lk-cta">Ver Look</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE MARCAS -->
+<div class="brand-marquee">
+  <div class="marquee-track">
+    <span class="marquee-item">Minimal Luxe</span>
+    <span class="marquee-sep">◆</span>
+    <span class="marquee-item">Urban Essence</span>
+    <span class="marquee-sep">◆</span>
+    <span class="marquee-item">Contemporary</span>
+    <span class="marquee-sep">◆</span>
+    <span class="marquee-item">Avant-Garde</span>
+    <span class="marquee-sep">◆</span>
+    <span class="marquee-item">Maison Noir</span>
+    <span class="marquee-sep">◆</span>
+    <span class="marquee-item">Couture Studio</span>
+    <span class="marquee-sep">◆</span>
+    <span class="marquee-item">SS 2025</span>
+    <span class="marquee-sep">◆</span>
+    <span class="marquee-item">Minimal Luxe</span>
+    <span class="marquee-sep">◆</span>
+    <span class="marquee-item">Urban Essence</span>
+    <span class="marquee-sep">◆</span>
+    <span class="marquee-item">Contemporary</span>
+    <span class="marquee-sep">◆</span>
+    <span class="marquee-item">Avant-Garde</span>
+    <span class="marquee-sep">◆</span>
+    <span class="marquee-item">Maison Noir</span>
+    <span class="marquee-sep">◆</span>
+    <span class="marquee-item">Couture Studio</span>
+    <span class="marquee-sep">◆</span>
+    <span class="marquee-item">SS 2025</span>
+    <span class="marquee-sep">◆</span>
+  </div>
+</div>
+
+<!-- NUEVOS INGRESOS -->
+<section class="nuevos" id="nuevos">
+  <div class="nuevos-header">
+    <div>
+      <div class="sec-label">Recién llegado</div>
+      <div class="sec-title">Nuevos ingresos</div>
+    </div>
+    <a href="#" class="ver-todo">Ver todos →</a>
+  </div>
+  <div class="nuevos-grid">
+    <div class="new-item">
+      <img src="https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=600&q=80&auto=format&fit=crop" alt="Abrigo de temporada"/>
+      <div class="new-overlay"></div>
+      <span class="new-tag">Nuevo ingreso</span>
+      <div class="new-info">
+        <div class="new-name">Abrigo Oversize de Lana</div>
+        <div class="new-price">desde $145.000</div>
+      </div>
+    </div>
+    <div class="new-item">
+      <img src="https://images.unsplash.com/photo-1519415510236-718bef2328e5?w=400&q=80&auto=format&fit=crop" alt="Falda plisada"/>
+      <div class="new-overlay"></div>
+      <span class="new-tag">Nuevo</span>
+      <div class="new-info">
+        <div class="new-name">Falda Plisada Midi</div>
+        <div class="new-price">$48.900</div>
+      </div>
+    </div>
+    <div class="new-item">
+      <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&q=80&auto=format&fit=crop" alt="Set coordinated"/>
+      <div class="new-overlay"></div>
+      <span class="new-tag">Nuevo</span>
+      <div class="new-info">
+        <div class="new-name">Conjunto Coordinado</div>
+        <div class="new-price">$97.500</div>
+      </div>
+    </div>
+    <div class="new-item">
+      <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&q=80&auto=format&fit=crop" alt="Bolso estructurado"/>
+      <div class="new-overlay"></div>
+      <span class="new-tag">Accesorio</span>
+      <div class="new-info">
+        <div class="new-name">Bolso Estructurado</div>
+        <div class="new-price">$72.000</div>
+      </div>
+    </div>
+    <div class="new-item">
+      <img src="https://images.unsplash.com/photo-1547949003-9792a18a2601?w=400&q=80&auto=format&fit=crop" alt="Zapato stiletto"/>
+      <div class="new-overlay"></div>
+      <span class="new-tag">Calzado</span>
+      <div class="new-info">
+        <div class="new-name">Stiletto Punta Fina</div>
+        <div class="new-price">$54.900</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<div class="servicios">
+  <div class="svc">
+    <span class="svc-icon">🚚</span>
+    <div class="svc-name">Envío Gratis</div>
+    <p class="svc-text">En compras superiores a $50.000. Llegamos a todo el país en 3–5 días hábiles.</p>
+  </div>
+  <div class="svc">
+    <span class="svc-icon">↩️</span>
+    <div class="svc-name">Devoluciones Fáciles</div>
+    <p class="svc-text">30 días para devolver o cambiar tu compra sin ninguna pregunta.</p>
+  </div>
+  <div class="svc">
+    <span class="svc-icon">🔒</span>
+    <div class="svc-name">Pago Seguro</div>
+    <p class="svc-text">Todas las transacciones están encriptadas y protegidas con SSL.</p>
+  </div>
+  <div class="svc">
+    <span class="svc-icon">💬</span>
+    <div class="svc-name">Atención 24/7</div>
+    <p class="svc-text">Nuestro equipo está disponible por WhatsApp, email o chat en todo momento.</p>
+  </div>
+</div>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="nl-eyebrow">Comunidad Maison Noir</div>
+  <h2 class="nl-title">Sé el primero <em>en enterarte</em></h2>
+  <p class="nl-sub">Nuevas colecciones, lookbooks exclusivos y ofertas anticipadas para suscriptores. Sin spam, solo lo que importa.</p>
+  <form class="nl-form" onsubmit="event.preventDefault();alert('¡Gracias por suscribirte!')">
+    <input class="nl-input" type="email" placeholder="Tu correo electrónico"/>
+    <button class="nl-submit" type="submit">Suscribirse</button>
+  </form>
+  <p class="nl-note">Al suscribirte aceptas nuestra política de privacidad. Puedes cancelar cuando quieras.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-main">
+    <div>
+      <div class="footer-brand">Maison Noir</div>
+      <p class="footer-about">Moda contemporánea para personas que viven con intención. Diseños atemporales, materiales de calidad y una curaduría que habla por sí sola.</p>
+      <div class="footer-social">
+        <a href="#" class="fsoc">ig</a>
+        <a href="#" class="fsoc">𝕏</a>
+        <a href="#" class="fsoc">tt</a>
+        <a href="#" class="fsoc">pi</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Tienda</div>
+      <ul class="footer-links">
+        <li><a href="#">Mujer</a></li>
+        <li><a href="#">Hombre</a></li>
+        <li><a href="#">Novedades</a></li>
+        <li><a href="#">Rebajas</a></li>
+        <li><a href="#">Lookbook</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Ayuda</div>
+      <ul class="footer-links">
+        <li><a href="#">Cómo comprar</a></li>
+        <li><a href="#">Tabla de tallas</a></li>
+        <li><a href="#">Devoluciones</a></li>
+        <li><a href="#">Seguimiento de pedido</a></li>
+        <li><a href="#">Contacto</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Empresa</div>
+      <ul class="footer-links">
+        <li><a href="#">Sobre nosotros</a></li>
+        <li><a href="#">Sostenibilidad</a></li>
+        <li><a href="#">Trabaja con nosotros</a></li>
+        <li><a href="#">Prensa</a></li>
+        <li><a href="#">Franquicias</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Maison Noir — Todos los derechos reservados.</div>
+    <div class="footer-pay">
+      <span class="pay-icon">Visa</span>
+      <span class="pay-icon">MC</span>
+      <span class="pay-icon">Amex</span>
+      <span class="pay-icon">MP</span>
+      <span class="pay-icon">Naranja</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Cursor personalizado
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0, my=0, rx=0, ry=0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top  = my + 'px';
+});
+
+function animateRing(){
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+document.querySelectorAll('a,button,.cat-item,.prod-card,.lk,.new-item,.nav-icon').forEach(el => {
+  el.addEventListener('mouseenter',()=>{cursor.classList.add('expand');ring.classList.add('expand');});
+  el.addEventListener('mouseleave',()=>{cursor.classList.remove('expand');ring.classList.remove('expand');});
+});
+
+// Tabs
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+// Color dots
+document.querySelectorAll('.prod-colors').forEach(group => {
+  group.querySelectorAll('.color-dot').forEach(dot => {
+    dot.addEventListener('click', () => {
+      group.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+      dot.classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>

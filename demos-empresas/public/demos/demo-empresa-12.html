@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AutoPlaza | Autos Usados de Confianza</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --azul:       #1a4fa8;
+  --azul-osc:   #0f3278;
+  --azul-cla:   #e8f0fc;
+  --naranja:    #f5820d;
+  --naranja-cla:#fff3e0;
+  --gris-osc:   #2c2c2c;
+  --gris-med:   #666;
+  --gris-cla:   #f4f5f7;
+  --borde:      #e0e3e9;
+  --blanco:     #ffffff;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito Sans',sans-serif;color:var(--gris-osc);background:var(--gris-cla);}
+
+/* ─── TOP BAR ─── */
+.topbar{
+  background:var(--azul-osc);
+  padding:.5rem 5%;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:.5rem;
+}
+.topbar-item{
+  font-size:.78rem;color:rgba(255,255,255,.8);
+  display:flex;align-items:center;gap:.5rem;
+}
+.topbar-item b{color:#fff;}
+
+/* ─── NAV ─── */
+nav{
+  background:var(--blanco);
+  box-shadow:0 2px 12px rgba(0,0,0,.08);
+  position:sticky;top:0;z-index:100;
+  padding:1rem 5%;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:1rem;flex-wrap:wrap;
+}
+.nav-logo{
+  font-family:'Nunito',sans-serif;
+  font-size:1.6rem;font-weight:900;
+  color:var(--azul);text-decoration:none;
+  display:flex;align-items:center;gap:.5rem;
+}
+.nav-logo-icon{
+  background:var(--naranja);color:#fff;
+  width:36px;height:36px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;
+}
+nav ul{list-style:none;display:flex;gap:2rem;}
+nav ul a{
+  text-decoration:none;color:var(--gris-med);
+  font-size:.88rem;font-weight:600;
+  transition:color .2s;
+}
+nav ul a:hover{color:var(--azul);}
+.nav-tel{
+  display:flex;align-items:center;gap:.6rem;
+  background:var(--azul);color:#fff;
+  padding:.6rem 1.4rem;border-radius:25px;
+  text-decoration:none;font-weight:700;font-size:.88rem;
+  transition:background .2s;
+  white-space:nowrap;
+}
+.nav-tel:hover{background:var(--azul-osc);}
+
+/* ─── HERO ─── */
+.hero{
+  background:linear-gradient(135deg, var(--azul-osc) 0%, var(--azul) 60%, #2a6dd9 100%);
+  padding:4rem 5% 0;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:2rem;align-items:end;overflow:hidden;
+  min-height:480px;
+}
+.hero-left{padding-bottom:4rem;}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+  padding:.4rem 1rem;border-radius:20px;
+  font-size:.75rem;font-weight:700;color:rgba(255,255,255,.9);
+  letter-spacing:.5px;margin-bottom:1.5rem;
+}
+.hero-badge span{
+  background:var(--naranja);color:#fff;
+  padding:.15rem .6rem;border-radius:12px;font-size:.68rem;
+}
+.hero-title{
+  font-family:'Nunito',sans-serif;
+  font-size:clamp(2rem,4vw,3rem);
+  font-weight:900;line-height:1.15;
+  color:#fff;margin-bottom:1rem;
+}
+.hero-title em{
+  font-style:normal;color:#ffd166;
+  display:block;
+}
+.hero-sub{
+  font-size:.98rem;line-height:1.8;
+  color:rgba(255,255,255,.75);
+  max-width:420px;margin-bottom:2rem;font-weight:400;
+}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;}
+.btn-orange{
+  background:var(--naranja);color:#fff;
+  padding:.85rem 2rem;border-radius:25px;
+  text-decoration:none;font-weight:800;font-size:.88rem;
+  transition:all .2s;display:inline-flex;align-items:center;gap:.5rem;
+  box-shadow:0 4px 15px rgba(245,130,13,.4);
+}
+.btn-orange:hover{background:#e0720b;transform:translateY(-2px);}
+.btn-white-outline{
+  background:transparent;color:#fff;
+  border:2px solid rgba(255,255,255,.5);
+  padding:.83rem 1.8rem;border-radius:25px;
+  text-decoration:none;font-weight:700;font-size:.88rem;
+  transition:all .2s;
+}
+.btn-white-outline:hover{background:rgba(255,255,255,.1);border-color:#fff;}
+.hero-right{
+  display:flex;align-items:flex-end;justify-content:center;
+}
+.hero-right img{
+  max-width:100%;
+  filter:drop-shadow(0 -10px 40px rgba(0,0,0,.3));
+  transform:translateY(4px);
+}
+.hero-stats{
+  background:var(--blanco);
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-radius:0;
+  box-shadow:0 4px 20px rgba(0,0,0,.1);
+}
+.hstat{
+  padding:1.3rem 1.5rem;
+  text-align:center;
+  border-right:1px solid var(--borde);
+}
+.hstat:last-child{border-right:none;}
+.hstat-val{
+  font-family:'Nunito',sans-serif;
+  font-size:1.6rem;font-weight:900;color:var(--azul);
+}
+.hstat-label{font-size:.72rem;color:var(--gris-med);font-weight:600;margin-top:.1rem;}
+
+/* ─── SEARCH BAR ─── */
+.search-wrap{
+  background:var(--blanco);
+  padding:2rem 5%;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.search-title{
+  font-family:'Nunito',sans-serif;
+  font-size:1.1rem;font-weight:800;color:var(--gris-osc);
+  margin-bottom:1rem;
+}
+.search-form{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr 1fr auto;
+  gap:.8rem;
+  align-items:end;
+}
+.sf-group label{
+  display:block;font-size:.72rem;font-weight:700;
+  color:var(--gris-med);letter-spacing:.5px;text-transform:uppercase;margin-bottom:.4rem;
+}
+.sf-group select,.sf-group input{
+  width:100%;padding:.75rem 1rem;
+  border:2px solid var(--borde);border-radius:10px;
+  font-family:'Nunito Sans',sans-serif;font-size:.88rem;
+  color:var(--gris-osc);background:var(--blanco);outline:none;
+  transition:border-color .2s;
+  appearance:none;
+}
+.sf-group select:focus,.sf-group input:focus{border-color:var(--azul);}
+.btn-search{
+  background:var(--azul);color:#fff;
+  border:none;padding:.78rem 2rem;border-radius:10px;
+  font-family:'Nunito Sans',sans-serif;
+  font-size:.88rem;font-weight:700;cursor:pointer;
+  transition:background .2s;white-space:nowrap;
+  display:flex;align-items:center;gap:.5rem;
+}
+.btn-search:hover{background:var(--azul-osc);}
+
+/* ─── SECCIÓN GENÉRICA ─── */
+.section{padding:4rem 5%;}
+.section-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:2rem;flex-wrap:wrap;gap:1rem;
+}
+.section-label{
+  font-size:.72rem;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--naranja);margin-bottom:.3rem;
+}
+.section-title{
+  font-family:'Nunito',sans-serif;
+  font-size:1.6rem;font-weight:900;color:var(--gris-osc);
+}
+.ver-todo{
+  font-size:.82rem;font-weight:700;color:var(--azul);
+  text-decoration:none;display:flex;align-items:center;gap:.3rem;
+  white-space:nowrap;
+}
+.ver-todo:hover{text-decoration:underline;}
+
+/* ─── CARDS AUTOS ─── */
+.autos-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(280px,1fr));
+  gap:1.5rem;
+}
+.auto-card{
+  background:var(--blanco);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 2px 12px rgba(0,0,0,.07);
+  transition:transform .25s,box-shadow .25s;
+  text-decoration:none;color:inherit;
+  display:block;
+}
+.auto-card:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,.12);}
+.auto-img-wrap{
+  position:relative;overflow:hidden;
+  aspect-ratio:16/9;background:#eef0f5;
+}
+.auto-img-wrap img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .4s;
+}
+.auto-card:hover .auto-img-wrap img{transform:scale(1.04);}
+.auto-tag{
+  position:absolute;top:.8rem;left:.8rem;
+  padding:.25rem .8rem;border-radius:20px;
+  font-size:.65rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+}
+.tag-nuevo{background:#d1fae5;color:#065f46;}
+.tag-oferta{background:#fee2e2;color:#991b1b;}
+.tag-reservado{background:#fef3c7;color:#92400e;}
+.auto-fav{
+  position:absolute;top:.8rem;right:.8rem;
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(255,255,255,.9);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;border:none;cursor:pointer;
+  transition:background .2s;
+}
+.auto-fav:hover{background:#fff;}
+.auto-body{padding:1.2rem;}
+.auto-marca{
+  font-size:.72rem;font-weight:700;color:var(--azul);
+  text-transform:uppercase;letter-spacing:1px;margin-bottom:.2rem;
+}
+.auto-nombre{
+  font-family:'Nunito',sans-serif;
+  font-size:1.05rem;font-weight:800;color:var(--gris-osc);
+  margin-bottom:.8rem;
+}
+.auto-detalles{
+  display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;
+}
+.auto-det{
+  display:flex;align-items:center;gap:.3rem;
+  font-size:.75rem;color:var(--gris-med);font-weight:600;
+  background:var(--gris-cla);padding:.25rem .7rem;border-radius:20px;
+}
+.auto-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:.9rem;border-top:1px solid var(--borde);
+}
+.auto-precio{
+  font-family:'Nunito',sans-serif;
+  font-size:1.3rem;font-weight:900;color:var(--gris-osc);
+}
+.auto-precio-antes{
+  font-size:.75rem;color:var(--gris-med);text-decoration:line-through;
+  display:block;line-height:1;
+}
+.auto-precio-desc{font-size:.72rem;color:#dc2626;font-weight:700;margin-left:.4rem;}
+.btn-ver{
+  background:var(--azul-cla);color:var(--azul);
+  padding:.5rem 1.1rem;border-radius:20px;
+  font-size:.78rem;font-weight:800;border:none;cursor:pointer;
+  transition:all .2s;
+  text-decoration:none;
+}
+.btn-ver:hover{background:var(--azul);color:#fff;}
+
+/* ─── FILTROS CATEGORÍAS ─── */
+.cats-row{
+  display:flex;gap:.8rem;flex-wrap:wrap;
+  margin-bottom:2rem;
+}
+.cat-filter{
+  display:flex;align-items:center;gap:.5rem;
+  background:var(--blanco);border:2px solid var(--borde);
+  padding:.55rem 1.2rem;border-radius:25px;
+  font-size:.82rem;font-weight:700;color:var(--gris-med);
+  cursor:pointer;transition:all .2s;
+  text-decoration:none;
+}
+.cat-filter:hover,.cat-filter.active{
+  border-color:var(--azul);color:var(--azul);background:var(--azul-cla);
+}
+
+/* ─── BANNER FINANCIAMIENTO ─── */
+.banner-fin{
+  background:linear-gradient(135deg,var(--naranja) 0%,#f5a623 100%);
+  border-radius:20px;
+  padding:3rem 4%;
+  display:grid;grid-template-columns:1fr auto;
+  gap:2rem;align-items:center;
+  margin:0 5%;
+}
+.fin-icon{font-size:3rem;margin-bottom:.5rem;}
+.fin-title{
+  font-family:'Nunito',sans-serif;
+  font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:.5rem;
+}
+.fin-sub{font-size:.9rem;color:rgba(255,255,255,.85);max-width:500px;}
+.btn-fin{
+  background:#fff;color:var(--naranja);
+  padding:.9rem 2rem;border-radius:25px;
+  font-weight:800;font-size:.88rem;text-decoration:none;
+  white-space:nowrap;transition:all .2s;
+  box-shadow:0 4px 15px rgba(0,0,0,.15);
+}
+.btn-fin:hover{transform:translateY(-2px);}
+
+/* ─── POR QUÉ ELEGIRNOS ─── */
+.section-white{background:var(--blanco);padding:4rem 5%;}
+.por-que-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;
+}
+.pq-item{
+  text-align:center;padding:2rem 1.5rem;
+  border-radius:16px;transition:background .2s;
+}
+.pq-item:hover{background:var(--gris-cla);}
+.pq-icon{
+  width:64px;height:64px;border-radius:16px;
+  background:var(--azul-cla);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.8rem;margin:0 auto 1.2rem;
+}
+.pq-title{
+  font-family:'Nunito',sans-serif;
+  font-size:1rem;font-weight:800;color:var(--gris-osc);margin-bottom:.5rem;
+}
+.pq-text{font-size:.82rem;line-height:1.7;color:var(--gris-med);}
+
+/* ─── MARCAS ─── */
+.marcas-strip{
+  background:var(--blanco);
+  border-top:1px solid var(--borde);
+  border-bottom:1px solid var(--borde);
+  padding:1.5rem 5%;
+  overflow:hidden;
+}
+.marcas-inner{
+  display:flex;gap:3rem;align-items:center;
+  animation:marcas 20s linear infinite;
+  white-space:nowrap;width:max-content;
+}
+.marca-item{
+  font-family:'Nunito',sans-serif;
+  font-size:1rem;font-weight:900;color:var(--borde);
+  letter-spacing:2px;text-transform:uppercase;
+  flex-shrink:0;transition:color .3s;
+}
+.marca-item:hover{color:var(--azul);}
+@keyframes marcas{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ─── TESTIMONIOS ─── */
+.testis-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;
+}
+.testi{
+  background:var(--blanco);
+  border-radius:16px;padding:1.8rem;
+  box-shadow:0 2px 10px rgba(0,0,0,.06);
+}
+.testi-stars{color:var(--naranja);font-size:.95rem;margin-bottom:.8rem;}
+.testi-text{
+  font-size:.88rem;line-height:1.75;color:var(--gris-osc);
+  margin-bottom:1.2rem;font-style:italic;
+}
+.testi-author{display:flex;align-items:center;gap:.8rem;}
+.testi-av{
+  width:40px;height:40px;border-radius:50%;
+  object-fit:cover;border:2px solid var(--azul-cla);
+}
+.testi-name{font-weight:700;font-size:.85rem;color:var(--gris-osc);}
+.testi-car{font-size:.75rem;color:var(--gris-med);}
+
+/* ─── CONTACTO ─── */
+.contacto-section{
+  background:var(--blanco);
+  padding:4rem 5%;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:4rem;align-items:start;
+}
+.cinfo-grid{display:flex;flex-direction:column;gap:1.2rem;margin-top:1.5rem;}
+.cinfo-row{
+  display:flex;align-items:flex-start;gap:1rem;
+  padding:1.2rem;background:var(--gris-cla);border-radius:12px;
+}
+.cinfo-icon{
+  width:44px;height:44px;background:var(--azul-cla);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;flex-shrink:0;
+}
+.cinfo-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gris-med);}
+.cinfo-val{font-weight:700;font-size:.9rem;color:var(--gris-osc);margin-top:.2rem;}
+.mapa{
+  border-radius:16px;overflow:hidden;
+  aspect-ratio:16/10;
+  background:#cdd5df;
+  position:relative;
+  border:3px solid var(--borde);
+}
+.mapa img{width:100%;height:100%;object-fit:cover;opacity:.8;}
+.mapa-label{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:#fff;padding:1rem 1.5rem;border-radius:12px;
+  box-shadow:0 4px 20px rgba(0,0,0,.15);text-align:center;
+}
+.mapa-pin{font-size:2rem;display:block;margin-bottom:.3rem;}
+.mapa-txt{font-weight:700;font-size:.88rem;color:var(--azul);}
+
+/* FORM CONTACTO */
+.cform{display:flex;flex-direction:column;gap:1rem;margin-top:1.5rem;}
+.fg{display:flex;flex-direction:column;gap:.35rem;}
+.fg label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gris-med);}
+.fg input,.fg textarea,.fg select{
+  padding:.8rem 1rem;
+  border:2px solid var(--borde);border-radius:10px;
+  font-family:'Nunito Sans',sans-serif;font-size:.9rem;
+  color:var(--gris-osc);outline:none;transition:border-color .2s;
+}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--azul);}
+.fg textarea{resize:vertical;min-height:100px;}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.btn-enviar{
+  background:var(--azul);color:#fff;
+  border:none;padding:1rem;border-radius:25px;
+  font-family:'Nunito Sans',sans-serif;
+  font-size:.9rem;font-weight:700;cursor:pointer;
+  transition:background .2s;
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+}
+.btn-enviar:hover{background:var(--azul-osc);}
+
+/* ─── CTA WHATSAPP ─── */
+.wa-float{
+  position:fixed;bottom:2rem;right:2rem;z-index:200;
+  background:#25d366;color:#fff;
+  width:56px;height:56px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;
+  box-shadow:0 4px 20px rgba(37,211,102,.5);
+  text-decoration:none;
+  animation:waBounce 2.5s ease infinite;
+}
+.wa-float:hover{transform:scale(1.1);}
+@keyframes waBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* ─── FOOTER ─── */
+footer{
+  background:var(--gris-osc);
+  color:rgba(255,255,255,.65);
+}
+.footer-main{
+  padding:3.5rem 5%;
+  display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;
+}
+.footer-brand{
+  font-family:'Nunito',sans-serif;
+  font-size:1.5rem;font-weight:900;color:#fff;
+  display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;
+}
+.footer-brand-icon{
+  background:var(--naranja);color:#fff;
+  width:32px;height:32px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;font-size:1rem;
+}
+.footer-about{font-size:.82rem;line-height:1.8;max-width:280px;}
+.footer-social{display:flex;gap:.8rem;margin-top:1.5rem;}
+.fsoc{
+  width:34px;height:34px;border-radius:8px;
+  background:rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;
+  transition:all .2s;
+}
+.fsoc:hover{background:var(--azul);color:#fff;}
+.footer-col-title{
+  font-size:.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,.4);margin-bottom:1rem;
+}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:.7rem;}
+.footer-links a{
+  font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s;
+}
+.footer-links a:hover{color:#fff;}
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,.07);
+  padding:1.2rem 5%;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:.8rem;
+}
+.footer-copy{font-size:.75rem;}
+</style>
+</head>
+<body>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/5491100000000" class="wa-float" title="Consultar por WhatsApp">💬</a>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div style="display:flex;gap:2rem;flex-wrap:wrap;">
+    <span class="topbar-item">📍 Av. Rivadavia 4500, CABA</span>
+    <span class="topbar-item">📞 <b>011 4500-0000</b></span>
+    <span class="topbar-item">🕐 Lun–Sáb <b>9:00 a 19:00</b></span>
+  </div>
+  <span class="topbar-item">✅ Más de <b>200 autos</b> disponibles hoy</span>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">🚗</div>
+    AutoPlaza
+  </a>
+  <ul>
+    <li><a href="#stock">Stock</a></li>
+    <li><a href="#financiamiento">Financiamiento</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <a href="tel:01145000000" class="nav-tel">📞 Llamar ahora</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-badge">
+      <span>NUEVO</span>
+      ¡Más de 200 autos disponibles!
+    </div>
+    <h1 class="hero-title">
+      Tu próximo auto<br>
+      <em>te está esperando</em>
+    </h1>
+    <p class="hero-sub">Autos usados seleccionados, con revisión mecánica completa, documentación al día y financiamiento propio. Comprá con confianza.</p>
+    <div class="hero-btns">
+      <a href="#stock" class="btn-orange">🔍 Ver stock completo</a>
+      <a href="#contacto" class="btn-white-outline">Consultar precio</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=700&q=80&auto=format&fit=crop" alt="Auto usado en playa"/>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="hero-stats">
+  <div class="hstat">
+    <div class="hstat-val">200+</div>
+    <div class="hstat-label">Autos en stock</div>
+  </div>
+  <div class="hstat">
+    <div class="hstat-val">15 años</div>
+    <div class="hstat-label">De experiencia</div>
+  </div>
+  <div class="hstat">
+    <div class="hstat-val">5.000+</div>
+    <div class="hstat-label">Clientes felices</div>
+  </div>
+  <div class="hstat">
+    <div class="hstat-val">100%</div>
+    <div class="hstat-label">Revisados</div>
+  </div>
+</div>
+
+<!-- BUSCADOR -->
+<div class="search-wrap">
+  <div class="search-title">🔎 Buscar un auto</div>
+  <form class="search-form" onsubmit="event.preventDefault()">
+    <div class="sf-group">
+      <label>Marca</label>
+      <select>
+        <option>Todas las marcas</option>
+        <option>Toyota</option><option>Volkswagen</option>
+        <option>Ford</option><option>Chevrolet</option>
+        <option>Peugeot</option><option>Renault</option>
+        <option>Honda</option><option>Fiat</option>
+      </select>
+    </div>
+    <div class="sf-group">
+      <label>Modelo</label>
+      <select>
+        <option>Todos los modelos</option>
+        <option>Corolla</option><option>Hilux</option>
+        <option>Gol</option><option>Vento</option>
+        <option>EcoSport</option><option>Sandero</option>
+      </select>
+    </div>
+    <div class="sf-group">
+      <label>Año desde</label>
+      <select>
+        <option>Cualquier año</option>
+        <option>2024</option><option>2023</option>
+        <option>2022</option><option>2021</option>
+        <option>2020</option><option>2019</option>
+        <option>2018 o anterior</option>
+      </select>
+    </div>
+    <div class="sf-group">
+      <label>Precio máx.</label>
+      <select>
+        <option>Sin límite</option>
+        <option>Hasta $8.000.000</option>
+        <option>Hasta $12.000.000</option>
+        <option>Hasta $18.000.000</option>
+        <option>Hasta $25.000.000</option>
+      </select>
+    </div>
+    <button type="submit" class="btn-search">🔍 Buscar</button>
+  </form>
+</div>
+
+<!-- STOCK -->
+<div class="section" id="stock">
+  <div class="section-head">
+    <div>
+      <div class="section-label">Stock disponible</div>
+      <div class="section-title">Autos en venta hoy</div>
+    </div>
+    <a href="#" class="ver-todo">Ver todos (200+) →</a>
+  </div>
+
+  <div class="cats-row">
+    <a href="#" class="cat-filter active">🚗 Todos</a>
+    <a href="#" class="cat-filter">🚙 Sedán</a>
+    <a href="#" class="cat-filter">🚐 SUV / Camioneta</a>
+    <a href="#" class="cat-filter">🏎 Hatchback</a>
+    <a href="#" class="cat-filter">🚌 Familiar</a>
+    <a href="#" class="cat-filter">⚡ Eléctrico / Híbrido</a>
+  </div>
+
+  <div class="autos-grid">
+
+    <!-- AUTO 1 -->
+    <a class="auto-card" href="#">
+      <div class="auto-img-wrap">
+        <img src="https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=500&q=80&auto=format&fit=crop" alt="Toyota Corolla"/>
+        <span class="auto-tag tag-nuevo">Nuevo ingreso</span>
+        <button class="auto-fav">♡</button>
+      </div>
+      <div class="auto-body">
+        <div class="auto-marca">Toyota</div>
+        <div class="auto-nombre">Corolla XEI 2.0 CVT</div>
+        <div class="auto-detalles">
+          <span class="auto-det">📅 2022</span>
+          <span class="auto-det">📍 38.000 km</span>
+          <span class="auto-det">⛽ Nafta</span>
+          <span class="auto-det">⚙️ Automático</span>
+        </div>
+        <div class="auto-footer">
+          <div>
+            <div class="auto-precio">$18.500.000</div>
+          </div>
+          <span class="btn-ver">Ver auto →</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- AUTO 2 -->
+    <a class="auto-card" href="#">
+      <div class="auto-img-wrap">
+        <img src="https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?w=500&q=80&auto=format&fit=crop" alt="VW Vento"/>
+        <span class="auto-tag tag-oferta">Oferta</span>
+        <button class="auto-fav">♡</button>
+      </div>
+      <div class="auto-body">
+        <div class="auto-marca">Volkswagen</div>
+        <div class="auto-nombre">Vento 1.4 TSI Highline</div>
+        <div class="auto-detalles">
+          <span class="auto-det">📅 2021</span>
+          <span class="auto-det">📍 52.000 km</span>
+          <span class="auto-det">⛽ Nafta</span>
+          <span class="auto-det">⚙️ DSG 7vel</span>
+        </div>
+        <div class="auto-footer">
+          <div>
+            <span class="auto-precio-antes">$16.200.000</span>
+            <span class="auto-precio">$14.900.000 <span class="auto-precio-desc">-8%</span></span>
+          </div>
+          <span class="btn-ver">Ver auto →</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- AUTO 3 -->
+    <a class="auto-card" href="#">
+      <div class="auto-img-wrap">
+        <img src="https://images.unsplash.com/photo-1617814076668-8dfc6fe3b744?w=500&q=80&auto=format&fit=crop" alt="Ford EcoSport"/>
+        <button class="auto-fav">♡</button>
+      </div>
+      <div class="auto-body">
+        <div class="auto-marca">Ford</div>
+        <div class="auto-nombre">EcoSport Titanium 2.0</div>
+        <div class="auto-detalles">
+          <span class="auto-det">📅 2023</span>
+          <span class="auto-det">📍 18.000 km</span>
+          <span class="auto-det">⛽ Nafta</span>
+          <span class="auto-det">⚙️ Automático</span>
+        </div>
+        <div class="auto-footer">
+          <div class="auto-precio">$22.000.000</div>
+          <span class="btn-ver">Ver auto →</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- AUTO 4 -->
+    <a class="auto-card" href="#">
+      <div class="auto-img-wrap">
+        <img src="https://images.unsplash.com/photo-1502877338535-766e1452684a?w=500&q=80&auto=format&fit=crop" alt="Chevrolet Tracker"/>
+        <span class="auto-tag tag-nuevo">Nuevo ingreso</span>
+        <button class="auto-fav">♡</button>
+      </div>
+      <div class="auto-body">
+        <div class="auto-marca">Chevrolet</div>
+        <div class="auto-nombre">Tracker Premier Turbo</div>
+        <div class="auto-detalles">
+          <span class="auto-det">📅 2023</span>
+          <span class="auto-det">📍 24.500 km</span>
+          <span class="auto-det">⛽ Nafta</span>
+          <span class="auto-det">⚙️ CVT</span>
+        </div>
+        <div class="auto-footer">
+          <div class="auto-precio">$26.800.000</div>
+          <span class="btn-ver">Ver auto →</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- AUTO 5 -->
+    <a class="auto-card" href="#">
+      <div class="auto-img-wrap">
+        <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=500&q=80&auto=format&fit=crop" alt="Peugeot 208"/>
+        <span class="auto-tag tag-oferta">Oferta</span>
+        <button class="auto-fav">♡</button>
+      </div>
+      <div class="auto-body">
+        <div class="auto-marca">Peugeot</div>
+        <div class="auto-nombre">208 Allure 1.6 VTi</div>
+        <div class="auto-detalles">
+          <span class="auto-det">📅 2020</span>
+          <span class="auto-det">📍 67.000 km</span>
+          <span class="auto-det">⛽ Nafta</span>
+          <span class="auto-det">⚙️ Manual</span>
+        </div>
+        <div class="auto-footer">
+          <div>
+            <span class="auto-precio-antes">$9.500.000</span>
+            <span class="auto-precio">$8.400.000 <span class="auto-precio-desc">-11%</span></span>
+          </div>
+          <span class="btn-ver">Ver auto →</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- AUTO 6 -->
+    <a class="auto-card" href="#">
+      <div class="auto-img-wrap">
+        <img src="https://images.unsplash.com/photo-1532974297617-c0f05fe48bff?w=500&q=80&auto=format&fit=crop" alt="Renault Sandero"/>
+        <span class="auto-tag tag-reservado">Reservado</span>
+        <button class="auto-fav">♡</button>
+      </div>
+      <div class="auto-body">
+        <div class="auto-marca">Renault</div>
+        <div class="auto-nombre">Sandero Stepway Intens</div>
+        <div class="auto-detalles">
+          <span class="auto-det">📅 2022</span>
+          <span class="auto-det">📍 41.000 km</span>
+          <span class="auto-det">⛽ Nafta</span>
+          <span class="auto-det">⚙️ CVT</span>
+        </div>
+        <div class="auto-footer">
+          <div class="auto-precio">$11.200.000</div>
+          <span class="btn-ver">Ver auto →</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<!-- BANNER FINANCIAMIENTO -->
+<div class="banner-fin" id="financiamiento">
+  <div>
+    <div class="fin-icon">💳</div>
+    <div class="fin-title">Financiamiento propio, sin banco</div>
+    <p class="fin-sub">Hasta 60 cuotas fijas. Sin garante. Aprobación en el día. Cuota inicial desde el 30%. El auto que querés, al alcance de tu bolsillo.</p>
+  </div>
+  <a href="#contacto" class="btn-fin">Simular cuotas →</a>
+</div>
+
+<!-- MARCAS -->
+<div class="marcas-strip">
+  <div class="marcas-inner">
+    <span class="marca-item">Toyota</span>
+    <span class="marca-item">•</span>
+    <span class="marca-item">Volkswagen</span>
+    <span class="marca-item">•</span>
+    <span class="marca-item">Ford</span>
+    <span class="marca-item">•</span>
+    <span class="marca-item">Chevrolet</span>
+    <span class="marca-item">•</span>
+    <span class="marca-item">Peugeot</span>
+    <span class="marca-item">•</span>
+    <span class="marca-item">Renault</span>
+    <span class="marca-item">•</span>
+    <span class="marca-item">Honda</span>
+    <span class="marca-item">•</span>
+    <span class="marca-item">Fiat</span>
+    <span class="marca-item">•</span>
+    <span class="marca-item">Nissan</span>
+    <span class="marca-item">•</span>
+    <span class="marca-item">Hyundai</span>
+    <span class="marca-item">•</span>
+    <span class="marca-item">Toyota</span>
+    <span class="marca-item">•</span>
+    <span class="marca-item">Volkswagen</span>
+    <span class="marca-item">•</span>
+    <span class="marca-item">Ford</span>
+    <span class="marca-item">•</span>
+    <span class="marca-item">Chevrolet</span>
+    <span class="marca-item">•</span>
+    <span class="marca-item">Peugeot</span>
+    <span class="marca-item">•</span>
+    <span class="marca-item">Renault</span>
+    <span class="marca-item">•</span>
+    <span class="marca-item">Honda</span>
+    <span class="marca-item">•</span>
+    <span class="marca-item">Fiat</span>
+    <span class="marca-item">•</span>
+    <span class="marca-item">Nissan</span>
+    <span class="marca-item">•</span>
+    <span class="marca-item">Hyundai</span>
+    <span class="marca-item">•</span>
+  </div>
+</div>
+
+<!-- POR QUÉ ELEGIRNOS -->
+<div class="section-white" id="servicios">
+  <div style="text-align:center;margin-bottom:2.5rem;">
+    <div class="section-label" style="justify-content:center;display:flex;">¿Por qué AutoPlaza?</div>
+    <div class="section-title">Comprá con total tranquilidad</div>
+  </div>
+  <div class="por-que-grid">
+    <div class="pq-item">
+      <div class="pq-icon">🔧</div>
+      <div class="pq-title">Revisión técnica completa</div>
+      <p class="pq-text">Todos nuestros autos pasan por 80 puntos de inspección mecánica antes de salir a la venta.</p>
+    </div>
+    <div class="pq-item">
+      <div class="pq-icon">📋</div>
+      <div class="pq-title">Documentación al día</div>
+      <p class="pq-text">Título, VTV, patentes y transferencia gestionadas. Salís con el auto en regla el mismo día.</p>
+    </div>
+    <div class="pq-item">
+      <div class="pq-icon">💰</div>
+      <div class="pq-title">Financiamiento propio</div>
+      <p class="pq-text">Sin banco, sin garante. Aprobamos tu crédito en el día con cuotas accesibles hasta 60 meses.</p>
+    </div>
+    <div class="pq-item">
+      <div class="pq-icon">🤝</div>
+      <div class="pq-title">Tomamos tu usado</div>
+      <p class="pq-text">Tasamos tu vehículo al mejor precio del mercado y lo descontamos del que te llevás.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIOS -->
+<div class="section">
+  <div class="section-head">
+    <div>
+      <div class="section-label">Lo que dicen nuestros clientes</div>
+      <div class="section-title">⭐ 4.9/5 en Google</div>
+    </div>
+  </div>
+  <div class="testis-grid">
+    <div class="testi">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Compré mi Corolla en AutoPlaza y la experiencia fue excelente. Todo el trámite en un día, muy transparentes con el estado del auto y el financiamiento fue sencillo."</p>
+      <div class="testi-author">
+        <img class="testi-av" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80&fit=crop&crop=face" alt=""/>
+        <div>
+          <div class="testi-name">Rodrigo Méndez</div>
+          <div class="testi-car">Toyota Corolla 2022</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Me tomaron el Ford Focus que tenía a muy buen precio y me fui con la Tracker el mismo día. Sin vueltas, sin sorpresas. Los recomiendo a todos mis amigos."</p>
+      <div class="testi-author">
+        <img class="testi-av" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&q=80&fit=crop&crop=face" alt=""/>
+        <div>
+          <div class="testi-name">Valeria Suárez</div>
+          <div class="testi-car">Chevrolet Tracker 2023</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"15 años comprando y vendiendo autos y nunca había tenido una atención tan buena. El auto llegó exactamente como lo describieron, perfecto estado mecánico."</p>
+      <div class="testi-author">
+        <img class="testi-av" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&q=80&fit=crop&crop=face" alt=""/>
+        <div>
+          <div class="testi-name">Carlos Peralta</div>
+          <div class="testi-car">VW Vento 2021</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACTO -->
+<section class="contacto-section" id="contacto">
+  <div>
+    <div class="section-label">Estamos para ayudarte</div>
+    <div class="section-title">Contactanos</div>
+    <div class="cinfo-grid">
+      <div class="cinfo-row">
+        <div class="cinfo-icon">📍</div>
+        <div>
+          <div class="cinfo-label">Dirección</div>
+          <div class="cinfo-val">Av. Rivadavia 4500, CABA<br>A 200m del subte A — Est. Carabobo</div>
+        </div>
+      </div>
+      <div class="cinfo-row">
+        <div class="cinfo-icon">📞</div>
+        <div>
+          <div class="cinfo-label">Teléfono</div>
+          <div class="cinfo-val">011 4500-0000 · WhatsApp 11 5000-0000</div>
+        </div>
+      </div>
+      <div class="cinfo-row">
+        <div class="cinfo-icon">🕐</div>
+        <div>
+          <div class="cinfo-label">Horario de atención</div>
+          <div class="cinfo-val">Lunes a Viernes: 9:00 – 19:00<br>Sábados: 9:00 – 14:00</div>
+        </div>
+      </div>
+      <div class="cinfo-row">
+        <div class="cinfo-icon">✉️</div>
+        <div>
+          <div class="cinfo-label">Email</div>
+          <div class="cinfo-val">ventas@autoplaza.com.ar</div>
+        </div>
+      </div>
+    </div>
+    <div class="mapa" style="margin-top:1.5rem;">
+      <img src="https://images.unsplash.com/photo-1569336415962-a4bd9f69c07a?w=600&q=60&auto=format&fit=crop" alt="Ubicación"/>
+      <div class="mapa-label">
+        <span class="mapa-pin">📍</span>
+        <div class="mapa-txt">AutoPlaza — Av. Rivadavia 4500</div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="section-label">Consulta sin compromiso</div>
+    <div class="section-title">¿Te interesa algún auto?</div>
+    <form class="cform" onsubmit="event.preventDefault();alert('¡Gracias! Te contactamos pronto 🚗')">
+      <div class="fg-row">
+        <div class="fg">
+          <label>Nombre *</label>
+          <input type="text" placeholder="Tu nombre"/>
+        </div>
+        <div class="fg">
+          <label>Teléfono *</label>
+          <input type="tel" placeholder="11 5000-0000"/>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Email</label>
+        <input type="email" placeholder="correo@ejemplo.com"/>
+      </div>
+      <div class="fg">
+        <label>Auto de interés</label>
+        <select>
+          <option>— Seleccionar —</option>
+          <option>Toyota Corolla 2022</option>
+          <option>VW Vento 2021</option>
+          <option>Ford EcoSport 2023</option>
+          <option>Chevrolet Tracker 2023</option>
+          <option>Peugeot 208 2020</option>
+          <option>Otro (indicar en mensaje)</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Mensaje</label>
+        <textarea placeholder="¿Tenés alguna consulta? ¿Querés agendar una visita o prueba de manejo?"></textarea>
+      </div>
+      <button type="submit" class="btn-enviar">📩 Enviar consulta</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-main">
+    <div>
+      <div class="footer-brand">
+        <div class="footer-brand-icon">🚗</div>
+        AutoPlaza
+      </div>
+      <p class="footer-about">Tu playa de autos usados de confianza. 15 años conectando a las personas con su próximo auto, con transparencia, financiamiento y garantía.</p>
+      <div class="footer-social">
+        <a href="#" class="fsoc">ig</a>
+        <a href="#" class="fsoc">fb</a>
+        <a href="#" class="fsoc">yt</a>
+        <a href="#" class="fsoc">wa</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Navegación</div>
+      <ul class="footer-links">
+        <li><a href="#stock">Ver stock</a></li>
+        <li><a href="#financiamiento">Financiamiento</a></li>
+        <li><a href="#servicios">Por qué elegirnos</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Servicios</div>
+      <ul class="footer-links">
+        <li><a href="#">Financiamiento propio</a></li>
+        <li><a href="#">Tomamos tu usado</a></li>
+        <li><a href="#">Transferencia incluida</a></li>
+        <li><a href="#">Gestión de VTV</a></li>
+        <li><a href="#">Prueba de manejo</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 AutoPlaza — Todos los derechos reservados · CABA, Argentina</span>
+    <span class="footer-copy">Precios expresados en pesos argentinos · Consultar disponibilidad</span>
+  </div>
+</footer>
+
+<script>
+// Filtros activos
+document.querySelectorAll('.cat-filter').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.cat-filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+// Favoritos
+document.querySelectorAll('.auto-fav').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    btn.textContent = btn.textContent === '♡' ? '❤️' : '♡';
+  });
+});
+</script>
+</body>
+</html>

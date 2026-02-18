@@ -59,6 +59,36 @@ const EmpresaTemplate = () => {
             tipo: 'Servicios',
             color: '#1abc9c',
             descripcion: 'Soluciones integrales'
+        },
+        8: {
+            nombre: 'ServiTotal',
+            tipo: 'Servicios',
+            color: '#1abc9c',
+            descripcion: 'Soluciones integrales'
+        },
+        9: {
+            nombre: 'ServiTotal',
+            tipo: 'Servicios',
+            color: '#1abc9c',
+            descripcion: 'Soluciones integrales'
+        },
+        10: {
+            nombre: 'ServiTotal',
+            tipo: 'Servicios',
+            color: '#1abc9c',
+            descripcion: 'Soluciones integrales'
+        },
+        11: {
+            nombre: 'ServiTotal',
+            tipo: 'Servicios',
+            color: '#1abc9c',
+            descripcion: 'Soluciones integrales'
+        },
+        12: {
+            nombre: 'ServiTotal',
+            tipo: 'Servicios',
+            color: '#1abc9c',
+            descripcion: 'Soluciones integrales'
         }
     };
 

@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AgroVerde | Empresa Agropecuaria</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --verde-oscuro: #1a4a1f;
+      --verde-medio: #2d7a36;
+      --verde-claro: #4caf50;
+      --verde-suave: #a8d5ab;
+      --verde-menta: #e8f5e9;
+      --blanco: #ffffff;
+      --gris-claro: #f5f5f0;
+      --texto-oscuro: #1a2e1b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      color: var(--texto-oscuro);
+      background: var(--blanco);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 6%;
+      background: rgba(26, 74, 31, 0.97);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--blanco);
+      letter-spacing: 1px;
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--verde-suave); }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    nav ul a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.85);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    nav ul a:hover { color: var(--verde-suave); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      background: var(--verde-oscuro);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10rem 6% 6rem 8%;
+      position: relative;
+    }
+
+    .hero-left::after {
+      content: '';
+      position: absolute;
+      right: -60px;
+      top: 0; bottom: 0;
+      width: 120px;
+      background: var(--verde-oscuro);
+      clip-path: polygon(0 0, 100% 15%, 100% 85%, 0 100%);
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--verde-suave);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 40px;
+      height: 2px;
+      background: var(--verde-claro);
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 5vw, 5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--blanco);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--verde-suave);
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.75);
+      max-width: 420px;
+      margin-bottom: 3rem;
+      font-weight: 300;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--verde-claro);
+      color: var(--blanco);
+      padding: 1rem 2.2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      width: fit-content;
+    }
+
+    .hero-cta:hover {
+      background: var(--verde-suave);
+      color: var(--verde-oscuro);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(76,175,80,0.4);
+    }
+
+    .hero-cta::after { content: '→'; font-size: 1.1rem; }
+
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-right-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(26,74,31,0.3) 0%, transparent 60%);
+    }
+
+    .hero-stats {
+      position: absolute;
+      bottom: 3rem;
+      left: 3rem;
+      display: flex;
+      gap: 2rem;
+      z-index: 3;
+    }
+
+    .hero-stat {
+      background: rgba(255,255,255,0.95);
+      padding: 1.2rem 1.8rem;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    }
+
+    .hero-stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--verde-medio);
+      line-height: 1;
+    }
+
+    .hero-stat-label {
+      font-size: 0.75rem;
+      color: #666;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 0.3rem;
+    }
+
+    /* SECCIÓN: NOSOTROS */
+    .section-nosotros {
+      padding: 8rem 8%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+      background: var(--gris-claro);
+    }
+
+    .section-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--verde-medio);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 30px;
+      height: 2px;
+      background: var(--verde-claro);
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 900;
+      line-height: 1.2;
+      color: var(--verde-oscuro);
+      margin-bottom: 1.5rem;
+    }
+
+    .section-body {
+      font-size: 1rem;
+      line-height: 1.9;
+      color: #4a5a4b;
+      font-weight: 300;
+    }
+
+    .nosotros-img-wrap {
+      position: relative;
+    }
+
+    .nosotros-img-wrap img {
+      width: 100%;
+      border-radius: 16px;
+      display: block;
+      box-shadow: 0 30px 60px rgba(26,74,31,0.15);
+    }
+
+    .nosotros-badge {
+      position: absolute;
+      bottom: -2rem;
+      right: -2rem;
+      background: var(--verde-oscuro);
+      color: var(--blanco);
+      padding: 2rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    }
+
+    .nosotros-badge-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--verde-suave);
+      line-height: 1;
+    }
+
+    .nosotros-badge-text {
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* SERVICIOS */
+    .section-servicios {
+      padding: 8rem 8%;
+      background: var(--blanco);
+    }
+
+    .section-servicios-header {
+      text-align: center;
+      margin-bottom: 5rem;
+    }
+
+    .servicios-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+    }
+
+    .servicio-card {
+      background: var(--verde-menta);
+      border-radius: 20px;
+      padding: 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s;
+      cursor: default;
+      border: 1px solid rgba(76,175,80,0.1);
+    }
+
+    .servicio-card:hover {
+      background: var(--verde-oscuro);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(26,74,31,0.2);
+    }
+
+    .servicio-card:hover .servicio-titulo,
+    .servicio-card:hover .servicio-texto,
+    .servicio-card:hover .servicio-icon {
+      color: var(--blanco);
+    }
+
+    .servicio-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      display: block;
+      transition: color 0.4s;
+      color: var(--verde-medio);
+    }
+
+    .servicio-titulo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--verde-oscuro);
+      margin-bottom: 1rem;
+      transition: color 0.4s;
+    }
+
+    .servicio-texto {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: #4a5a4b;
+      font-weight: 300;
+      transition: color 0.4s;
+    }
+
+    .servicio-card:hover .servicio-texto { color: rgba(255,255,255,0.8); }
+
+    /* PRODUCTOS */
+    .section-productos {
+      padding: 8rem 8%;
+      background: var(--verde-oscuro);
+    }
+
+    .section-productos-header { text-align: center; margin-bottom: 5rem; }
+    .section-productos-header .section-label { justify-content: center; color: var(--verde-suave); }
+    .section-productos-header .section-title { color: var(--blanco); }
+
+    .productos-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+
+    .producto-card {
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 3/4;
+      cursor: default;
+    }
+
+    .producto-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+
+    .producto-card:hover img { transform: scale(1.08); }
+
+    .producto-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(26,74,31,0.9) 0%, transparent 50%);
+      display: flex;
+      align-items: flex-end;
+      padding: 1.5rem;
+    }
+
+    .producto-nombre {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--blanco);
+    }
+
+    /* CIFRAS */
+    .section-cifras {
+      padding: 6rem 8%;
+      background: var(--verde-claro);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      text-align: center;
+    }
+
+    .cifra-item {}
+    .cifra-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: var(--blanco);
+    }
+    .cifra-label {
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.8);
+      font-weight: 700;
+      margin-top: 0.5rem;
+    }
+
+    /* CONTACTO */
+    .section-contacto {
+      padding: 8rem 8%;
+      background: var(--gris-claro);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .contacto-info p {
+      font-size: 1rem;
+      line-height: 1.9;
+      color: #4a5a4b;
+      font-weight: 300;
+      margin-top: 1.5rem;
+    }
+
+    .contacto-datos {
+      margin-top: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .contacto-dato {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.95rem;
+      color: var(--verde-oscuro);
+      font-weight: 700;
+    }
+
+    .contacto-dato-icon {
+      width: 42px;
+      height: 42px;
+      background: var(--verde-claro);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .contacto-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--verde-medio);
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      padding: 0.9rem 1.2rem;
+      border: 2px solid rgba(76,175,80,0.2);
+      border-radius: 10px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem;
+      color: var(--texto-oscuro);
+      background: var(--blanco);
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--verde-claro);
+    }
+
+    .form-group textarea { resize: vertical; min-height: 130px; }
+
+    .form-submit {
+      background: var(--verde-oscuro);
+      color: var(--blanco);
+      border: none;
+      padding: 1.1rem 2.5rem;
+      border-radius: 50px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+      width: fit-content;
+    }
+
+    .form-submit:hover {
+      background: var(--verde-claro);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(76,175,80,0.4);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--texto-oscuro);
+      color: rgba(255,255,255,0.6);
+      padding: 4rem 8% 2rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 4rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-brand-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--blanco);
+      margin-bottom: 1rem;
+    }
+
+    .footer-brand-name span { color: var(--verde-suave); }
+
+    .footer-desc {
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+
+    .footer-heading {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--blanco);
+      margin-bottom: 1.2rem;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.55);
+      font-size: 0.9rem;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover { color: var(--verde-suave); }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 1.5rem;
+      text-align: center;
+      font-size: 0.82rem;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow { animation: fadeUp 0.7s ease both; animation-delay: 0.2s; }
+    .hero-title   { animation: fadeUp 0.7s ease both; animation-delay: 0.4s; }
+    .hero-desc    { animation: fadeUp 0.7s ease both; animation-delay: 0.6s; }
+    .hero-cta     { animation: fadeUp 0.7s ease both; animation-delay: 0.8s; }
+
+    /* Decorative leaf */
+    .leaf-deco {
+      position: absolute;
+      opacity: 0.04;
+      pointer-events: none;
+      font-size: 22rem;
+      right: -3rem;
+      top: 50%;
+      transform: translateY(-50%) rotate(-15deg);
+      color: var(--verde-claro);
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Agro<span>Verde</span></a>
+    <ul>
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#productos">Productos</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <span class="leaf-deco">🌿</span>
+      <div class="hero-eyebrow">Empresa Agropecuaria</div>
+      <h1 class="hero-title">
+        El campo es<br><em>nuestra pasión</em><br>y negocio
+      </h1>
+      <p class="hero-desc">
+        Más de 30 años cultivando el futuro del agro. Producción sostenible, tecnología de vanguardia y compromiso con la tierra.
+      </p>
+      <a href="#contacto" class="hero-cta">Habla con nosotros</a>
+    </div>
+    <div class="hero-right">
+      <img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=900&q=80&auto=format&fit=crop" alt="Campo agrícola al amanecer"/>
+      <div class="hero-right-overlay"></div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-num">30+</div>
+          <div class="hero-stat-label">Años</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">5.000</div>
+          <div class="hero-stat-label">Hectáreas</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">200+</div>
+          <div class="hero-stat-label">Clientes</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOSOTROS -->
+  <section class="section-nosotros" id="nosotros">
+    <div class="nosotros-img-wrap">
+      <img src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=700&q=80&auto=format&fit=crop" alt="Trabajador agrícola en el campo"/>
+      <div class="nosotros-badge">
+        <div class="nosotros-badge-num">30</div>
+        <div class="nosotros-badge-text">Años de<br>experiencia</div>
+      </div>
+    </div>
+    <div>
+      <div class="section-label">Quiénes somos</div>
+      <h2 class="section-title">Tradición familiar, visión moderna</h2>
+      <p class="section-body">
+        AgroVerde nació en 1994 como una pequeña empresa familiar dedicada a la producción de granos. Con el paso del tiempo, crecimos hasta convertirnos en una de las compañías agropecuarias más reconocidas de la región, sin perder los valores que nos fundaron: trabajo duro, honestidad y amor por la tierra.<br><br>
+        Hoy combinamos décadas de experiencia con tecnología de precisión para maximizar la productividad de manera sostenible, cuidando cada rincón de nuestros campos y el medioambiente que los rodea.
+      </p>
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section class="section-servicios" id="servicios">
+    <div class="section-servicios-header">
+      <div class="section-label" style="justify-content:center;">Lo que ofrecemos</div>
+      <h2 class="section-title">Nuestros Servicios</h2>
+    </div>
+    <div class="servicios-grid">
+      <div class="servicio-card">
+        <span class="servicio-icon">🌾</span>
+        <div class="servicio-titulo">Producción de Granos</div>
+        <p class="servicio-texto">Cultivo tecnificado de soja, maíz, trigo y girasol bajo estrictos estándares de calidad y sostenibilidad ambiental.</p>
+      </div>
+      <div class="servicio-card">
+        <span class="servicio-icon">🐄</span>
+        <div class="servicio-titulo">Ganadería Extensiva</div>
+        <p class="servicio-texto">Cría y engorde de bovinos en pasturas naturales y mejoradas, con bienestar animal como prioridad fundamental.</p>
+      </div>
+      <div class="servicio-card">
+        <span class="servicio-icon">💧</span>
+        <div class="servicio-titulo">Riego Tecnificado</div>
+        <p class="servicio-texto">Sistemas de irrigación de alta eficiencia, uso responsable del agua y monitoreo digital de suelos en tiempo real.</p>
+      </div>
+      <div class="servicio-card">
+        <span class="servicio-icon">🚜</span>
+        <div class="servicio-titulo">Servicio de Maquinaria</div>
+        <p class="servicio-texto">Flota propia de equipos agrícolas de última generación disponibles para siembra, cosecha y labores culturales.</p>
+      </div>
+      <div class="servicio-card">
+        <span class="servicio-icon">📊</span>
+        <div class="servicio-titulo">Consultoría Agronómica</div>
+        <p class="servicio-texto">Asesoramiento personalizado en gestión de cultivos, análisis de suelo, manejo integrado de plagas y rentabilidad.</p>
+      </div>
+      <div class="servicio-card">
+        <span class="servicio-icon">🌱</span>
+        <div class="servicio-titulo">Agricultura Sostenible</div>
+        <p class="servicio-texto">Implementación de prácticas de siembra directa, rotación de cultivos y agricultura de precisión para reducir impacto ambiental.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTOS -->
+  <section class="section-productos" id="productos">
+    <div class="section-productos-header">
+      <div class="section-label">Nuestra producción</div>
+      <h2 class="section-title" style="color:white;">Productos del Campo</h2>
+    </div>
+    <div class="productos-grid">
+      <div class="producto-card">
+        <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&q=80&auto=format&fit=crop" alt="Soja"/>
+        <div class="producto-overlay">
+          <div class="producto-nombre">Soja</div>
+        </div>
+      </div>
+      <div class="producto-card">
+        <img src="https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=400&q=80&auto=format&fit=crop" alt="Maíz"/>
+        <div class="producto-overlay">
+          <div class="producto-nombre">Maíz</div>
+        </div>
+      </div>
+      <div class="producto-card">
+        <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=400&q=80&auto=format&fit=crop" alt="Trigo"/>
+        <div class="producto-overlay">
+          <div class="producto-nombre">Trigo</div>
+        </div>
+      </div>
+      <div class="producto-card">
+        <img src="https://images.unsplash.com/photo-1510627498534-cf7e9002facc?w=400&q=80&auto=format&fit=crop" alt="Ganadería"/>
+        <div class="producto-overlay">
+          <div class="producto-nombre">Ganadería</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CIFRAS -->
+  <div class="section-cifras">
+    <div class="cifra-item">
+      <div class="cifra-num">5.000</div>
+      <div class="cifra-label">Hectáreas productivas</div>
+    </div>
+    <div class="cifra-item">
+      <div class="cifra-num">2.500</div>
+      <div class="cifra-label">Cabezas de ganado</div>
+    </div>
+    <div class="cifra-item">
+      <div class="cifra-num">98%</div>
+      <div class="cifra-label">Clientes satisfechos</div>
+    </div>
+    <div class="cifra-item">
+      <div class="cifra-num">15</div>
+      <div class="cifra-label">Certificaciones</div>
+    </div>
+  </div>
+
+  <!-- CONTACTO -->
+  <section class="section-contacto" id="contacto">
+    <div class="contacto-info">
+      <div class="section-label">Hablemos</div>
+      <h2 class="section-title">Contáctenos</h2>
+      <p>¿Tiene preguntas sobre nuestros productos o servicios? Estamos disponibles para atenderle y brindarle toda la información que necesita.</p>
+      <div class="contacto-datos">
+        <div class="contacto-dato">
+          <div class="contacto-dato-icon">📍</div>
+          Ruta 9, Km 245, Provincia de Córdoba, Argentina
+        </div>
+        <div class="contacto-dato">
+          <div class="contacto-dato-icon">📞</div>
+          +54 351 4xx-xxxx
+        </div>
+        <div class="contacto-dato">
+          <div class="contacto-dato-icon">✉️</div>
+          info@agroverde.com.ar
+        </div>
+        <div class="contacto-dato">
+          <div class="contacto-dato-icon">🕐</div>
+          Lunes a Viernes 8:00 – 18:00
+        </div>
+      </div>
+    </div>
+    <form class="contacto-form" onsubmit="event.preventDefault(); alert('¡Mensaje enviado! Nos comunicaremos pronto.')">
+      <div class="form-group">
+        <label>Nombre completo</label>
+        <input type="text" placeholder="Juan García"/>
+      </div>
+      <div class="form-group">
+        <label>Correo electrónico</label>
+        <input type="email" placeholder="juan@ejemplo.com"/>
+      </div>
+      <div class="form-group">
+        <label>Asunto</label>
+        <select>
+          <option>Consulta sobre servicios</option>
+          <option>Compra de productos</option>
+          <option>Asesoramiento agronómico</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Mensaje</label>
+        <textarea placeholder="Escriba su mensaje aquí..."></textarea>
+      </div>
+      <button type="submit" class="form-submit">Enviar mensaje</button>
+    </form>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">Agro<span>Verde</span></div>
+        <p class="footer-desc">Empresa agropecuaria con tres décadas de experiencia cultivando el campo con pasión, tecnología y respeto por la naturaleza.</p>
+      </div>
+      <div>
+        <div class="footer-heading">Navegación</div>
+        <ul class="footer-links">
+          <li><a href="#nosotros">Nosotros</a></li>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#productos">Productos</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Servicios</div>
+        <ul class="footer-links">
+          <li><a href="#">Producción de Granos</a></li>
+          <li><a href="#">Ganadería</a></li>
+          <li><a href="#">Riego Tecnificado</a></li>
+          <li><a href="#">Consultoría</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 AgroVerde S.A. — Todos los derechos reservados.
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -6,6 +6,11 @@ const empresas = [
     { id: 5, nombre: 'disco simple', tag: 'disco' },
     { id: 6, nombre: 'empresa de impresiones 3d', tag: 'servicios' },
     { id: 7, nombre: 'tienda de productos/presentacion', tag: 'tienda' },
+    { id: 8, nombre: 'tienda de agropecuaria/presentacion', tag: 'presentacion' },
+    { id: 9, nombre: 'Empresa de importacion/presentacion', tag: 'presentacion' },
+    { id: 10, nombre: 'Autos-marca/presentacion', tag: 'presentacion' },
+    { id: 11, nombre: 'tienda de ropa/presentacion', tag: 'presentacion' },
+    { id: 12, nombre: 'playa de autos/presentacion', tag: 'presentacion' },
 ];
 
 const Home = () => {
